@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Archipel des idées — Naviguer dans la pensée</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --void: #08090d;
+  --deep: #0d1017;
+  --surface: #121620;
+  --card: #151a24;
+  --muted: #3a4560;
+  --text-dim: #6a7a95;
+  --text: #b8c4d8;
+  --text-bright: #dde6f0;
+  --white: #f0f4f8;
+  --gold: #c8a96e;
+  --gold-dim: rgba(200,169,110,0.12);
+  --gold-glow: rgba(200,169,110,0.06);
+  --cyan: #4dd9c0;
+  --cyan-dim: rgba(77,217,192,0.08);
+  --rose: #e06b6b;
+  --rose-dim: rgba(224,107,107,0.08);
+  --border: rgba(255,255,255,0.055);
+  --border-gold: rgba(200,169,110,0.2);
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --mono: 'DM Mono', monospace;
+  --sans: 'DM Sans', system-ui, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--void);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* TEXTURE DE FOND — carte marine */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 60px,
+      rgba(255,255,255,0.012) 60px,
+      rgba(255,255,255,0.012) 61px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 60px,
+      rgba(255,255,255,0.008) 60px,
+      rgba(255,255,255,0.008) 61px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* LUEURS ATMOSPHÉRIQUES */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 20% 30%, rgba(200,169,110,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 70%, rgba(77,217,192,0.03) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 60% at 60% 10%, rgba(139,159,212,0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* TOUT LE CONTENU AU-DESSUS */
+.layer { position: relative; z-index: 1; }
+
+/* HEADER */
+.site-header {
+  padding: 4rem 3rem 3rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.header-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.header-eyebrow::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.5;
+}
+
+.header-title {
+  font-family: var(--serif);
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 300;
+  color: var(--white);
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+}
+.header-title em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--gold);
+}
+
+.header-desc {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-dim);
+  max-width: 520px;
+  line-height: 1.65;
+  margin-top: 0.5rem;
+}
+
+.header-stat {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.stat-num {
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--gold);
+  line-height: 1;
+}
+.stat-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+/* SÉPARATEUR */
+.sep {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 3rem;
+}
+.sep-line {
+  height: 1px;
+  background: var(--border);
+}
+
+/* CARTE DE L'ARCHIPEL */
+.carte-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem 3rem 4rem;
+}
+
+.carte-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+.carte-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.carte-title {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--text-bright);
+  font-style: italic;
+}
+
+/* GRILLE DES ÎLES */
+.iles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1px;
+  background: var(--border);
+}
+
+/* ÎLE DISPONIBLE */
+.ile-card {
+  background: var(--card);
+  padding: 2rem;
+  text-decoration: none;
+  display: block;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.25s;
+}
+.ile-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.ile-card:hover { background: var(--surface); }
+.ile-card:hover::before { transform: scaleX(1); }
+
+.ile-card.cyan-accent::before { background: var(--cyan); }
+.ile-card.cyan-accent:hover { background: rgba(77,217,192,0.04); }
+
+.ile-status {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.ile-status.open { color: var(--gold); }
+.ile-status.open-cyan { color: var(--cyan); }
+
+.status-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+.status-dot.gold { background: var(--gold); }
+.status-dot.cyan { background: var(--cyan); }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.ile-type {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.ile-name {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--white);
+  line-height: 1.15;
+  margin-bottom: 0.75rem;
+}
+.ile-card.cyan-accent .ile-name { color: #e8f4f0; }
+
+.ile-desc {
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-dim);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.ile-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.ile-tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+.ile-card:hover .ile-tag { border-color: rgba(200,169,110,0.2); }
+.ile-card.cyan-accent:hover .ile-tag { border-color: rgba(77,217,192,0.2); }
+
+.ile-arrow {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  transition: color 0.2s, transform 0.2s;
+}
+.ile-card:hover .ile-arrow { color: var(--gold); transform: translate(3px, -3px); }
+.ile-card.cyan-accent:hover .ile-arrow { color: var(--cyan); }
+
+/* Gestalt — accent chaud ocre */
+.ile-card.warm-accent::before { background: #c17d3c; }
+.ile-card.warm-accent:hover { background: rgba(193,125,60,0.04); }
+.ile-card.warm-accent .ile-name { color: #f5ede0; }
+.ile-card.warm-accent:hover .ile-tag { border-color: rgba(193,125,60,0.25); }
+.ile-card.warm-accent:hover .ile-arrow { color: #c17d3c; }
+.ile-status.open-warm { color: #c17d3c; }
+.status-dot.warm { background: #c17d3c; animation: pulse 2s ease-in-out infinite; }
+
+/* ÎLE EN CONSTRUCTION */
+.ile-construction {
+  background: var(--void);
+  padding: 2rem;
+  position: relative;
+  border: 1px dashed rgba(255,255,255,0.06);
+  margin: -1px;
+}
+
+.construction-status {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.construction-status::before {
+  content: '·';
+  font-size: 18px;
+  line-height: 1;
+  color: var(--muted);
+}
+
+.ile-construction .ile-type { opacity: 0.5; }
+
+.ile-construction .ile-name {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.15;
+  margin-bottom: 0.6rem;
+  font-style: italic;
+}
+
+.ile-construction .ile-desc {
+  font-size: 0.88rem;
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+/* SECTION MANIFESTE */
+.manifeste-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem;
+  border-top: 1px solid var(--border);
+}
+
+.manifeste-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 4rem;
+  align-items: start;
+}
+@media (max-width: 700px) { .manifeste-grid { grid-template-columns: 1fr; gap: 2rem; } }
+
+.manifeste-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+.manifeste-subtitle {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-bright);
+  line-height: 1.3;
+}
+
+.manifeste-body p {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-weight: 300;
+  color: var(--text);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+.manifeste-body p:last-child { margin-bottom: 0; }
+.manifeste-body strong { color: var(--text-bright); font-weight: 400; }
+.manifeste-body em { color: var(--gold); font-style: italic; }
+
+/* PRINCIPES */
+.principes-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem;
+  border-top: 1px solid var(--border);
+}
+
+.principes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  margin-top: 2rem;
+}
+
+.principe-cell {
+  background: var(--card);
+  padding: 1.5rem;
+}
+.principe-num {
+  font-family: var(--serif);
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: var(--border);
+  line-height: 1;
+  margin-bottom: 0.75rem;
+}
+.principe-title {
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--gold);
+  margin-bottom: 0.4rem;
+  line-height: 1.3;
+}
+.principe-text {
+  font-family: var(--serif);
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--text-dim);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* FOOTER */
+footer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 3rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.footer-brand {
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--muted);
+}
+.footer-note {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0.6;
+}
+
+/* ANIMATIONS D'ENTRÉE */
+.fade-in {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: fadeIn 0.8s ease forwards;
+}
+.fade-in:nth-child(1) { animation-delay: 0.1s; }
+.fade-in:nth-child(2) { animation-delay: 0.2s; }
+.fade-in:nth-child(3) { animation-delay: 0.3s; }
+.fade-in:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes fadeIn {
+  to { opacity: 1; transform: none; }
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .site-header { padding: 3rem 1.5rem 2rem; }
+  .carte-section, .manifeste-section, .principes-section { padding: 2rem 1.5rem; }
+  footer { padding: 1.5rem; }
+  .header-title { font-size: 2.8rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="layer">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="fade-in">
+      <p class="header-eyebrow">Portail de navigation intellectuelle</p>
+    </div>
+    <div class="fade-in">
+      <h1 class="header-title">Archipel<br><em>des idées</em></h1>
+    </div>
+    <div class="fade-in">
+      <p class="header-desc">Un espace de navigation dans la pensée — auteurs, écoles, théories, concepts. Chaque île, sa singularité. Entre elles, des ponts.</p>
+    </div>
+    <div class="fade-in">
+      <div class="header-stat">
+        <div class="stat-item">
+          <span class="stat-num">3</span>
+          <span class="stat-label">Îles disponibles</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">5</span>
+          <span class="stat-label">En construction</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">∞</span>
+          <span class="stat-label">À venir</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="sep"><div class="sep-line"></div></div>
+
+  <!-- CARTE -->
+  <section class="carte-section">
+    <div class="carte-header">
+      <span class="carte-label">La carte</span>
+      <span class="carte-title">Naviguer par curiosité, pas par plan</span>
+    </div>
+
+    <div class="iles-grid">
+
+      <!-- ÎLE 1 : Meirieu — disponible -->
+      <a href="meirieu.html" class="ile-card">
+        <div class="ile-status open">
+          <span class="status-dot gold"></span>
+          Île disponible
+        </div>
+        <p class="ile-type">Pédagogue — France</p>
+        <p class="ile-name">Philippe Meirieu</p>
+        <p class="ile-desc">L'apprentissage comme émancipation. Le paradoxe de l'acte éducatif entre contrainte féconde et liberté du sujet.</p>
+        <div class="ile-tags">
+          <span class="ile-tag">Pédagogie</span>
+          <span class="ile-tag">Émancipation</span>
+          <span class="ile-tag">École</span>
+          <span class="ile-tag">Différenciation</span>
+        </div>
+        <span class="ile-arrow">↗</span>
+      </a>
+
+      <!-- ÎLE 2 : Palo Alto — disponible -->
+      <a href="palo-alto.html" class="ile-card cyan-accent">
+        <div class="ile-status open-cyan">
+          <span class="status-dot cyan"></span>
+          Île disponible
+        </div>
+        <p class="ile-type">École de pensée — Californie, 1950s</p>
+        <p class="ile-name">École de Palo Alto</p>
+        <p class="ile-desc">La communication, les systèmes, le changement. Un collectif qui a révolutionné la façon de penser les relations humaines.</p>
+        <div class="ile-tags">
+          <span class="ile-tag">Systémique</span>
+          <span class="ile-tag">Communication</span>
+          <span class="ile-tag">Cybernétique</span>
+          <span class="ile-tag">Thérapie brève</span>
+        </div>
+        <span class="ile-arrow">↗</span>
+      </a>
+
+      <!-- ÎLE 3 : Gestalt — disponible -->
+      <a href="gestalt.html" class="ile-card warm-accent">
+        <div class="ile-status open-warm">
+          <span class="status-dot warm"></span>
+          Île disponible
+        </div>
+        <p class="ile-type">Approche thérapeutique — New York, 1951</p>
+        <p class="ile-name">Gestalt-thérapie</p>
+        <p class="ile-desc">La forme qui prend forme. L'organisme en contact avec son monde, dans la plénitude du présent vécu.</p>
+        <div class="ile-tags">
+          <span class="ile-tag">Contact</span>
+          <span class="ile-tag">Phénoménologie</span>
+          <span class="ile-tag">Ici et maintenant</span>
+          <span class="ile-tag">Humanisme</span>
+        </div>
+        <span class="ile-arrow">↗</span>
+      </a>
+
+      <!-- ÎLES EN CONSTRUCTION -->
+      <div class="ile-construction">
+        <p class="construction-status">En construction</p>
+        <p class="ile-type">Anthropologue & théoricien</p>
+        <p class="ile-name">Gregory Bateson</p>
+        <p class="ile-desc">L'écologie de l'esprit, les niveaux logiques, les patterns qui relient toutes choses.</p>
+      </div>
+
+      <div class="ile-construction">
+        <p class="construction-status">En construction</p>
+        <p class="ile-type">Pédagogue — Brésil</p>
+        <p class="ile-name">Paulo Freire</p>
+        <p class="ile-desc">La pédagogie des opprimés, le dialogue transformateur, la conscientisation comme acte politique.</p>
+      </div>
+
+      <div class="ile-construction">
+        <p class="construction-status">En construction</p>
+        <p class="ile-type">Sociologue & philosophe — France</p>
+        <p class="ile-name">Edgar Morin</p>
+        <p class="ile-desc">Le paradigme de la complexité, la pensée reliant, contre la réduction et la disjonction.</p>
+      </div>
+
+      <div class="ile-construction">
+        <p class="construction-status">En construction</p>
+        <p class="ile-type">Psychosociologue — Allemagne / USA</p>
+        <p class="ile-name">Kurt Lewin</p>
+        <p class="ile-desc">La dynamique des groupes, la recherche-action, le changement planifié dans les systèmes sociaux.</p>
+      </div>
+
+      <div class="ile-construction">
+        <p class="construction-status">En construction</p>
+        <p class="ile-type">Mathématicien & philosophe — USA</p>
+        <p class="ile-name">Norbert Wiener & la Cybernétique</p>
+        <p class="ile-desc">Le terreau de tout. La boucle de rétroaction, l'information, la régulation des systèmes complexes.</p>
+      </div>
+
+      <div class="ile-construction">
+        <p class="construction-status">En construction</p>
+        <p class="ile-type">Philosophe — France</p>
+        <p class="ile-name">Michel Foucault</p>
+        <p class="ile-desc">Le pouvoir, le savoir, les dispositifs. Une archéologie des institutions et des discours qui nous constituent.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="sep"><div class="sep-line"></div></div>
+
+  <!-- MANIFESTE -->
+  <section class="manifeste-section">
+    <div class="manifeste-grid">
+      <div>
+        <p class="manifeste-label">Ce que c'est</p>
+        <p class="manifeste-subtitle">Un archipel,<br>pas une encyclopédie</p>
+      </div>
+      <div class="manifeste-body">
+        <p>Chaque île de cet archipel est <strong>autonome</strong> : elle a son propre écosystème, sa propre logique interne, sa propre façon de donner à voir une pensée. On peut la visiter seule, sans plan, sans ordre prescrit.</p>
+        <p>Mais les îles sont aussi <strong>reliées</strong>. Entre elles circulent des concepts, des filiations, des tensions productives. Un pont entre Meirieu et Palo Alto, par exemple : le paradoxe éducatif d'un côté, la double contrainte de l'autre. Deux pensées qui ne se connaissaient pas, mais qui se répondent.</p>
+        <p>L'ambition n'est pas l'exhaustivité. C'est <em>la qualité de la navigation</em> : entrer dans une pensée, la comprendre dans ses articulations essentielles, la retenir — et repartir avec quelque chose de nouveau dans la tête.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="sep"><div class="sep-line"></div></div>
+
+  <!-- PRINCIPES -->
+  <section class="principes-section">
+    <p class="manifeste-label">Les principes de navigation</p>
+    <div class="principes-grid">
+      <div class="principe-cell">
+        <p class="principe-num">01</p>
+        <p class="principe-title">Naviguer par curiosité</p>
+        <p class="principe-text">Pas de parcours imposé. On entre par où l'on veut, on suit ce qui attire, on revient, on fait des détours.</p>
+      </div>
+      <div class="principe-cell">
+        <p class="principe-num">02</p>
+        <p class="principe-title">La qualité contre le gavage</p>
+        <p class="principe-text">Chaque île est dense mais lisible. L'essentiel, pas l'exhaustif. Comprendre et retenir plutôt qu'accumuler.</p>
+      </div>
+      <div class="principe-cell">
+        <p class="principe-num">03</p>
+        <p class="principe-title">Les ponts, pas les murs</p>
+        <p class="principe-text">Chaque île signale ses connexions avec d'autres. La valeur naît des relations entre les îles autant que de chaque île seule.</p>
+      </div>
+      <div class="principe-cell">
+        <p class="principe-num">04</p>
+        <p class="principe-title">Toujours en chantier</p>
+        <p class="principe-text">L'archipel grandit. Les îles en construction sont visibles : elles invitent à revenir, pas à attendre qu'il soit "fini".</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="footer-brand">Archipel des idées</span>
+    <span class="footer-note">Navigation libre — Connaissance ouverte</span>
+  </footer>
+
+</div>
+
+</body>
+</html>

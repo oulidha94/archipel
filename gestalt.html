@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestalt-thérapie — La forme, le contact, le présent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --terre: #2d1f14;
+  --terre-mid: #3d2a1a;
+  --ecorce: #5c3d22;
+  --ocre: #c17d3c;
+  --ocre-dim: rgba(193,125,60,0.12);
+  --ocre-pale: rgba(193,125,60,0.06);
+  --mousse: #4a6741;
+  --mousse-dim: rgba(74,103,65,0.12);
+  --mousse-pale: rgba(74,103,65,0.06);
+  --argile: #b5572a;
+  --argile-dim: rgba(181,87,42,0.12);
+  --sable: #e8d5b0;
+  --sable-mid: #d4be90;
+  --ivoire: #f5ede0;
+  --creme: #faf5ec;
+  --blanc: #fdfaf5;
+  --muted: #8a7260;
+  --text: #3d2a1a;
+  --text-dim: #7a6248;
+  --border: rgba(93,62,34,0.12);
+  --border-ocre: rgba(193,125,60,0.25);
+  --serif: 'Lora', Georgia, serif;
+  --sans: 'DM Sans', system-ui, sans-serif;
+  --mono: 'DM Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--creme);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* TEXTURE ORGANIQUE */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(193,125,60,0.06) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 90% 80%, rgba(74,103,65,0.05) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 40% at 50% 50%, rgba(181,87,42,0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.layer { position: relative; z-index: 1; }
+
+/* NAV */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(245,237,224,0.94);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  gap: 0;
+}
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ocre);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-right: auto;
+  opacity: 0.85;
+}
+.nav-links {
+  display: flex;
+  gap: 0;
+  list-style: none;
+}
+.nav-links li a {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 0 1rem;
+  height: 50px;
+  line-height: 50px;
+  border-right: 1px solid var(--border);
+  transition: color 0.2s;
+}
+.nav-links li:first-child a { border-left: 1px solid var(--border); }
+.nav-links li a:hover { color: var(--ocre); }
+
+/* HERO */
+.hero {
+  padding: 9rem 2rem 5rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* FIGURE/FOND visuel dans le hero */
+.hero-figure-fond {
+  position: relative;
+  margin-bottom: 2.5rem;
+}
+.hero-fond {
+  font-family: var(--serif);
+  font-size: clamp(5rem, 14vw, 11rem);
+  font-weight: 600;
+  color: rgba(193,125,60,0.07);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  position: absolute;
+  top: -1rem;
+  left: -0.5rem;
+  pointer-events: none;
+  user-select: none;
+}
+.hero-inner { position: relative; }
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ocre);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--ocre);
+  opacity: 0.7;
+}
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+  font-weight: 500;
+  line-height: 1.1;
+  color: var(--terre);
+  margin-bottom: 0.4rem;
+  letter-spacing: -0.01em;
+}
+.hero-title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ocre);
+}
+.hero-subtitle {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--text-dim);
+  max-width: 540px;
+  margin-top: 0.75rem;
+  line-height: 1.65;
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+.meta-pill {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  background: var(--ivoire);
+}
+.meta-pill.accent { border-color: var(--border-ocre); color: var(--ocre); background: var(--ocre-pale); }
+.meta-pill.mousse { border-color: rgba(74,103,65,0.3); color: var(--mousse); background: var(--mousse-pale); }
+
+/* SECTIONS */
+.section {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  border-top: 1px solid var(--border);
+}
+.section-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-weight: 500;
+  color: var(--terre);
+  margin-bottom: 0.6rem;
+  line-height: 1.25;
+}
+.section-intro {
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--text-dim);
+  max-width: 640px;
+  margin-bottom: 2.5rem;
+  line-height: 1.7;
+}
+
+/* SIGNAL BLOCK */
+.signal-block {
+  border-left: 3px solid var(--ocre);
+  padding: 1.25rem 1.5rem;
+  background: var(--ocre-pale);
+  margin: 2rem 0;
+  border-radius: 0 4px 4px 0;
+}
+.signal-block p {
+  font-family: var(--serif);
+  font-size: 1rem;
+  color: var(--text);
+  line-height: 1.7;
+}
+.signal-block p + p { margin-top: 0.75rem; }
+.signal-block em { color: var(--ocre); font-style: italic; }
+.signal-block strong { color: var(--terre); font-weight: 600; }
+
+.signal-block.mousse {
+  border-left-color: var(--mousse);
+  background: var(--mousse-pale);
+}
+.signal-block.mousse em { color: var(--mousse); }
+
+/* QUOTE */
+.quote-block {
+  border-left: 2px solid var(--sable-mid);
+  padding: 1.25rem 1.75rem;
+  background: var(--ivoire);
+  margin: 2rem 0;
+}
+.quote-text {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--ecorce);
+  line-height: 1.6;
+  margin-bottom: 0.4rem;
+}
+.quote-source {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+
+/* ORIGINES — sources visuelles */
+.sources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  margin: 2rem 0;
+}
+.source-cell {
+  background: var(--blanc);
+  padding: 1.5rem;
+}
+.source-num {
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 500;
+  color: rgba(193,125,60,0.2);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+.source-name {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--terre);
+  margin-bottom: 0.3rem;
+}
+.source-desc {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* FIGURES */
+.figures-wrap {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1px;
+  background: var(--border);
+}
+.figure-card {
+  background: var(--blanc);
+  padding: 1.5rem;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+}
+.figure-card:hover { background: var(--ivoire); }
+.figure-card.active { background: var(--ivoire); }
+.figure-role {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.figure-role.ocre { color: var(--ocre); }
+.figure-role.mousse { color: var(--mousse); }
+.figure-role.argile { color: var(--argile); }
+.figure-name {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--terre);
+  margin-bottom: 0.15rem;
+}
+.figure-dates {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 0.65rem;
+}
+.figure-summary {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.figure-arrow {
+  position: absolute;
+  top: 1.5rem; right: 1.5rem;
+  font-size: 14px;
+  color: var(--muted);
+  transition: color 0.2s, transform 0.2s;
+}
+.figure-card:hover .figure-arrow,
+.figure-card.active .figure-arrow { color: var(--ocre); transform: rotate(90deg); }
+
+.figure-detail {
+  display: none;
+  background: var(--ivoire);
+  border-top: 1px solid var(--border);
+  padding: 2rem;
+  grid-column: 1 / -1;
+}
+.figure-detail.open { display: block; }
+.figure-detail h3 {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--terre);
+  margin-bottom: 1rem;
+}
+.figure-detail p {
+  font-family: var(--serif);
+  font-size: 0.98rem;
+  color: var(--text);
+  line-height: 1.75;
+  margin-bottom: 0.75rem;
+}
+.figure-detail p:last-child { margin-bottom: 0; }
+.figure-detail em { color: var(--ocre); font-style: italic; }
+.figure-detail strong { color: var(--terre); font-weight: 600; }
+.close-btn {
+  float: right;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+.close-btn:hover { color: var(--ocre); border-color: var(--border-ocre); }
+
+/* FIGURE / FOND — section visuelle */
+.ff-demo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  margin: 2rem 0;
+}
+@media (max-width: 580px) { .ff-demo { grid-template-columns: 1fr; } }
+.ff-cell {
+  background: var(--blanc);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.ff-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.ff-title {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--terre);
+}
+.ff-text {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  line-height: 1.65;
+  font-style: italic;
+}
+/* Illustration figure/fond */
+.ff-visuel {
+  width: 100%;
+  height: 120px;
+  position: relative;
+  overflow: hidden;
+  background: var(--sable);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ff-visuel .forme {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: var(--ecorce);
+  position: relative;
+  z-index: 2;
+  transition: transform 0.4s ease;
+}
+.ff-cell:hover .ff-visuel .forme { transform: scale(1.15); }
+.ff-visuel .fond-text {
+  position: absolute;
+  font-family: var(--serif);
+  font-size: 11px;
+  color: rgba(93,62,34,0.3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+
+/* CONCEPTS */
+.concepts-list { list-style: none; }
+.concept-item {
+  border-top: 1px solid var(--border);
+  padding: 1.5rem 0;
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+@media (max-width: 580px) { .concept-item { grid-template-columns: 1fr; gap: 0.5rem; } }
+.concept-item:last-child { border-bottom: 1px solid var(--border); }
+.concept-tag {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  display: inline-block;
+  margin-top: 4px;
+  border: 1px solid;
+}
+.concept-tag.fondateur { background: var(--ocre-pale); color: var(--ocre); border-color: rgba(193,125,60,0.25); }
+.concept-tag.pratique { background: var(--mousse-pale); color: var(--mousse); border-color: rgba(74,103,65,0.25); }
+.concept-tag.philosophie { background: var(--argile-dim); color: var(--argile); border-color: rgba(181,87,42,0.25); }
+.concept-tag.processus { background: rgba(92,61,34,0.08); color: var(--ecorce); border-color: rgba(92,61,34,0.2); }
+.concept-term {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--terre);
+  margin-bottom: 0.35rem;
+}
+.concept-def {
+  font-size: 0.92rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+.concept-def strong { color: var(--text); font-weight: 500; }
+.concept-def em { color: var(--ocre); font-style: italic; }
+
+/* INTERRUPTIONS DU CONTACT */
+.interruptions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  margin: 2rem 0;
+}
+.interruption-cell {
+  background: var(--blanc);
+  padding: 1.25rem 1.5rem;
+  border-bottom: 2px solid transparent;
+  transition: background 0.2s, border-color 0.2s;
+}
+.interruption-cell:hover { background: var(--ivoire); border-bottom-color: var(--ocre); }
+.interruption-name {
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--terre);
+  margin-bottom: 0.35rem;
+}
+.interruption-def {
+  font-size: 0.86rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* CYCLE DU CONTACT */
+.cycle-wrap {
+  background: var(--ivoire);
+  border: 1px solid var(--border);
+  padding: 2rem;
+  margin: 2rem 0;
+}
+.cycle-title {
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--terre);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-style: italic;
+}
+.cycle-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+}
+@media (max-width: 580px) { .cycle-steps { grid-template-columns: 1fr 1fr; } }
+.cycle-step {
+  background: var(--blanc);
+  padding: 1rem;
+  text-align: center;
+}
+.cycle-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ocre);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.35rem;
+}
+.cycle-name {
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--terre);
+  margin-bottom: 0.25rem;
+}
+.cycle-desc {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* RUPTURE */
+.rupture-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  margin: 2rem 0;
+}
+@media (max-width: 580px) { .rupture-grid { grid-template-columns: 1fr; } }
+.rupture-cell {
+  padding: 1.5rem;
+  background: var(--blanc);
+}
+.rupture-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+.rupture-label.avant { color: var(--muted); }
+.rupture-label.avec { color: var(--ocre); }
+.rupture-title {
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+}
+.rupture-cell.avant-cell .rupture-title { color: var(--muted); }
+.rupture-cell.avec-cell .rupture-title { color: var(--terre); }
+.rupture-text {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  line-height: 1.65;
+}
+
+/* PONTS */
+.ponts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1px;
+  background: var(--border);
+}
+.pont-card {
+  background: var(--blanc);
+  padding: 1.25rem 1.5rem;
+  border-bottom: 2px solid transparent;
+  transition: background 0.2s, border-color 0.2s;
+}
+.pont-card.disponible { cursor: pointer; }
+.pont-card.disponible:hover { background: var(--ivoire); border-bottom-color: var(--ocre); }
+.pont-status {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.pont-status.open { color: var(--ocre); }
+.pont-status.bientot { color: var(--muted); }
+.pont-name {
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--terre);
+  margin-bottom: 0.25rem;
+}
+.pont-card:not(.disponible) .pont-name { color: var(--muted); }
+.pont-lien {
+  font-size: 0.86rem;
+  color: var(--text-dim);
+  font-style: italic;
+  line-height: 1.5;
+}
+.pont-card:not(.disponible) .pont-lien { color: var(--muted); opacity: 0.6; }
+
+/* FOOTER */
+footer {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.footer-brand {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.footer-note {
+  font-family: var(--serif);
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* REVEAL */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.reveal.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+<div class="layer">
+
+<nav class="nav">
+  <span class="nav-logo">Archipel des idées</span>
+  <ul class="nav-links">
+    <li><a href="#origines">Origines</a></li>
+    <li><a href="#figures">Figures</a></li>
+    <li><a href="#concepts">Concepts</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#rupture">Rupture</a></li>
+    <li><a href="#ponts">Ponts</a></li>
+  </ul>
+</nav>
+
+<header class="hero layer">
+  <div class="hero-figure-fond">
+    <span class="hero-fond" aria-hidden="true">Gestalt</span>
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Île de l'archipel — Approche thérapeutique</p>
+      <h1 class="hero-title">Gestalt-<em>thérapie</em></h1>
+      <p class="hero-subtitle">La forme qui prend forme. L'organisme en contact avec son monde, ici et maintenant, dans la plénitude du présent vécu.</p>
+      <div class="hero-meta">
+        <span class="meta-pill accent">New York, 1951</span>
+        <span class="meta-pill">Fritz & Laura Perls</span>
+        <span class="meta-pill mousse">Phénoménologie</span>
+        <span class="meta-pill">Contact</span>
+        <span class="meta-pill">Ici et maintenant</span>
+        <span class="meta-pill">Psychologie humaniste</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ORIGINES -->
+<section id="origines" class="section reveal">
+  <p class="section-label">Section 1</p>
+  <h2 class="section-title">Naissance d'une approche</h2>
+  <p class="section-intro">La Gestalt-thérapie n'est pas née d'un seul auteur ni d'une seule discipline. Elle est le fruit d'une rencontre, d'un exil, et d'une rupture assumée avec la psychanalyse classique.</p>
+
+  <div class="signal-block">
+    <p>Le mot allemand <em>Gestalt</em> résiste à la traduction exacte. Il signifie à la fois "forme", "figure", "configuration" — et surtout le processus de <strong>prendre forme</strong>. Ce n'est pas un objet statique : c'est un mouvement. Un organisme qui s'organise, une expérience qui se structure, une relation qui se noue. C'est ce dynamisme que la Gestalt-thérapie place au cœur de sa pratique.</p>
+  </div>
+
+  <div class="sources-grid">
+    <div class="source-cell">
+      <p class="source-num">01</p>
+      <p class="source-name">La psychanalyse — et son dépassement</p>
+      <p class="source-desc">Fritz Perls est psychanalyste formé. Il s'inspire de Ferenczi (technique active), de Rank (le présent plutôt que le passé), de Reich (le corps et la société). Mais il rompt : l'inconscient fossile ne l'intéresse pas. Ce qui se passe maintenant, oui.</p>
+    </div>
+    <div class="source-cell">
+      <p class="source-num">02</p>
+      <p class="source-name">La Gestalt-psychologie</p>
+      <p class="source-desc">Von Ehrenfels énonce la loi fondatrice : "Le tout est supérieur à la somme des parties." Kurt Lewin élargit ce principe à la dynamique de groupe et à la théorie du champ. Ces deux apports structurent le regard gestaltiste sur l'expérience.</p>
+    </div>
+    <div class="source-cell">
+      <p class="source-num">03</p>
+      <p class="source-name">La phénoménologie & l'existentialisme</p>
+      <p class="source-desc">Husserl, Heidegger, Merleau-Ponty, Sartre, Buber. Suspendre le jugement pour accueillir ce qui apparaît. La corporéité. La liberté et la responsabilité face à la finitude. L'entre-deux de la relation Je-Tu chère à Buber.</p>
+    </div>
+    <div class="source-cell">
+      <p class="source-num">04</p>
+      <p class="source-name">La psychologie humaniste</p>
+      <p class="source-desc">Rogers, Maslow, Moreno. Une troisième voie entre béhaviorisme et psychanalyse. L'autoconscience, le ressenti, la capacité créative, la liberté, la responsabilité — l'humain comme sujet capable de croissance.</p>
+    </div>
+    <div class="source-cell">
+      <p class="source-num">05</p>
+      <p class="source-name">Le pragmatisme américain</p>
+      <p class="source-desc">William James, John Dewey, George Mead. Centrer l'attention sur les effets des phénomènes plutôt que sur leurs causes. Une philosophie de l'action, du présent et de l'expérience directe — qui résonne profondément avec la méthode gestaltiste.</p>
+    </div>
+    <div class="source-cell">
+      <p class="source-num">06</p>
+      <p class="source-name">Les sagesses orientales</p>
+      <p class="source-desc">Le zen et le taoïsme ont profondément influencé Perls. La posture de lâcher-prise, la présence dans l'ici et maintenant, la non-résistance — autant de tonalités qui colorent la Gestalt et la distinguent des approches purement occidentales.</p>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    <p class="quote-text">« La psychologie consiste à observer ce qui se passe à la frontière-contact entre l'individu et l'environnement : c'est là, à la limite entre les deux, que les événements psychologiques ont lieu. »</p>
+    <p class="quote-source">Fritz Perls — Manuel de Gestalt-thérapie</p>
+  </div>
+</section>
+
+<!-- FIGURES -->
+<section id="figures" class="section reveal">
+  <p class="section-label">Section 2</p>
+  <h2 class="section-title">Les figures fondatrices</h2>
+  <p class="section-intro">La Gestalt est née d'un couple, d'une amitié intellectuelle, et d'un cercle new-yorkais. Trois personnalités en ont posé les fondements.</p>
+
+  <div class="figures-wrap" id="figures-grid">
+
+    <div class="figure-card" onclick="toggleFigure('fritz')">
+      <p class="figure-role ocre">Psychiatre & psychothérapeute</p>
+      <p class="figure-name">Fritz Perls</p>
+      <p class="figure-dates">1893 – 1970 · Allemagne / USA</p>
+      <p class="figure-summary">Figure centrale et provocatrice. Ancien psychanalyste qui rompt avec Freud pour élaborer une approche radicalement ancrée dans le présent, le corps et la relation.</p>
+      <span class="figure-arrow">↓</span>
+    </div>
+
+    <div class="figure-card" onclick="toggleFigure('laura')">
+      <p class="figure-role mousse">Psychologue & co-fondatrice</p>
+      <p class="figure-name">Laura Perls</p>
+      <p class="figure-dates">1905 – 1990 · Allemagne / USA</p>
+      <p class="figure-summary">Souvent oubliée, pourtant essentielle. Docteure en psychologie, musicienne, élève de Husserl et Wertheimer. Elle apporte la rigueur philosophique et la dimension relationnelle que Fritz tendait à négliger.</p>
+      <span class="figure-arrow">↓</span>
+    </div>
+
+    <div class="figure-card" onclick="toggleFigure('goodman')">
+      <p class="figure-role argile">Écrivain & philosophe</p>
+      <p class="figure-name">Paul Goodman</p>
+      <p class="figure-dates">1911 – 1972 · USA</p>
+      <p class="figure-summary">Intellectuel anarchiste, écrivain et activiste. Co-rédacteur de l'ouvrage fondateur de 1951. Il apporte la dimension politique, sociale et philosophique à une approche qui aurait pu rester purement clinique.</p>
+      <span class="figure-arrow">↓</span>
+    </div>
+
+    <div class="figure-detail" id="detail-fritz">
+      <button class="close-btn" onclick="closeFigure('fritz', event)">Fermer ×</button>
+      <h3>Fritz Perls — le révolutionnaire présent</h3>
+      <p>Frederick Salomon Perls naît à Berlin en 1893. Psychanalyste formé, il commence sa carrière dans la tradition freudienne avant de s'en éloigner radicalement. Son premier ouvrage majeur, <em>Le Moi, la faim et l'agressivité</em> (1942, écrit avec Laura), annonce la rupture : contre la théorie des pulsions freudiennes, Perls propose le modèle de la "faim" comme métaphore de la relation à l'environnement — l'organisme qui cherche, saisit, mâche, digère ou rejette.</p>
+      <p>Arrivé aux États-Unis après un exil en Afrique du Sud, Perls rencontre Paul Goodman et Laura. Ensemble, ils publient en 1951 l'ouvrage fondateur. Fritz fonde le premier Institut de Gestalt-thérapie à New York avec Laura, puis gagne la Californie où il devient, dans les années 60, une <em>célébrité médiatique</em> au sein du mouvement du potentiel humain à l'Institut Esalen.</p>
+      <p>Sa posture thérapeutique est directe, parfois brutale : il travaille dans le présent, s'intéresse au "comment" plutôt qu'au "pourquoi", sollicite le corps, les émotions, la voix, le regard. <strong>Son outil emblématique : la "chaise vide"</strong>, qui permet au patient de dialoguer avec une partie de lui-même ou avec une personne absente, rendant présent ce qui était évité.</p>
+    </div>
+
+    <div class="figure-detail" id="detail-laura">
+      <button class="close-btn" onclick="closeFigure('laura', event)">Fermer ×</button>
+      <h3>Laura Perls — la rigueur oubliée</h3>
+      <p>Lore Posner naît à Pforzheim en 1905. Docteure en psychologie, elle a étudié la phénoménologie avec Husserl et la Gestalt-psychologie avec Wertheimer et Goldstein. Musicienne accomplie, elle apporte à la Gestalt une sensibilité au rythme, à la respiration, au mouvement corporel — dimensions que Fritz tendait à sous-estimer.</p>
+      <p>Sa contribution à l'ouvrage de 1951 est majeure mais longtemps occultée par l'ombre flamboyante de Fritz. <em>C'est elle qui fonde et dirige l'Institut de New York</em> pendant que Fritz parcourt le monde. Là où Fritz cherche la rupture et la confrontation, Laura cultive la <strong>continuité, le soutien et la relation</strong>. Sa conception de la thérapie comme "danse à deux" est l'une des contributions les plus profondes à la tradition gestaltiste relationnelle.</p>
+      <p>Elle formera des générations de thérapeutes à New York jusqu'à sa mort en 1990, laissant une empreinte intellectuelle et clinique que l'histoire de la Gestalt commence seulement à reconnaître à sa juste valeur.</p>
+    </div>
+
+    <div class="figure-detail" id="detail-goodman">
+      <button class="close-btn" onclick="closeFigure('goodman', event)">Fermer ×</button>
+      <h3>Paul Goodman — la dimension politique</h3>
+      <p>Paul Goodman est avant tout un intellectuel anarchiste, romancier, poète et activiste social. Sa rencontre avec Fritz Perls dans les années 40 est une rencontre décisive : Goodman rédige la majeure partie de la théorie de l'ouvrage de 1951 — notamment le volume I, le plus philosophique et le plus difficile.</p>
+      <p>Son apport fondamental est d'inscrire la Gestalt dans une critique <em>sociale et politique</em> : les névoses ne sont pas seulement des dysfonctionnements individuels, elles sont aussi des réponses adaptées à des structures sociales pathogènes. La société peut être elle-même pathologique. Cette dimension, souvent mise de côté dans la pratique clinique ultérieure, est pourtant au cœur de la vision originale de la Gestalt.</p>
+      <p>Goodman quitte rapidement le mouvement gestaltiste pour se consacrer à son activisme (notamment pacifiste et anti-institutionnel dans les années 60). Mais son empreinte théorique reste considérable, même si sa contribution est trop rarement citée.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONCEPTS -->
+<section id="concepts" class="section reveal">
+  <p class="section-label">Section 3</p>
+  <h2 class="section-title">Le lexique gestaltiste</h2>
+  <p class="section-intro">Des concepts nés de la pratique et de la philosophie, qui forment un langage cohérent pour décrire l'expérience humaine dans sa dimension relationnelle et incarnée.</p>
+
+  <ul class="concepts-list">
+    <li class="concept-item">
+      <div><span class="concept-tag fondateur">Fondateur</span></div>
+      <div>
+        <p class="concept-term">Le champ organisme-environnement</p>
+        <p class="concept-def">Principe d'indissociabilité fondateur, hérité de Kurt Lewin : <strong>tout comportement humain est la résultante d'un champ global incluant l'organisme et ce qui l'entoure.</strong> On ne peut comprendre un individu en faisant abstraction de son contexte, de ses relations, de sa situation présente. Le "champ" n'est pas un décor — il co-constitue l'expérience. Cette vision fait basculer l'analyse de l'intrapsychique vers l'<em>interactionnel</em>.</p>
+      </div>
+    </li>
+    <li class="concept-item">
+      <div><span class="concept-tag fondateur">Fondateur</span></div>
+      <div>
+        <p class="concept-term">La frontière-contact</p>
+        <p class="concept-def">Notion centrale et subtile : la frontière-contact est <strong>ce qui sépare et ce qui relie simultanément</strong> l'organisme et son environnement. Ce n'est pas un mur — c'est une interface vivante, "vibrante et fluctuante". C'est à cette frontière que se jouent tous les événements psychologiques : les pensées, les émotions, les comportements. La santé psychique, c'est une frontière-contact souple, perméable sans être dissoute.</p>
+      </div>
+    </li>
+    <li class="concept-item">
+      <div><span class="concept-tag philosophie">Philosophie</span></div>
+      <div>
+        <p class="concept-term">Figure et fond</p>
+        <p class="concept-def">Hérité de la Gestalt-psychologie : à tout moment, notre perception sélectionne une <em>figure</em> (ce qui attire l'attention, ce qui émerge) sur un <em>fond</em> (tout le reste qui recule). Ce principe s'applique à toute expérience : un besoin qui émerge devient figure, le reste passe en fond. <strong>La santé, c'est la capacité à laisser les figures émerger et se dissoudre librement.</strong> La pathologie, c'est une figure figée qui ne peut se dissoudre — une situation inachevée qui monopolise l'attention.</p>
+      </div>
+    </li>
+    <li class="concept-item">
+      <div><span class="concept-tag processus">Processus</span></div>
+      <div>
+        <p class="concept-term">Le self comme processus</p>
+        <p class="concept-def">Rupture avec la psychologie classique : le self gestaltiste n'est <strong>pas une structure fixe</strong>, une instance ou une identité stable. C'est un <em>processus interactionnel</em> — l'ensemble des ajustements à la frontière-contact, qui varie à chaque instant selon les besoins et les stimuli de l'environnement. Il s'exprime à travers trois fonctions : le <em>ça</em> (les besoins, les pulsions vitales), la <em>personnalité</em> (les représentations stables de soi) et le <em>moi</em> (la capacité de choisir et d'orienter l'action).</p>
+      </div>
+    </li>
+    <li class="concept-item">
+      <div><span class="concept-tag pratique">Pratique</span></div>
+      <div>
+        <p class="concept-term">L'awareness</p>
+        <p class="concept-def">Terme anglais délibérément conservé, difficilement traduisible. L'awareness est la <strong>conscience immédiate de ce qui se passe</strong> — dans le corps, dans les sensations, dans l'émotion, dans le contact avec l'autre — dans l'instant présent. Pas une réflexion intellectuelle sur le passé, mais une présence au vécu tel qu'il se déroule. Le gestalt-thérapeute cultive et sollicite l'awareness chez le patient : <em>qu'est-ce que vous ressentez là, maintenant, dans votre corps ?</em></p>
+      </div>
+    </li>
+    <li class="concept-item">
+      <div><span class="concept-tag philosophie">Philosophie</span></div>
+      <div>
+        <p class="concept-term">L'ajustement créateur</p>
+        <p class="concept-def">Face aux sollicitations constantes du milieu, l'organisme s'ajuste. La Gestalt distingue l'<em>ajustement conservateur</em> (réponses automatiques et habituelles, nécessaires à la survie) de l'<strong>ajustement créateur</strong> (réponse nouvelle, inventée dans la situation, permettant la croissance). La thérapie vise à élargir le registre de l'ajustement créateur — à sortir des réponses figées pour inventer de nouveaux modes relationnels.</p>
+      </div>
+    </li>
+    <li class="concept-item">
+      <div><span class="concept-tag pratique">Pratique</span></div>
+      <div>
+        <p class="concept-term">Le "comment" plutôt que le "pourquoi"</p>
+        <p class="concept-def">Principe méthodologique fondamental. Le gestalt-thérapeute se centre sur le <strong>processus</strong> (comment quelque chose se produit, comment l'organisme s'organise dans l'instant) plutôt que sur le <em>contenu</em> (pourquoi, quelle en est la cause dans le passé). Demander "pourquoi" invite à l'intellectualisation et au récit. Demander "comment" — <em>comment respirez-vous en disant cela ? comment votre corps réagit-il ?</em> — ramène dans l'expérience vécue.</p>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section reveal">
+  <p class="section-label">Section 4</p>
+  <h2 class="section-title">Le cycle du contact & ses interruptions</h2>
+  <p class="section-intro">La vie psychique se déroule en séquences de contact avec l'environnement. Chaque cycle a ses phases. Et chaque interruption du cycle correspond à une façon particulière d'éviter le contact plein.</p>
+
+  <div class="cycle-wrap">
+    <p class="cycle-title">Le cycle du contact — quatre phases</p>
+    <div class="cycle-steps">
+      <div class="cycle-step">
+        <p class="cycle-num">01</p>
+        <p class="cycle-name">Pré-contact</p>
+        <p class="cycle-desc">Émergence d'un besoin, d'une tension. Quelque chose se mobilise sans être encore identifié. Le corps s'agite.</p>
+      </div>
+      <div class="cycle-step">
+        <p class="cycle-num">02</p>
+        <p class="cycle-name">Mise en contact</p>
+        <p class="cycle-desc">Le besoin se clarifie, l'objet s'identifie. L'émotion monte. L'organisme s'oriente vers l'environnement.</p>
+      </div>
+      <div class="cycle-step">
+        <p class="cycle-num">03</p>
+        <p class="cycle-name">Plein contact</p>
+        <p class="cycle-desc">La rencontre avec l'objet du besoin. Lâcher-prise, accomplissement. Toutes les fonctions convergent en un tout.</p>
+      </div>
+      <div class="cycle-step">
+        <p class="cycle-num">04</p>
+        <p class="cycle-name">Post-contact</p>
+        <p class="cycle-desc">Retrait, assimilation. L'expérience s'intègre. Le "vide fertile" précède l'émergence d'un nouveau besoin.</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="section-intro" style="margin-bottom:1rem;">Quand le cycle est interrompu, six formes caractéristiques apparaissent :</p>
+
+  <div class="interruptions-grid">
+    <div class="interruption-cell">
+      <p class="interruption-name">Confluence</p>
+      <p class="interruption-def">Absence de frontière entre soi et l'autre. On ne sait plus où l'on finit et où l'autre commence. Fusion sans contact véritable.</p>
+    </div>
+    <div class="interruption-cell">
+      <p class="interruption-name">Introjection</p>
+      <p class="interruption-def">Avaler sans mâcher. Adopter des idées, des valeurs, des injonctions venues de l'extérieur sans les questionner ni les assimiler vraiment.</p>
+    </div>
+    <div class="interruption-cell">
+      <p class="interruption-name">Projection</p>
+      <p class="interruption-def">Attribuer à l'environnement ce qui appartient à soi. Mettre sur l'autre ce qu'on ne reconnaît pas en soi-même.</p>
+    </div>
+    <div class="interruption-cell">
+      <p class="interruption-name">Rétroflexion</p>
+      <p class="interruption-def">Retourner contre soi l'énergie destinée à l'environnement. Faire à soi ce qu'on voudrait faire à l'autre, ou subir ce qu'on voudrait faire subir.</p>
+    </div>
+    <div class="interruption-cell">
+      <p class="interruption-name">Déflexion</p>
+      <p class="interruption-def">Détourner l'attention, diluer le contact. Humour déplacé, discours généralisant, regard fuyant — tout ce qui évite la pleine présence.</p>
+    </div>
+    <div class="interruption-cell">
+      <p class="interruption-name">Égotisme</p>
+      <p class="interruption-def">Contrôler excessivement le processus pour ne pas "se perdre" dans le plein contact. La peur de la dissolution empêche l'abandon nécessaire à la rencontre.</p>
+    </div>
+  </div>
+
+  <div class="signal-block mousse">
+    <p>Ces interruptions ne sont pas des pathologies à éradiquer. Ce sont des <strong>ajustements créateurs devenus rigides</strong> — des façons de se protéger qui ont eu leur sens à un moment de la vie, et qui sont maintenant devenues automatiques, répétitives, et coûteuses. La thérapie ne cherche pas à les supprimer, mais à <em>les rendre conscientes</em> pour qu'elles redeviennent des choix plutôt que des réflexes.</p>
+  </div>
+</section>
+
+<!-- RUPTURE ÉPISTÉMOLOGIQUE -->
+<section id="rupture" class="section reveal">
+  <p class="section-label">Section 5</p>
+  <h2 class="section-title">Ce que la Gestalt déplace</h2>
+  <p class="section-intro">La Gestalt n'est pas qu'une technique thérapeutique. C'est un changement de regard sur ce qu'est un être humain, sur ce qu'est un problème, et sur ce qu'est une relation d'aide.</p>
+
+  <div class="rupture-grid">
+    <div class="rupture-cell avant-cell">
+      <p class="rupture-label avant">Psychologie classique</p>
+      <p class="rupture-title">L'individu comme unité close</p>
+      <p class="rupture-text">L'être humain est un système intérieur qu'on analyse de l'extérieur. Ses troubles viennent de son passé, de son inconscient, de ses structures psychiques internes.</p>
+    </div>
+    <div class="rupture-cell avec-cell">
+      <p class="rupture-label avec">Gestalt-thérapie</p>
+      <p class="rupture-title">L'organisme en relation constante</p>
+      <p class="rupture-text">L'être humain ne peut être compris hors de son champ. Il se définit dans et par ses contacts avec l'environnement. Le thérapeute fait partie du champ thérapeutique — il n'est pas un observateur neutre.</p>
+    </div>
+    <div class="rupture-cell avant-cell">
+      <p class="rupture-label avant">Psychologie classique</p>
+      <p class="rupture-title">Le passé comme explication</p>
+      <p class="rupture-text">Comprendre l'origine du symptôme, c'est déjà le traiter. La temporalité est fondamentalement tournée vers le passé et ses traumatismes fondateurs.</p>
+    </div>
+    <div class="rupture-cell avec-cell">
+      <p class="rupture-label avec">Gestalt-thérapie</p>
+      <p class="rupture-title">Le présent comme lieu du changement</p>
+      <p class="rupture-text">Le passé se rejoue dans le présent. C'est là, maintenant, dans cette relation, que quelque chose peut bouger. Le "comment" de l'instant prime sur le "pourquoi" de l'histoire.</p>
+    </div>
+    <div class="rupture-cell avant-cell">
+      <p class="rupture-label avant">Psychologie classique</p>
+      <p class="rupture-title">Le thérapeute expert</p>
+      <p class="rupture-text">Le thérapeute détient le savoir sur le patient. Il interprète, diagnostique, prescrit. La relation est asymétrique par essence.</p>
+    </div>
+    <div class="rupture-cell avec-cell">
+      <p class="rupture-label avec">Gestalt-thérapie</p>
+      <p class="rupture-title">La rencontre comme levier</p>
+      <p class="rupture-text">Le thérapeute n'est pas un expert qui délivre son savoir. Il est un co-présent, engagé dans le champ. C'est la qualité de la rencontre — sa nouveauté, son authenticité — qui permet la transformation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PONTS -->
+<section id="ponts" class="section reveal">
+  <p class="section-label">Section 6 — Archipel</p>
+  <h2 class="section-title">Ponts vers d'autres îles</h2>
+  <p class="section-intro">La Gestalt n'existe pas seule. Elle dialogue avec des pensées voisines, des auteurs qui partagent ses intuitions fondamentales, et des courants qu'elle a contribué à nourrir.</p>
+
+  <div class="ponts-grid">
+    <div class="pont-card disponible" onclick="window.location.href='palo-alto.html'">
+      <p class="pont-status open">↗ Île disponible</p>
+      <p class="pont-name">École de Palo Alto</p>
+      <p class="pont-lien">Deux approches qui partagent le déplacement vers la relation et l'interaction. La double contrainte et les interruptions du contact — deux façons de penser le blocage relationnel.</p>
+    </div>
+    <div class="pont-card disponible" onclick="window.location.href='meirieu.html'">
+      <p class="pont-status open">↗ Île disponible</p>
+      <p class="pont-name">Philippe Meirieu</p>
+      <p class="pont-lien">La situation-problème comme contact avec la nouveauté. L'ajustement créateur de la Gestalt résonne avec la pédagogie de l'obstacle. L'apprenant comme organisme en relation avec son milieu d'apprentissage.</p>
+    </div>
+    <div class="pont-card">
+      <p class="pont-status bientot">· En construction</p>
+      <p class="pont-name">Analyse Transactionnelle</p>
+      <p class="pont-lien">Née dans le même bain humaniste américain. Berne et Perls se sont connus. Deux langages différents pour parler de la relation, des jeux et des scénarios.</p>
+    </div>
+    <div class="pont-card">
+      <p class="pont-status bientot">· En construction</p>
+      <p class="pont-name">Kurt Lewin</p>
+      <p class="pont-lien">Le fondateur de la théorie du champ que la Gestalt intègre directement. La dynamique des groupes comme champ en tension permanente.</p>
+    </div>
+    <div class="pont-card">
+      <p class="pont-status bientot">· En construction</p>
+      <p class="pont-name">Carl Rogers</p>
+      <p class="pont-lien">Contemporain et partenaire critique. L'approche centrée sur la personne partage avec la Gestalt la confiance dans le potentiel de croissance de l'organisme.</p>
+    </div>
+    <div class="pont-card">
+      <p class="pont-status bientot">· En construction</p>
+      <p class="pont-name">Maurice Merleau-Ponty</p>
+      <p class="pont-lien">Le philosophe de la corporéité et de la perception. Sa phénoménologie du corps vécu est le fond philosophique le plus profond de la Gestalt-thérapie.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-brand">Archipel des idées — île : Gestalt-thérapie</span>
+  <span class="footer-note">Construit à partir de sources académiques. Navigation libre.</span>
+</footer>
+
+</div>
+
+<script>
+function toggleFigure(id) {
+  const allDetails = document.querySelectorAll('.figure-detail');
+  const allCards = document.querySelectorAll('.figure-card');
+  const detail = document.getElementById('detail-' + id);
+  const isOpen = detail.classList.contains('open');
+
+  allDetails.forEach(d => d.classList.remove('open'));
+  allCards.forEach(c => c.classList.remove('active'));
+
+  if (!isOpen) {
+    detail.classList.add('open');
+    document.querySelectorAll('.figure-card').forEach(card => {
+      if (card.getAttribute('onclick') && card.getAttribute('onclick').includes(id)) {
+        card.classList.add('active');
+      }
+    });
+    setTimeout(() => {
+      detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 100);
+  }
+}
+
+function closeFigure(id, event) {
+  event.stopPropagation();
+  document.getElementById('detail-' + id).classList.remove('open');
+  document.querySelectorAll('.figure-card').forEach(card => {
+    if (card.getAttribute('onclick') && card.getAttribute('onclick').includes(id)) {
+      card.classList.remove('active');
+    }
+  });
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
