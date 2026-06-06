@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gregory Bateson — La structure qui connecte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Josefin+Sans:wght@300;400;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --parchemin: #f2ead8;
+  --parchemin-chaud: #e8dcc0;
+  --parchemin-fonce: #ddd0b0;
+  --ivoire: #faf6ec;
+  --foret: #1e3d20;
+  --foret-mid: #2d5a30;
+  --foret-pale: #e0ede0;
+  --foret-dim: rgba(30,61,32,0.1);
+  --terre: #6b3a1a;
+  --terre-mid: #8a4a22;
+  --terre-pale: #f0e0d0;
+  --terre-dim: rgba(107,58,26,0.1);
+  --safran: #b8820a;
+  --safran-pale: #f5e8c0;
+  --safran-dim: rgba(184,130,10,0.1);
+  --encre: #1a1410;
+  --encre-mid: #2d2018;
+  --muted: #7a6850;
+  --text: #2d2018;
+  --text-dim: #8a7060;
+  --border: rgba(107,58,26,0.12);
+  --border-foret: rgba(30,61,32,0.22);
+  --garamond: 'EB Garamond', Georgia, serif;
+  --josefin: 'Josefin Sans', system-ui, sans-serif;
+  --mono: 'DM Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--garamond);
+  background: var(--parchemin);
+  color: var(--text);
+  font-size: 18px;
+  line-height: 1.75;
+  min-height: 100vh;
+}
+
+/* Texture parchemin — nervures */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      -12deg,
+      transparent,
+      transparent 100px,
+      rgba(107,58,26,0.025) 100px,
+      rgba(107,58,26,0.025) 101px
+    ),
+    repeating-linear-gradient(
+      78deg,
+      transparent,
+      transparent 140px,
+      rgba(30,61,32,0.02) 140px,
+      rgba(30,61,32,0.02) 141px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 5% 10%, rgba(30,61,32,0.06) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 95% 85%, rgba(184,130,10,0.05) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 60% at 50% 50%, rgba(242,234,216,0.3) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.layer { position: relative; z-index: 1; }
+
+/* NAV */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(242,234,216,0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  height: 50px;
+}
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--foret);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-right: auto;
+  opacity: 0.8;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.nav-logo:hover { opacity: 1; }
+.nav-links { display: flex; list-style: none; }
+.nav-links li a {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 0 0.9rem;
+  height: 50px;
+  line-height: 50px;
+  border-right: 1px solid var(--border);
+  transition: color 0.2s;
+}
+.nav-links li:first-child a { border-left: 1px solid var(--border); }
+.nav-links li a:hover { color: var(--foret); }
+
+/* HERO */
+.hero { padding: 9rem 2rem 5rem; max-width: 960px; margin: 0 auto; }
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--foret);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  opacity: 0.8;
+}
+.hero-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: var(--foret); opacity: 0.6; }
+.hero-title {
+  font-family: var(--garamond);
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 400;
+  line-height: 1.05;
+  color: var(--encre);
+  letter-spacing: -0.01em;
+}
+.hero-title em { font-style: italic; color: var(--foret-mid); }
+.hero-question {
+  font-family: var(--garamond);
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--foret);
+  margin-top: 1.25rem;
+  opacity: 0.8;
+  letter-spacing: 0.02em;
+}
+.hero-subtitle {
+  font-family: var(--garamond);
+  font-size: 1.05rem;
+  color: var(--text-dim);
+  max-width: 560px;
+  margin-top: 0.6rem;
+  line-height: 1.75;
+}
+.hero-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
+.meta-pill {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  background: var(--ivoire);
+}
+.meta-pill.foret { border-color: var(--border-foret); color: var(--foret); background: var(--foret-pale); }
+.meta-pill.terre { border-color: rgba(107,58,26,0.25); color: var(--terre); background: var(--terre-pale); }
+.meta-pill.safran { border-color: rgba(184,130,10,0.25); color: var(--safran); background: var(--safran-pale); }
+
+/* SECTIONS */
+.section { max-width: 960px; margin: 0 auto; padding: 4rem 2rem; border-top: 1px solid var(--border); }
+.section-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+.section-title {
+  font-family: var(--garamond);
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 400;
+  color: var(--encre);
+  margin-bottom: 0.6rem;
+  line-height: 1.2;
+  font-style: italic;
+}
+.section-intro { font-size: 1rem; color: var(--text-dim); max-width: 660px; margin-bottom: 2.5rem; line-height: 1.8; }
+
+/* SIGNAL */
+.signal {
+  border-left: 3px solid var(--foret);
+  padding: 1.25rem 1.5rem;
+  background: var(--foret-dim);
+  margin: 2rem 0;
+}
+.signal p { font-size: 1rem; color: var(--text); line-height: 1.8; }
+.signal p + p { margin-top: 0.75rem; }
+.signal em { color: var(--foret-mid); font-style: italic; }
+.signal strong { color: var(--encre); font-weight: 600; }
+.signal.terre { border-left-color: var(--terre); background: var(--terre-dim); }
+.signal.terre em { color: var(--terre-mid); }
+.signal.safran { border-left-color: var(--safran); background: var(--safran-dim); }
+.signal.safran em { color: var(--safran); }
+
+/* QUOTE */
+.quote {
+  padding: 1.75rem 2rem;
+  background: var(--parchemin-chaud);
+  border: 1px solid var(--parchemin-fonce);
+  border-left: 3px solid var(--safran);
+  margin: 2.5rem 0;
+  position: relative;
+}
+.quote-text { font-family: var(--garamond); font-size: 1.2rem; font-style: italic; color: var(--encre-mid); line-height: 1.65; margin-bottom: 0.5rem; }
+.quote-source { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.05em; }
+
+/* LA STRUCTURE QUI CONNECTE — visuel */
+.structure-visuel {
+  background: var(--ivoire);
+  border: 1px solid var(--parchemin-fonce);
+  padding: 2rem;
+  margin: 2rem 0;
+  text-align: center;
+}
+.structure-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+}
+.structure-noeuds {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.noeud {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.3;
+  border: 1px solid;
+  position: relative;
+}
+.noeud.central {
+  width: 100px;
+  height: 100px;
+  background: var(--foret);
+  border-color: var(--foret);
+  color: var(--parchemin);
+  font-size: 10px;
+  font-weight: 600;
+}
+.noeud.sec { background: var(--foret-pale); border-color: var(--border-foret); color: var(--foret); }
+.connexion {
+  font-size: 1.2rem;
+  color: var(--parchemin-fonce);
+}
+.structure-note {
+  font-family: var(--garamond);
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  font-style: italic;
+  line-height: 1.65;
+  border-top: 1px solid var(--parchemin-fonce);
+  padding-top: 1rem;
+  margin-top: 0.5rem;
+}
+
+/* CONCEPTS */
+.concepts-list { list-style: none; }
+.concept-item {
+  border-top: 1px solid var(--border);
+  padding: 1.75rem 0;
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+@media (max-width: 560px) { .concept-item { grid-template-columns: 1fr; gap: 0.5rem; } }
+.concept-item:last-child { border-bottom: 1px solid var(--border); }
+.concept-tag {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  display: inline-block;
+  margin-top: 4px;
+  border: 1px solid;
+}
+.concept-tag.fondateur { background: var(--foret-pale); color: var(--foret); border-color: var(--border-foret); }
+.concept-tag.epistemologie { background: var(--safran-pale); color: var(--safran); border-color: rgba(184,130,10,0.25); }
+.concept-tag.communication { background: var(--terre-pale); color: var(--terre); border-color: rgba(107,58,26,0.25); }
+.concept-tag.apprentissage { background: var(--parchemin-chaud); color: var(--muted); border-color: var(--border); }
+.concept-term {
+  font-family: var(--garamond);
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--encre);
+  margin-bottom: 0.35rem;
+}
+.concept-def { font-size: 0.95rem; color: var(--text-dim); line-height: 1.75; }
+.concept-def strong { color: var(--text); font-weight: 600; }
+.concept-def em { color: var(--foret-mid); font-style: italic; }
+
+/* NIVEAUX LOGIQUES */
+.niveaux-stack {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.niveau-item {
+  padding: 1rem 1.5rem;
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+.niveau-item:nth-child(1) { background: var(--foret); }
+.niveau-item:nth-child(2) { background: var(--foret-mid); }
+.niveau-item:nth-child(3) { background: rgba(45,90,48,0.7); }
+.niveau-item:nth-child(4) { background: rgba(45,90,48,0.45); }
+.niveau-item:nth-child(5) { background: rgba(45,90,48,0.25); }
+.niveau-num {
+  font-family: var(--mono);
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: rgba(255,255,255,0.4);
+  text-align: center;
+  line-height: 1;
+}
+.niveau-content {}
+.niveau-name {
+  font-family: var(--josefin);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--parchemin);
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+.niveau-desc { font-family: var(--garamond); font-size: 0.85rem; color: rgba(242,234,216,0.7); line-height: 1.5; }
+.niveau-item:nth-child(5) .niveau-name { color: var(--encre); }
+.niveau-item:nth-child(5) .niveau-desc { color: var(--text-dim); }
+
+/* PARCOURS */
+.parcours-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  margin: 2rem 0;
+}
+@media (max-width: 580px) { .parcours-grid { grid-template-columns: 1fr; } }
+.parcours-cell { background: var(--ivoire); padding: 1.5rem; }
+.parcours-date { font-family: var(--mono); font-size: 10px; color: var(--foret); letter-spacing: 0.1em; margin-bottom: 0.4rem; opacity: 0.8; }
+.parcours-title { font-family: var(--garamond); font-size: 1rem; font-weight: 500; color: var(--encre); margin-bottom: 0.35rem; }
+.parcours-text { font-size: 0.88rem; color: var(--text-dim); line-height: 1.65; }
+.parcours-text em { color: var(--foret-mid); font-style: italic; }
+.parcours-text strong { color: var(--text); font-weight: 500; }
+
+/* OEUVRES */
+.oeuvres-list { list-style: none; }
+.oeuvre-item {
+  display: grid;
+  grid-template-columns: 55px 1fr;
+  gap: 0.75rem;
+  border-top: 1px solid var(--border);
+  padding: 1rem 0;
+  align-items: start;
+}
+.oeuvre-item:last-child { border-bottom: 1px solid var(--border); }
+.oeuvre-year { font-family: var(--mono); font-size: 11px; color: var(--foret); opacity: 0.7; padding-top: 2px; }
+.oeuvre-title { font-family: var(--garamond); font-size: 0.97rem; font-weight: 500; color: var(--encre); line-height: 1.35; margin-bottom: 0.2rem; font-style: italic; }
+.oeuvre-note { font-size: 0.86rem; color: var(--text-dim); line-height: 1.45; }
+
+/* PONTS */
+.ponts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1px;
+  background: var(--border);
+}
+.pont-card {
+  background: var(--ivoire);
+  padding: 1.25rem 1.5rem;
+  border-bottom: 2px solid transparent;
+  transition: background 0.2s, border-color 0.2s;
+}
+.pont-card.disponible { cursor: pointer; }
+.pont-card.disponible:hover { background: var(--parchemin-chaud); border-bottom-color: var(--foret); }
+.pont-status { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.pont-status.open { color: var(--foret); }
+.pont-status.bientot { color: var(--muted); }
+.pont-name { font-family: var(--garamond); font-size: 1rem; font-weight: 500; color: var(--encre); margin-bottom: 0.25rem; }
+.pont-card:not(.disponible) .pont-name { color: var(--muted); }
+.pont-lien { font-size: 0.86rem; color: var(--text-dim); font-style: italic; line-height: 1.5; }
+.pont-card:not(.disponible) .pont-lien { opacity: 0.65; }
+
+/* FOOTER */
+footer { max-width: 960px; margin: 0 auto; padding: 2rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.footer-brand { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.footer-note { font-size: 0.88rem; color: var(--muted); font-style: italic; }
+
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+<div class="layer">
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">← Archipel des idées</a>
+  <ul class="nav-links">
+    <li><a href="#ancrage">Ancrage</a></li>
+    <li><a href="#structure">La structure</a></li>
+    <li><a href="#concepts">Concepts</a></li>
+    <li><a href="#niveaux">Niveaux logiques</a></li>
+    <li><a href="#ecologie">Écologie</a></li>
+    <li><a href="#ponts">Ponts</a></li>
+  </ul>
+</nav>
+
+<header class="hero layer">
+  <p class="hero-eyebrow">Île de l'archipel — Anthropologue, théoricien des systèmes</p>
+  <h1 class="hero-title">Gregory<br><em>Bateson</em></h1>
+  <p class="hero-question">« Quelle est la structure qui connecte le crabe, l'anémone de mer, la primevère et moi ? »</p>
+  <p class="hero-subtitle">L'homme qui cherchait les patterns qui relient toutes choses — de la Nouvelle-Guinée aux dauphins, du double lien à l'écologie de l'esprit.</p>
+  <div class="hero-meta">
+    <span class="meta-pill foret">1904 — 1980</span>
+    <span class="meta-pill">Grantchester → San Francisco</span>
+    <span class="meta-pill terre">Double lien · Niveaux logiques</span>
+    <span class="meta-pill safran">Écologie de l'esprit</span>
+    <span class="meta-pill">Conférences Macy</span>
+  </div>
+</header>
+
+<!-- ANCRAGE -->
+<section id="ancrage" class="section reveal">
+  <p class="section-label">Section 1</p>
+  <h2 class="section-title">Un esprit inclassable</h2>
+  <p class="section-intro">Bateson est une figure rare : un penseur qui refuse les frontières disciplinaires non par caprice, mais parce qu'il croit — et démontre — que les vraies questions se posent précisément à ces frontières.</p>
+
+  <div class="signal">
+    <p>Gregory Bateson naît en 1904 à Grantchester, en Angleterre, fils du célèbre généticien William Bateson. Formé en biologie à Cambridge, il se tourne vers l'anthropologie, l'ethnologie et la linguistique — <em>sans jamais quitter la biologie intellectuellement.</em> C'est ce qui fait sa singularité : il pense toujours avec la biologie, même quand il parle de psychiatrie ou de communication.</p>
+    <p>Par sa propre admission, <strong>Bateson a souvent été mal interprété.</strong> Il n'a pas de respect pour les conventions de l'écriture scientifique. Ses œuvres ont la forme de l'essai. Il cite un poète antique en ignorant des études récentes. Il écrit à un niveau d'abstraction que ses contemporains trouvent parfois impénétrable — <em>et qui révèle en fait une profondeur que peu ont su mesurer de son vivant.</em></p>
+  </div>
+
+  <div class="parcours-grid">
+    <div class="parcours-cell">
+      <p class="parcours-date">1904–1925</p>
+      <p class="parcours-title">L'enfance et Cambridge</p>
+      <p class="parcours-text">Fils de William Bateson, généticien qui a donné son nom à la génétique. Formé en biologie à Cambridge. <em>La biologie ne le quittera jamais</em> — elle sera le substrat de toute sa pensée.</p>
+    </div>
+    <div class="parcours-cell">
+      <p class="parcours-date">1936</p>
+      <p class="parcours-title">Naven — la Nouvelle-Guinée</p>
+      <p class="parcours-text">Son premier ouvrage majeur. Étude du peuple Iatmul. Il y forge le concept de <strong>schismogenèse</strong> — la création progressive de différences par accumulation des interactions. Une pensée dynamique et circulaire, déjà.</p>
+    </div>
+    <div class="parcours-cell">
+      <p class="parcours-date">1935–1950</p>
+      <p class="parcours-title">Margaret Mead</p>
+      <p class="parcours-text">Il est son troisième mari. Ensemble, ils travaillent à Bali et en Nouvelle-Guinée. <em>Une collaboration intellectuelle aussi intense que personnelle.</em> Leur fille Mary Catherine deviendra elle-même anthropologue.</p>
+    </div>
+    <div class="parcours-cell">
+      <p class="parcours-date">1946–1953</p>
+      <p class="parcours-title">Les conférences Macy</p>
+      <p class="parcours-text">Il participe aux conférences fondatrices de la cybernétique avec Wiener, von Neumann, von Foerster. <strong>Il importe le feedback et les niveaux logiques dans les sciences humaines</strong> — une révolution silencieuse.</p>
+    </div>
+    <div class="parcours-cell">
+      <p class="parcours-date">1950s</p>
+      <p class="parcours-title">Palo Alto — le double lien</p>
+      <p class="parcours-text">Il inspire la naissance du Mental Research Institute à Palo Alto. Son article de 1956 sur la double contrainte et la schizophrénie <em>bouleverse la psychiatrie.</em> Watzlawick et Jackson en feront une œuvre thérapeutique.</p>
+    </div>
+    <div class="parcours-cell">
+      <p class="parcours-date">1960–1980</p>
+      <p class="parcours-title">Les dauphins et l'écologie</p>
+      <p class="parcours-text">Il étudie la communication des dauphins et des loutres à San Francisco. Il cherche les patterns universels du vivant. <strong>Vers une écologie de l'esprit (1972)</strong> synthétise une vie entière de pensée.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LA STRUCTURE QUI CONNECTE -->
+<section id="structure" class="section reveal">
+  <p class="section-label">Section 2</p>
+  <h2 class="section-title">La structure qui connecte</h2>
+  <p class="section-intro">La question centrale de Bateson, celle qui traverse toute son œuvre : qu'est-ce qui connecte les différentes formes du vivant entre elles ? Qu'est-ce qui fait que le crabe, la fleur et l'humain partagent quelque chose d'essentiel ?</p>
+
+  <div class="signal">
+    <p>Bateson appelle <em>« la structure qui connecte »</em> (the pattern that connects) ce lien fondamental entre toutes les formes de vie. Ce n'est pas une substance — c'est un <strong>pattern de patterns</strong>, une structure de relations qui se répète à tous les niveaux du vivant. La symétrie de la feuille et la symétrie bilatérale du corps humain ne sont pas une coïncidence — elles révèlent quelque chose de profond sur la façon dont la vie s'organise.</p>
+    <p>Cette intuition est à la fois scientifique et esthétique. Bateson parle de <em>« l'esthétique de la nature »</em> — la beauté n'est pas un ajout décoratif au vivant, elle est le signe que nous percevons une structure profonde. <strong>Quand quelque chose est beau, c'est parce qu'il révèle un pattern.</strong></p>
+  </div>
+
+  <div class="structure-visuel">
+    <p class="structure-title">// Le pattern qui connecte — visualisation</p>
+    <div class="structure-noeuds">
+      <div class="noeud sec">Biologie<br>cellulaire</div>
+      <div class="connexion">—</div>
+      <div class="noeud sec">Écologie<br>des groupes</div>
+      <div class="connexion">—</div>
+      <div class="noeud central">PATTERN<br>qui<br>connecte</div>
+      <div class="connexion">—</div>
+      <div class="noeud sec">Communication<br>humaine</div>
+      <div class="connexion">—</div>
+      <div class="noeud sec">Évolution<br>des espèces</div>
+    </div>
+    <p class="structure-note">La structure qui connecte n'est pas une métaphore — c'est une affirmation épistémologique forte : les mêmes patterns formels opèrent à tous les niveaux du vivant. Reconnaître ce pattern, c'est la tâche d'une pensée écologique.</p>
+  </div>
+
+  <div class="quote">
+    <p class="quote-text">La quantité d'information de base stockée dans un crabe est considérablement plus grande que celle contenue dans un être humain — ce qui suggère que la nature n'est pas avare d'information, mais prodigue.</p>
+    <p class="quote-source">Gregory Bateson — Vers une écologie de l'esprit</p>
+  </div>
+</section>
+
+<!-- CONCEPTS -->
+<section id="concepts" class="section reveal">
+  <p class="section-label">Section 3</p>
+  <h2 class="section-title">Le lexique batesonien</h2>
+  <p class="section-intro">Des concepts nés à la frontière de l'anthropologie, de la biologie, de la cybernétique et de la psychiatrie — chacun une invitation à penser autrement.</p>
+
+  <ul class="concepts-list">
+    <li class="concept-item">
+      <div><span class="concept-tag fondateur">Fondateur</span></div>
+      <div>
+        <p class="concept-term">Double lien (double bind)</p>
+        <p class="concept-def">Situation où un individu reçoit deux injonctions contradictoires et incompatibles, sans pouvoir satisfaire les deux, ni sortir de la relation, ni commenter la contradiction. Bateson l'observe d'abord dans les familles de schizophrènes (1956). <strong>Sa thèse révolutionnaire : la schizophrénie n'est pas une maladie individuelle — c'est une réponse adaptée à un contexte communicationnel pathologique.</strong> La maladie est dans la structure de la relation, pas dans l'individu. Ce déplacement du regard est l'acte fondateur de Palo Alto.</p>
+      </div>
+    </li>
+    <li class="concept-item">
+      <div><span class="concept-tag communication">Communication</span></div>
+      <div>
+        <p class="concept-term">Métacommunication</p>
+        <p class="concept-def">Toute communication se situe à plusieurs niveaux simultanément : le niveau du contenu (ce qui est dit) et le niveau de la relation (comment ce qui est dit doit être compris). <em>La métacommunication est la communication sur la communication.</em> Dire « je plaisante » est une métacommunication — elle indique comment interpréter le niveau inférieur. <strong>La pathologie surgit quand les niveaux se confondent ou se contredisent</strong> — quand le message et le métamessage s'annulent mutuellement.</p>
+      </div>
+    </li>
+    <li class="concept-item">
+      <div><span class="concept-tag apprentissage">Apprentissage</span></div>
+      <div>
+        <p class="concept-term">Deutero-apprentissage — « apprendre à apprendre »</p>
+        <p class="concept-def">Bateson distingue plusieurs niveaux d'apprentissage. L'apprentissage 0 est la réponse stéréotypée. L'apprentissage I est la correction d'erreur. L'apprentissage II — le deutero-apprentissage — est <strong>l'acquisition de patterns et de structures cognitives à travers l'expérience : apprendre à apprendre.</strong> <em>C'est à ce niveau que se jouent les grandes transformations de la personnalité</em> — et les grandes résistances au changement. Changer de prémisses, pas seulement de comportements.</p>
+      </div>
+    </li>
+    <li class="concept-item">
+      <div><span class="concept-tag fondateur">Fondateur</span></div>
+      <div>
+        <p class="concept-term">Schismogenèse</p>
+        <p class="concept-def">Concept forgé dans Naven (1936) : la création progressive de différences par accumulation des interactions entre personnes ou groupes. Il y a deux types : <em>la schismogenèse symétrique</em> (escalade compétitive — A fait plus, B fait plus) et <em>la schismogenèse complémentaire</em> (les rôles se renforcent mutuellement — dominant/dominé). <strong>Sans mécanismes de régulation, les deux conduisent à la rupture du système.</strong> C'est une théorie du conflit avant la lettre.</p>
+      </div>
+    </li>
+    <li class="concept-item">
+      <div><span class="concept-tag epistemologie">Épistémologie</span></div>
+      <div>
+        <p class="concept-term">Épistemologie de l'esprit</p>
+        <p class="concept-def">Bateson ne sépare pas l'esprit de la nature. Pour lui, <strong>l'esprit n'est pas localisé dans le cerveau — il est distribué dans le système.</strong> Un aveugle dont la canne explore le monde : où commence son esprit ? À sa main ? Au bout de la canne ? À l'obstacle qu'elle rencontre ? <em>L'esprit est le processus de traitement de l'information dans le système entier, pas dans l'individu seul.</em> Cette intuition est à l'origine de la cognition distribuée et de l'énactivisme contemporain.</p>
+      </div>
+    </li>
+    <li class="concept-item">
+      <div><span class="concept-tag epistemologie">Épistémologie</span></div>
+      <div>
+        <p class="concept-term">La différence qui fait la différence</p>
+        <p class="concept-def">Définition batesonienne de l'information : <em>une information, c'est une différence qui fait une différence.</em> Pas toute différence — seulement celle qui change quelque chose dans le système qui la reçoit. <strong>L'information n'est pas une substance — c'est une relation entre différences.</strong> Ce déplacement conceptuel est fondateur pour la cybernétique et les théories de la communication.</p>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<!-- NIVEAUX LOGIQUES -->
+<section id="niveaux" class="section reveal">
+  <p class="section-label">Section 4</p>
+  <h2 class="section-title">Les niveaux logiques de l'apprentissage</h2>
+  <p class="section-intro">Inspirés de la théorie des types de Russell et Whitehead, les niveaux logiques de Bateson montrent que la communication et l'apprentissage opèrent à des niveaux hiérarchiques distincts — et que la confusion entre niveaux est à l'origine de la plupart des pathologies relationnelles.</p>
+
+  <div class="niveaux-stack">
+    <div class="niveau-item">
+      <p class="niveau-num">III</p>
+      <div class="niveau-content">
+        <p class="niveau-name">Apprentissage III — Changement de prémisses</p>
+        <p class="niveau-desc">Remise en question du système de référence lui-même. Transformation profonde de l'identité. Rare, difficile, parfois traumatique — mais source de croissance réelle. Ce que certains appellent l'éveil ou la conversion.</p>
+      </div>
+    </div>
+    <div class="niveau-item">
+      <p class="niveau-num">II</p>
+      <div class="niveau-content">
+        <p class="niveau-name">Deutero-apprentissage — Apprendre à apprendre</p>
+        <p class="niveau-desc">Acquisition de patterns d'apprentissage, de styles cognitifs. Changement de contexte d'apprentissage. C'est à ce niveau que se jouent les grandes transformations personnelles et les résistances profondes au changement.</p>
+      </div>
+    </div>
+    <div class="niveau-item">
+      <p class="niveau-num">I</p>
+      <div class="niveau-content">
+        <p class="niveau-name">Apprentissage I — Correction d'erreur</p>
+        <p class="niveau-desc">Modification du comportement dans un ensemble de possibles donné. Apprentissage conditionné classique. La réponse change, mais le cadre de référence reste le même.</p>
+      </div>
+    </div>
+    <div class="niveau-item">
+      <p class="niveau-num">0</p>
+      <div class="niveau-content">
+        <p class="niveau-name">Apprentissage 0 — Réponse stéréotypée</p>
+        <p class="niveau-desc">Réponse fixe, non modifiable par l'expérience. Réflexe, instinct. Pas d'apprentissage au sens propre — juste l'exécution d'un programme.</p>
+      </div>
+    </div>
+    <div class="niveau-item" style="background:var(--parchemin-chaud);">
+      <p class="niveau-num" style="color:var(--muted);opacity:0.5;">↕</p>
+      <div class="niveau-content">
+        <p class="niveau-name" style="color:var(--terre);">La règle batesonienne</p>
+        <p class="niveau-desc" style="color:var(--text-dim);">Un niveau ne peut pas se décrire ou se corriger lui-même — il faut monter d'un niveau. La confusion entre niveaux logiques est à l'origine du double lien et de la plupart des pathologies relationnelles et institutionnelles.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="signal safran">
+    <p>L'application pratique est immense. <em>En management :</em> changer les comportements (niveau I) sans changer les prémisses organisationnelles (niveau II) ne produit pas de transformation durable. <em>En thérapie :</em> travailler sur les symptômes sans toucher au contexte qui les produit revient à lutter contre le double lien avec les outils du double lien. <strong>Le changement réel se joue toujours à un niveau supérieur à celui où le problème apparaît.</strong></p>
+  </div>
+</section>
+
+<!-- ÉCOLOGIE DE L'ESPRIT -->
+<section id="ecologie" class="section reveal">
+  <p class="section-label">Section 5</p>
+  <h2 class="section-title">L'écologie de l'esprit</h2>
+  <p class="section-intro">La grande ambition de Bateson : unifier biologie, esprit et nature dans une épistémologie cohérente. Une pensée qui préfigure l'écologie profonde, la cognition distribuée et les sciences de la complexité.</p>
+
+  <div class="signal terre">
+    <p>Bateson formule ce qui est peut-être sa thèse la plus radicale : <strong>l'esprit n'est pas une propriété du cerveau individuel — il est une propriété des systèmes.</strong> Les systèmes vivants, les écosystèmes, les sociétés humaines sont tous des systèmes mentaux au sens où ils traitent de l'information, apprennent, s'adaptent. <em>L'humain n'est pas séparable de son environnement</em> — il en fait partie, il en est un sous-système.</p>
+    <p>Cette vision a des conséquences éthiques profondes : <strong>détruire un écosystème, c'est détruire une partie de l'esprit planétaire.</strong> La crise écologique n'est pas un problème "extérieur" à résoudre — c'est une pathologie de la façon dont nous pensons notre rapport à la nature.</p>
+  </div>
+
+  <ul class="oeuvres-list">
+    <li class="oeuvre-item">
+      <p class="oeuvre-year">1936</p>
+      <div><p class="oeuvre-title">Naven</p><p class="oeuvre-note">Premier grand ouvrage. Étude du peuple Iatmul de Nouvelle-Guinée. Forge le concept de schismogenèse. Rupture avec l'anthropologie structuro-fonctionnaliste.</p></div>
+    </li>
+    <li class="oeuvre-item">
+      <p class="oeuvre-year">1956</p>
+      <div><p class="oeuvre-title">Vers une théorie de la schizophrénie (article)</p><p class="oeuvre-note">Article fondateur co-écrit avec Jackson, Haley et Weakland. Introduction du concept de double lien. Acte fondateur de l'école de Palo Alto.</p></div>
+    </li>
+    <li class="oeuvre-item">
+      <p class="oeuvre-year">1972</p>
+      <div><p class="oeuvre-title">Vers une écologie de l'esprit</p><p class="oeuvre-note">Recueil d'essais couvrant 30 ans de pensée. L'œuvre-somme. Cybernétique, anthropologie, psychiatrie, biologie, esthétique — tous connectés par la question des patterns.</p></div>
+    </li>
+    <li class="oeuvre-item">
+      <p class="oeuvre-year">1979</p>
+      <div><p class="oeuvre-title">Esprit et Nature — une unité nécessaire</p><p class="oeuvre-note">Son testament intellectuel. L'unité de l'esprit et de la nature comme nécessité épistémologique. Un livre qu'il termine en sachant qu'il mourra avant de voir sa réception.</p></div>
+    </li>
+    <li class="oeuvre-item">
+      <p class="oeuvre-year">1987</p>
+      <div><p class="oeuvre-title">Où les anges hésitent (posthume, avec Mary Catherine Bateson)</p><p class="oeuvre-note">Achevé après sa mort par sa fille. Vers une épistémologie du sacré — la question de la dimension spirituelle de la pensée écologique.</p></div>
+    </li>
+  </ul>
+</section>
+
+<!-- PONTS -->
+<section id="ponts" class="section reveal">
+  <p class="section-label">Section 6 — Archipel</p>
+  <h2 class="section-title">Ponts vers d'autres îles</h2>
+  <p class="section-intro">Bateson est le nœud central de l'archipel. Presque toutes les îles ont un lien direct avec lui — soit parce qu'il les a inspirées, soit parce qu'il partage avec elles une intuition fondamentale.</p>
+
+  <div class="ponts-grid">
+    <div class="pont-card disponible" onclick="window.location.href='palo-alto.html'">
+      <p class="pont-status open">↗ Île disponible</p>
+      <p class="pont-name">École de Palo Alto</p>
+      <p class="pont-lien">Bateson est le père intellectuel de Palo Alto. Le double lien, la métacommunication, les niveaux logiques — tout ce que Watzlawick, Jackson et Haley développeront vient directement de lui. Il quitte Palo Alto en 1963 mais son empreinte reste totale.</p>
+    </div>
+    <div class="pont-card disponible" onclick="window.location.href='wiener.html'">
+      <p class="pont-status open">↗ Île disponible</p>
+      <p class="pont-name">Norbert Wiener</p>
+      <p class="pont-lien">Bateson participe aux conférences Macy avec Wiener. Il est celui qui importe le feedback et la cybernétique dans les sciences humaines et la psychiatrie. Deux penseurs du même paradigme — l'un côté mathématique, l'autre côté vivant.</p>
+    </div>
+    <div class="pont-card disponible" onclick="window.location.href='gestalt.html'">
+      <p class="pont-status open">↗ Île disponible</p>
+      <p class="pont-name">Gestalt-thérapie</p>
+      <p class="pont-lien">Laura Perls a étudié avec les fondateurs de la Gestalt-psychologie (Wertheimer, Goldstein) — les mêmes qui ont influencé Lewin et, indirectement, Bateson. Le champ organisme-environnement gestaltiste et l'écologie de l'esprit batesonienne sont deux formulations de la même intuition holiste.</p>
+    </div>
+    <div class="pont-card disponible" onclick="window.location.href='morin.html'">
+      <p class="pont-status open">↗ Île disponible</p>
+      <p class="pont-name">Edgar Morin</p>
+      <p class="pont-lien">La pensée complexe de Morin et l'écologie de l'esprit de Bateson : deux façons de penser la même chose — l'impossibilité de séparer l'observateur du système observé, le tout des parties, l'esprit de la nature.</p>
+    </div>
+    <div class="pont-card disponible" onclick="window.location.href='lewin.html'">
+      <p class="pont-status open">↗ Île disponible</p>
+      <p class="pont-name">Kurt Lewin</p>
+      <p class="pont-lien">Lewin et Bateson partagent la théorie du champ et l'intuition que les comportements ne se comprennent que dans leur contexte systémique. La schismogenèse de Bateson et la dynamique des groupes de Lewin pensent la même réalité.</p>
+    </div>
+    <div class="pont-card disponible" onclick="window.location.href='meirieu.html'">
+      <p class="pont-status open">↗ Île disponible</p>
+      <p class="pont-name">Philippe Meirieu</p>
+      <p class="pont-lien">Le deutero-apprentissage de Bateson — apprendre à apprendre — est le fondement théorique le plus profond de la pédagogie de Meirieu. La situation-problème crée les conditions du passage au niveau II de l'apprentissage batesonien.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-brand">Archipel des idées — île : Gregory Bateson</span>
+  <span class="footer-note">Construit à partir de sources académiques. Navigation libre.</span>
+</footer>
+
+</div>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
