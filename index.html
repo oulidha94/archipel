@@ -334,6 +334,42 @@ body::after {
 .ile-status.open-warm { color: #c17d3c; }
 .status-dot.warm { background: #c17d3c; animation: pulse 2s ease-in-out infinite; }
 
+/* AT — accent bleu-indigo */
+.ile-card.at-accent::before { background: #3d5499; }
+.ile-card.at-accent:hover { background: rgba(61,84,153,0.05); }
+.ile-card.at-accent .ile-name { color: #eaecf7; }
+.ile-card.at-accent:hover .ile-tag { border-color: rgba(61,84,153,0.25); }
+.ile-card.at-accent:hover .ile-arrow { color: #3d5499; }
+.ile-status.open-at { color: #3d5499; }
+.status-dot.at { background: #3d5499; animation: pulse 2s ease-in-out infinite; }
+
+/* Lewin — accent vert électrique */
+.ile-card.lewin-accent::before { background: #1eb87a; }
+.ile-card.lewin-accent:hover { background: rgba(30,184,122,0.04); }
+.ile-card.lewin-accent .ile-name { color: #e4f5ee; }
+.ile-card.lewin-accent:hover .ile-tag { border-color: rgba(30,184,122,0.25); }
+.ile-card.lewin-accent:hover .ile-arrow { color: #1eb87a; }
+.ile-status.open-lewin { color: #1eb87a; }
+.status-dot.lewin { background: #1eb87a; animation: pulse 2s ease-in-out infinite; }
+
+/* Rogers — accent cuivré-rosé */
+.ile-card.rogers-accent::before { background: #b8652a; }
+.ile-card.rogers-accent:hover { background: rgba(184,101,42,0.04); }
+.ile-card.rogers-accent .ile-name { color: #f5ede0; }
+.ile-card.rogers-accent:hover .ile-tag { border-color: rgba(184,101,42,0.22); }
+.ile-card.rogers-accent:hover .ile-arrow { color: #b8652a; }
+.ile-status.open-rogers { color: #b8652a; }
+.status-dot.rogers { background: #b8652a; animation: pulse 2s ease-in-out infinite; }
+
+/* Morin — accent or profond */
+.ile-card.morin-accent::before { background: #c8973a; }
+.ile-card.morin-accent:hover { background: rgba(200,151,58,0.04); }
+.ile-card.morin-accent .ile-name { color: #f5edda; }
+.ile-card.morin-accent:hover .ile-tag { border-color: rgba(200,151,58,0.25); }
+.ile-card.morin-accent:hover .ile-arrow { color: #c8973a; }
+.ile-status.open-morin { color: #c8973a; }
+.status-dot.morin { background: #c8973a; animation: pulse 2s ease-in-out infinite; }
+
 /* ÎLE EN CONSTRUCTION */
 .ile-construction {
   background: var(--void);
@@ -539,11 +575,11 @@ footer {
     <div class="fade-in">
       <div class="header-stat">
         <div class="stat-item">
-          <span class="stat-num">3</span>
+          <span class="stat-num">8</span>
           <span class="stat-label">Îles disponibles</span>
         </div>
         <div class="stat-item">
-          <span class="stat-num">5</span>
+          <span class="stat-num">2</span>
           <span class="stat-label">En construction</span>
         </div>
         <div class="stat-item">
@@ -619,6 +655,78 @@ footer {
         <span class="ile-arrow">↗</span>
       </a>
 
+      <!-- ÎLE 4 : Analyse Transactionnelle — disponible -->
+      <a href="at.html" class="ile-card at-accent">
+        <div class="ile-status open-at">
+          <span class="status-dot at"></span>
+          Île disponible
+        </div>
+        <p class="ile-type">Théorie de la personnalité — San Francisco, 1958</p>
+        <p class="ile-name">Analyse Transactionnelle</p>
+        <p class="ile-desc">Parent, Adulte, Enfant. Décrypter ce qui se joue dans chaque échange — jeux, positions de vie, scénario.</p>
+        <div class="ile-tags">
+          <span class="ile-tag">États du Moi</span>
+          <span class="ile-tag">Jeux psychologiques</span>
+          <span class="ile-tag">Éric Berne</span>
+          <span class="ile-tag">Autonomie</span>
+        </div>
+        <span class="ile-arrow">↗</span>
+      </a>
+
+      <!-- ÎLE 5 : Lewin — disponible -->
+      <a href="lewin.html" class="ile-card lewin-accent">
+        <div class="ile-status open-lewin">
+          <span class="status-dot lewin"></span>
+          Île disponible
+        </div>
+        <p class="ile-type">Psychologue social — Prusse / USA, 1890–1947</p>
+        <p class="ile-name">Kurt Lewin</p>
+        <p class="ile-desc">B = f(P,E). Le champ, le groupe, la recherche-action. Le chaînon qui relie presque tout l'archipel.</p>
+        <div class="ile-tags">
+          <span class="ile-tag">Théorie du champ</span>
+          <span class="ile-tag">Dynamique des groupes</span>
+          <span class="ile-tag">Changement</span>
+          <span class="ile-tag">Leadership</span>
+        </div>
+        <span class="ile-arrow">↗</span>
+      </a>
+
+      <!-- ÎLE 6 : Rogers — disponible -->
+      <a href="rogers.html" class="ile-card rogers-accent">
+        <div class="ile-status open-rogers">
+          <span class="status-dot rogers"></span>
+          Île disponible
+        </div>
+        <p class="ile-type">Psychologue humaniste — USA, 1902–1987</p>
+        <p class="ile-name">Carl Rogers</p>
+        <p class="ile-desc">La relation avant la technique. Empathie, congruence, considération positive inconditionnelle.</p>
+        <div class="ile-tags">
+          <span class="ile-tag">ACP</span>
+          <span class="ile-tag">Empathie</span>
+          <span class="ile-tag">Congruence</span>
+          <span class="ile-tag">Humanisme</span>
+        </div>
+        <span class="ile-arrow">↗</span>
+      </a>
+
+      <!-- ÎLE 7 : Morin — disponible -->
+      <a href="morin.html" class="ile-card morin-accent">
+        <div class="ile-status open-morin">
+          <span class="status-dot morin"></span>
+          Île disponible
+        </div>
+        <p class="ile-type">Sociologue & philosophe — France, né en 1921</p>
+        <p class="ile-name">Edgar Morin</p>
+        <p class="ile-desc">Relier · Distinguer · Ne pas réduire. La pensée complexe contre toutes les simplifications.</p>
+        <div class="ile-tags">
+          <span class="ile-tag">Complexité</span>
+          <span class="ile-tag">Transdisciplinarité</span>
+          <span class="ile-tag">Humanisme planétaire</span>
+          <span class="ile-tag">La Méthode</span>
+        </div>
+        <span class="ile-arrow">↗</span>
+      </a>
+
       <!-- ÎLES EN CONSTRUCTION -->
       <div class="ile-construction">
         <p class="construction-status">En construction</p>
@@ -629,37 +737,9 @@ footer {
 
       <div class="ile-construction">
         <p class="construction-status">En construction</p>
-        <p class="ile-type">Pédagogue — Brésil</p>
-        <p class="ile-name">Paulo Freire</p>
-        <p class="ile-desc">La pédagogie des opprimés, le dialogue transformateur, la conscientisation comme acte politique.</p>
-      </div>
-
-      <div class="ile-construction">
-        <p class="construction-status">En construction</p>
-        <p class="ile-type">Sociologue & philosophe — France</p>
-        <p class="ile-name">Edgar Morin</p>
-        <p class="ile-desc">Le paradigme de la complexité, la pensée reliant, contre la réduction et la disjonction.</p>
-      </div>
-
-      <div class="ile-construction">
-        <p class="construction-status">En construction</p>
-        <p class="ile-type">Psychosociologue — Allemagne / USA</p>
-        <p class="ile-name">Kurt Lewin</p>
-        <p class="ile-desc">La dynamique des groupes, la recherche-action, le changement planifié dans les systèmes sociaux.</p>
-      </div>
-
-      <div class="ile-construction">
-        <p class="construction-status">En construction</p>
         <p class="ile-type">Mathématicien & philosophe — USA</p>
         <p class="ile-name">Norbert Wiener & la Cybernétique</p>
         <p class="ile-desc">Le terreau de tout. La boucle de rétroaction, l'information, la régulation des systèmes complexes.</p>
-      </div>
-
-      <div class="ile-construction">
-        <p class="construction-status">En construction</p>
-        <p class="ile-type">Philosophe — France</p>
-        <p class="ile-name">Michel Foucault</p>
-        <p class="ile-desc">Le pouvoir, le savoir, les dispositifs. Une archéologie des institutions et des discours qui nous constituent.</p>
       </div>
 
     </div>

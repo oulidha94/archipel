@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edgar Morin — Penser la complexité</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Spectral+SC:wght@300;400;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --nuit: #0c0e18;
+  --nuit-mid: #12152a;
+  --nuit-soft: #181c34;
+  --nuit-card: #141830;
+  --or: #c8973a;
+  --or-dim: rgba(200,151,58,0.13);
+  --or-pale: rgba(200,151,58,0.06);
+  --or-vif: #e8b050;
+  --cuivre: #b06030;
+  --cuivre-dim: rgba(176,96,48,0.12);
+  --bleu-clair: #6ab0d4;
+  --bleu-dim: rgba(106,176,212,0.1);
+  --vert-sauge: #5a9070;
+  --vert-dim: rgba(90,144,112,0.1);
+  --text: #c4cce0;
+  --text-dim: #6878a0;
+  --muted: #3a4468;
+  --border: rgba(200,151,58,0.12);
+  --border-fort: rgba(200,151,58,0.25);
+  --serif: 'Spectral', Georgia, serif;
+  --serif-sc: 'Spectral SC', Georgia, serif;
+  --mono: 'DM Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--serif);
+  background: var(--nuit);
+  color: var(--text);
+  font-size: 17px;
+  line-height: 1.75;
+  min-height: 100vh;
+}
+
+/* Texture — strates de complexité */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      -30deg,
+      transparent,
+      transparent 80px,
+      rgba(200,151,58,0.018) 80px,
+      rgba(200,151,58,0.018) 81px
+    ),
+    repeating-linear-gradient(
+      60deg,
+      transparent,
+      transparent 120px,
+      rgba(106,176,212,0.015) 120px,
+      rgba(106,176,212,0.015) 121px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 10% 15%, rgba(200,151,58,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 90% 80%, rgba(106,176,212,0.05) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 60% at 50% 50%, rgba(12,14,24,0.5) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.layer { position: relative; z-index: 1; }
+
+/* NAV */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(12,14,24,0.94);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  height: 50px;
+}
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--or);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-right: auto;
+  opacity: 0.8;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.nav-logo:hover { opacity: 1; }
+.nav-links { display: flex; list-style: none; }
+.nav-links li a {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 0 0.9rem;
+  height: 50px;
+  line-height: 50px;
+  border-right: 1px solid var(--border);
+  transition: color 0.2s;
+}
+.nav-links li:first-child a { border-left: 1px solid var(--border); }
+.nav-links li a:hover { color: var(--or); }
+
+/* HERO */
+.hero { padding: 9rem 2rem 5rem; max-width: 960px; margin: 0 auto; }
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--or);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.hero-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: var(--or); opacity: 0.7; }
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(2.8rem, 6.5vw, 5.5rem);
+  font-weight: 300;
+  line-height: 1.05;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+.hero-title em { font-style: italic; color: var(--or-vif); font-weight: 300; }
+.hero-devise {
+  font-family: var(--serif-sc);
+  font-size: 0.9rem;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  color: var(--or);
+  margin-top: 1.25rem;
+  opacity: 0.75;
+}
+.hero-subtitle {
+  font-size: 1.05rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-dim);
+  max-width: 560px;
+  margin-top: 0.75rem;
+  line-height: 1.75;
+}
+.hero-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
+.meta-pill {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  background: var(--nuit-card);
+}
+.meta-pill.or { border-color: var(--border-fort); color: var(--or); background: var(--or-pale); }
+.meta-pill.bleu { border-color: rgba(106,176,212,0.25); color: var(--bleu-clair); background: var(--bleu-dim); }
+
+/* SECTIONS */
+.section { max-width: 960px; margin: 0 auto; padding: 4rem 2rem; border-top: 1px solid var(--border); }
+.section-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 300;
+  color: #fff;
+  margin-bottom: 0.6rem;
+  line-height: 1.2;
+  font-style: italic;
+}
+.section-intro { font-size: 1rem; font-weight: 300; font-style: italic; color: var(--text-dim); max-width: 660px; margin-bottom: 2.5rem; line-height: 1.75; }
+
+/* SIGNAL */
+.signal {
+  border-left: 3px solid var(--or);
+  padding: 1.25rem 1.5rem;
+  background: var(--or-dim);
+  margin: 2rem 0;
+}
+.signal p { font-size: 0.97rem; color: var(--text); line-height: 1.75; font-weight: 300; }
+.signal p + p { margin-top: 0.75rem; }
+.signal em { color: var(--or-vif); font-style: italic; }
+.signal strong { color: #fff; font-weight: 600; }
+.signal.bleu { border-left-color: var(--bleu-clair); background: var(--bleu-dim); }
+.signal.bleu em { color: var(--bleu-clair); }
+.signal.vert { border-left-color: var(--vert-sauge); background: var(--vert-dim); }
+.signal.vert em { color: var(--vert-sauge); }
+
+/* QUOTE */
+.quote {
+  padding: 2rem 2rem 1.5rem;
+  background: var(--nuit-card);
+  border: 1px solid var(--border);
+  margin: 2.5rem 0;
+  position: relative;
+}
+.quote::before {
+  content: '\201C';
+  position: absolute;
+  top: 0.5rem; left: 1.5rem;
+  font-family: var(--serif);
+  font-size: 5rem;
+  color: var(--or);
+  opacity: 0.15;
+  line-height: 1;
+}
+.quote-text { font-family: var(--serif); font-size: 1.15rem; font-style: italic; font-weight: 300; color: var(--or-vif); line-height: 1.65; margin-bottom: 0.5rem; }
+.quote-source { font-family: var(--mono); font-size: 10px; color: var(--text-dim); letter-spacing: 0.05em; }
+
+/* PARCOURS BIOGRAPHIQUE */
+.bio-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  margin: 2rem 0;
+}
+@media (max-width: 580px) { .bio-grid { grid-template-columns: 1fr; } }
+.bio-cell { background: var(--nuit-card); padding: 1.5rem; }
+.bio-label { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--or); margin-bottom: 0.5rem; opacity: 0.8; }
+.bio-title { font-family: var(--serif); font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 0.35rem; }
+.bio-text { font-size: 0.88rem; color: var(--text-dim); line-height: 1.65; font-weight: 300; }
+.bio-text em { color: var(--or); font-style: italic; }
+.bio-text strong { color: var(--text); font-weight: 500; }
+
+/* LES 7 PRINCIPES */
+.principes-list { list-style: none; }
+.principe-item {
+  border-top: 1px solid var(--border);
+  padding: 1.75rem 0;
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+@media (max-width: 560px) { .principe-item { grid-template-columns: 1fr; gap: 0.5rem; } }
+.principe-item:last-child { border-bottom: 1px solid var(--border); }
+.principe-num {
+  font-family: var(--serif);
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: var(--or);
+  opacity: 0.3;
+  line-height: 1;
+  padding-top: 4px;
+}
+.principe-body {}
+.principe-name {
+  font-family: var(--serif-sc);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--or-vif);
+  letter-spacing: 0.06em;
+  margin-bottom: 0.4rem;
+}
+.principe-def { font-size: 0.92rem; color: var(--text-dim); line-height: 1.7; font-weight: 300; }
+.principe-def strong { color: var(--text); font-weight: 500; }
+.principe-def em { color: var(--or); font-style: italic; }
+
+/* RUPTURE ÉPISTÉMOLOGIQUE */
+.rupture-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  margin: 2rem 0;
+}
+@media (max-width: 560px) { .rupture-grid { grid-template-columns: 1fr; } }
+.rupture-cell { background: var(--nuit-card); padding: 1.5rem; }
+.rupture-label { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.6rem; }
+.rupture-label.avant { color: var(--cuivre); }
+.rupture-label.apres { color: var(--or); }
+.rupture-title { font-family: var(--serif); font-size: 1rem; font-weight: 600; margin-bottom: 0.35rem; }
+.avant-cell .rupture-title { color: var(--text-dim); }
+.apres-cell .rupture-title { color: var(--or-vif); }
+.rupture-text { font-size: 0.88rem; color: var(--text-dim); line-height: 1.65; font-weight: 300; }
+
+/* LA MÉTHODE — 6 tomes */
+.methode-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  margin: 2rem 0;
+}
+.methode-tome {
+  background: var(--nuit-card);
+  padding: 1.5rem;
+  border-bottom: 2px solid transparent;
+  transition: background 0.2s, border-color 0.2s;
+}
+.methode-tome:hover { background: var(--nuit-soft); border-bottom-color: var(--or); }
+.methode-annee { font-family: var(--mono); font-size: 10px; color: var(--or); letter-spacing: 0.1em; margin-bottom: 0.4rem; opacity: 0.7; }
+.methode-num { font-family: var(--serif); font-size: 2rem; font-weight: 300; color: var(--or); opacity: 0.2; line-height: 1; margin-bottom: 0.3rem; }
+.methode-titre { font-family: var(--serif); font-size: 0.95rem; font-weight: 600; color: #fff; margin-bottom: 0.35rem; line-height: 1.3; font-style: italic; }
+.methode-sous { font-size: 0.82rem; color: var(--text-dim); line-height: 1.55; font-weight: 300; }
+
+/* HUMANISME PLANÉTAIRE */
+.humanisme-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  margin: 2rem 0;
+}
+@media (max-width: 640px) { .humanisme-wrap { grid-template-columns: 1fr; } }
+.humanisme-cell {
+  background: var(--nuit-card);
+  padding: 1.5rem;
+  border-top: 2px solid;
+}
+.humanisme-cell:nth-child(1) { border-top-color: var(--or); }
+.humanisme-cell:nth-child(2) { border-top-color: var(--bleu-clair); }
+.humanisme-cell:nth-child(3) { border-top-color: var(--vert-sauge); }
+.humanisme-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.7;
+}
+.humanisme-name {
+  font-family: var(--serif-sc);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+.humanisme-cell:nth-child(1) .humanisme-name { color: var(--or); }
+.humanisme-cell:nth-child(2) .humanisme-name { color: var(--bleu-clair); }
+.humanisme-cell:nth-child(3) .humanisme-name { color: var(--vert-sauge); }
+.humanisme-text { font-size: 0.88rem; color: var(--text-dim); line-height: 1.65; font-weight: 300; }
+
+/* OEUVRES */
+.oeuvres-list { list-style: none; }
+.oeuvre-item {
+  display: grid;
+  grid-template-columns: 55px 1fr;
+  gap: 0.75rem;
+  border-top: 1px solid var(--border);
+  padding: 1rem 0;
+  align-items: start;
+}
+.oeuvre-item:last-child { border-bottom: 1px solid var(--border); }
+.oeuvre-year { font-family: var(--mono); font-size: 11px; color: var(--or); opacity: 0.7; padding-top: 2px; }
+.oeuvre-title { font-family: var(--serif); font-size: 0.95rem; font-weight: 600; color: #fff; line-height: 1.3; margin-bottom: 0.2rem; font-style: italic; }
+.oeuvre-note { font-size: 0.85rem; color: var(--text-dim); line-height: 1.45; font-weight: 300; }
+
+/* PONTS */
+.ponts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1px;
+  background: var(--border);
+}
+.pont-card {
+  background: var(--nuit-card);
+  padding: 1.25rem 1.5rem;
+  border-bottom: 2px solid transparent;
+  transition: background 0.2s, border-color 0.2s;
+}
+.pont-card.disponible { cursor: pointer; }
+.pont-card.disponible:hover { background: var(--nuit-soft); border-bottom-color: var(--or); }
+.pont-status { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.pont-status.open { color: var(--or); }
+.pont-status.bientot { color: var(--muted); }
+.pont-name { font-family: var(--serif); font-size: 1rem; font-weight: 400; color: #fff; margin-bottom: 0.25rem; font-style: italic; }
+.pont-card:not(.disponible) .pont-name { color: var(--muted); }
+.pont-lien { font-size: 0.86rem; color: var(--text-dim); font-style: italic; line-height: 1.5; font-weight: 300; }
+.pont-card:not(.disponible) .pont-lien { opacity: 0.6; }
+
+/* FOOTER */
+footer { max-width: 960px; margin: 0 auto; padding: 2rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.footer-brand { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.footer-note { font-size: 0.85rem; color: var(--muted); font-style: italic; font-weight: 300; }
+
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+<div class="layer">
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">← Archipel des idées</a>
+  <ul class="nav-links">
+    <li><a href="#ancrage">Ancrage</a></li>
+    <li><a href="#principes">Les 7 principes</a></li>
+    <li><a href="#rupture">Rupture</a></li>
+    <li><a href="#methode">La Méthode</a></li>
+    <li><a href="#humanisme">Humanisme</a></li>
+    <li><a href="#ponts">Ponts</a></li>
+  </ul>
+</nav>
+
+<header class="hero layer">
+  <p class="hero-eyebrow">Île de l'archipel — Sociologue et philosophe</p>
+  <h1 class="hero-title">Edgar<br><em>Morin</em></h1>
+  <p class="hero-devise">Relier · Distinguer · Ne pas réduire</p>
+  <p class="hero-subtitle">Une vie entière consacrée à penser autrement — contre la simplification, contre la disjonction, pour une connaissance qui relie sans dissoudre et distingue sans séparer.</p>
+  <div class="hero-meta">
+    <span class="meta-pill or">Né en 1921, Paris</span>
+    <span class="meta-pill">CNRS — directeur de recherche émérite</span>
+    <span class="meta-pill bleu">Pensée complexe</span>
+    <span class="meta-pill">Transdisciplinarité</span>
+    <span class="meta-pill">Humanisme planétaire</span>
+  </div>
+</header>
+
+<!-- ANCRAGE -->
+<section id="ancrage" class="section reveal">
+  <p class="section-label">Section 1</p>
+  <h2 class="section-title">Un homme inclassable dans un siècle inclassable</h2>
+  <p class="section-intro">Edgar Morin n'entre dans aucune case — ni disciplinaire, ni politique, ni institutionnelle. C'est peut-être ce qui le rend indispensable.</p>
+
+  <div class="bio-grid">
+    <div class="bio-cell">
+      <p class="bio-label">L'autodidacte</p>
+      <p class="bio-title">Sans thèse, au CNRS</p>
+      <p class="bio-text">Morin se définit lui-même comme <em>avant tout autodidacte</em>. Licencié en histoire-géographie et en droit, il entre au CNRS sans avoir écrit de thèse de doctorat. Il y sera élu maître de recherche, puis directeur de recherche émérite. <strong>La pensée libre contre les cases disciplinaires</strong> — il l'a vécu avant de le théoriser.</p>
+    </div>
+    <div class="bio-cell">
+      <p class="bio-label">Le nom comme émergence</p>
+      <p class="bio-title">Nahoum devient Morin</p>
+      <p class="bio-text">Né Edgar Nahoum, il adopte le pseudonyme de Morin pendant la Résistance. L'anecdote est révélatrice : lors d'une réunion de résistants à Toulouse, il se présente sous un autre nom ; <em>une camarade comprend "Morin", et il ne rectifie pas.</em> Même son identité est une émergence imprévue — un hasard devenu nécessité.</p>
+    </div>
+    <div class="bio-cell">
+      <p class="bio-label">L'engagement</p>
+      <p class="bio-title">Résistant, puis libre</p>
+      <p class="bio-text">Antifasciste dès 1936, résistant actif pendant l'Occupation, membre du PCF jusqu'en 1951 — <strong>il en est exclu pour avoir osé une critique publique.</strong> Cette rupture est aussi une libération. Il développe alors une pensée politique humaniste qui refuse les dogmes, toutes les certitudes absolues et tous les réductionnismes.</p>
+    </div>
+    <div class="bio-cell">
+      <p class="bio-label">Le tournant</p>
+      <p class="bio-title">L'Institut Salk, 1969</p>
+      <p class="bio-text">Invité à l'Institut Salk de San Diego, il rencontre Jacques Monod (auteur du Hasard et la Nécessité) et <em>conçoit les fondements de la pensée complexe</em>. Ce qui deviendra La Méthode — six volumes sur 27 ans — prend racine dans cette rencontre entre biologie, philosophie et science des systèmes.</p>
+    </div>
+  </div>
+
+  <div class="quote">
+    <p class="quote-text">La connaissance pertinente est celle qui est capable de situer toute information dans son contexte et dans l'ensemble dont elle fait partie.</p>
+    <p class="quote-source">Edgar Morin — Les sept savoirs nécessaires à l'éducation du futur, UNESCO, 1999</p>
+  </div>
+</section>
+
+<!-- LES 7 PRINCIPES DE LA COMPLEXITÉ -->
+<section id="principes" class="section reveal">
+  <p class="section-label">Section 2</p>
+  <h2 class="section-title">Les sept principes de la pensée complexe</h2>
+  <p class="section-intro">Morin ne propose pas une méthode en sept étapes — il propose sept façons de regarder le réel autrement. Chaque principe est une invitation à dépasser une réduction.</p>
+
+  <ul class="principes-list">
+    <li class="principe-item">
+      <p class="principe-num">01</p>
+      <div class="principe-body">
+        <p class="principe-name">Le principe systémique ou organisationnel</p>
+        <p class="principe-def">Le tout est à la fois plus et moins que la somme de ses parties. <em>Plus</em>, parce que l'organisation produit des qualités émergentes qui n'existent pas dans les éléments séparés. <em>Moins</em>, parce que certaines qualités des parties sont inhibées ou contraintes par l'organisation du tout. <strong>On ne peut comprendre un système en le décomposant.</strong></p>
+      </div>
+    </li>
+    <li class="principe-item">
+      <p class="principe-num">02</p>
+      <div class="principe-body">
+        <p class="principe-name">Le principe hologrammique</p>
+        <p class="principe-def">Comme dans un hologramme, <strong>chaque partie contient la quasi-totalité du tout</strong>. L'individu contient la société en lui (par la culture, le langage, les normes), et la société est présente dans chaque individu. Ce principe brise la dichotomie classique entre le tout et les parties — les deux se co-contiennent.</p>
+      </div>
+    </li>
+    <li class="principe-item">
+      <p class="principe-num">03</p>
+      <div class="principe-body">
+        <p class="principe-name">Le principe de la boucle rétroactive</p>
+        <p class="principe-def">La cause agit sur l'effet, mais l'effet agit en retour sur la cause. <em>Toute causalité est circulaire.</em> L'inflation cause la hausse des salaires qui cause l'inflation. Les peurs collectives produisent les comportements qui confirment les peurs. <strong>La pensée linéaire cause→effet est insuffisante pour comprendre tout phénomène vivant ou social.</strong></p>
+      </div>
+    </li>
+    <li class="principe-item">
+      <p class="principe-num">04</p>
+      <div class="principe-body">
+        <p class="principe-name">Le principe de la boucle récursive</p>
+        <p class="principe-def">Les produits et les effets sont eux-mêmes producteurs de ce qui les produit. <em>La société est produite par les individus qui sont produits par la société.</em> L'espèce produit les individus qui reproduisent l'espèce. Ce n'est pas une régression infinie — c'est une <strong>organisation auto-productrice et auto-organisatrice</strong> : c'est la définition même du vivant.</p>
+      </div>
+    </li>
+    <li class="principe-item">
+      <p class="principe-num">05</p>
+      <div class="principe-body">
+        <p class="principe-name">Le principe d'autonomie/dépendance (auto-éco-organisation)</p>
+        <p class="principe-def">Tout être vivant est à la fois autonome et dépendant de son environnement. <strong>L'autonomie n'est possible que par la dépendance.</strong> Le cerveau humain est autonome dans sa pensée — mais il dépend d'un corps, d'une culture, d'une société. <em>Il ne faut pas opposer autonomie et dépendance : elles se co-constituent.</em></p>
+      </div>
+    </li>
+    <li class="principe-item">
+      <p class="principe-num">06</p>
+      <div class="principe-body">
+        <p class="principe-name">Le principe dialogique</p>
+        <p class="principe-def">Associer deux termes à la fois complémentaires et antagonistes. <em>Ordre et désordre, vie et mort, logos et mythos</em> — la pensée complexe ne tranche pas entre les contraires : elle les tient ensemble. <strong>La dialogique n'est pas la synthèse hégélienne qui dépasse les contraires</strong> — c'est la capacité à vivre dans leur tension productive sans la résoudre.</p>
+      </div>
+    </li>
+    <li class="principe-item">
+      <p class="principe-num">07</p>
+      <div class="principe-body">
+        <p class="principe-name">Le principe de réintroduction du sujet connaissant</p>
+        <p class="principe-def">Toute connaissance est <strong>la reconstruction opérée par un esprit/cerveau dans une culture et à une époque donnée.</strong> L'observateur fait partie du système observé. Il n'y a pas de point de vue surplombant, objectif, exempt de tout conditionnement. Ce principe rejoint von Foerster et le constructivisme — mais Morin l'articule à une épistémologie plus vaste, qui inclut la biologie de la connaissance.</p>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<!-- RUPTURE ÉPISTÉMOLOGIQUE -->
+<section id="rupture" class="section reveal">
+  <p class="section-label">Section 3</p>
+  <h2 class="section-title">Ce que Morin déplace</h2>
+  <p class="section-intro">La pensée complexe n'est pas un savoir de plus — c'est une autre façon de savoir. Un changement de paradigme que Morin appelle le passage de la pensée simplifiante à la pensée complexe.</p>
+
+  <div class="rupture-grid">
+    <div class="rupture-cell avant-cell">
+      <p class="rupture-label avant">Pensée simplifiante</p>
+      <p class="rupture-title">Disjonction</p>
+      <p class="rupture-text">Séparer les disciplines, les domaines, les phénomènes. La biologie n'a rien à voir avec la sociologie. Le corps n'a rien à voir avec l'esprit. Ce qui est simple peut être compris, le reste est ignoré ou "résiduel".</p>
+    </div>
+    <div class="rupture-cell apres-cell">
+      <p class="rupture-label apres">Pensée complexe</p>
+      <p class="rupture-title">Reliance</p>
+      <p class="rupture-text">Relier sans fondre. Distinguer sans séparer. La biologie, la sociologie, la psychologie et la physique parlent du même monde depuis des angles différents. <em>Complexus</em> : ce qui est tissé ensemble.</p>
+    </div>
+    <div class="rupture-cell avant-cell">
+      <p class="rupture-label avant">Pensée simplifiante</p>
+      <p class="rupture-title">Réduction</p>
+      <p class="rupture-text">Comprendre le tout en le décomposant en parties élémentaires. L'humain se réduit à ses neurones, la société à ses individus, la vie à sa chimie. L'analyse suffira à tout expliquer.</p>
+    </div>
+    <div class="rupture-cell apres-cell">
+      <p class="rupture-label apres">Pensée complexe</p>
+      <p class="rupture-title">Émergence</p>
+      <p class="rupture-text">Ce qui émerge du tout ne peut se réduire aux parties. La conscience émerge de l'activité neuronale sans y être réductible. La culture émerge des individus sans se confondre avec eux. <em>L'émergence est irréductible.</em></p>
+    </div>
+    <div class="rupture-cell avant-cell">
+      <p class="rupture-label avant">Pensée simplifiante</p>
+      <p class="rupture-title">Certitude</p>
+      <p class="rupture-text">La science vise la certitude. L'incertitude est provisoire — elle sera résolue par davantage de connaissance. La vérité est accessible et stable.</p>
+    </div>
+    <div class="rupture-cell apres-cell">
+      <p class="rupture-label apres">Pensée complexe</p>
+      <p class="rupture-title">Incertitude assumée</p>
+      <p class="rupture-text">L'incertitude n'est pas un défaut de la connaissance — c'est une caractéristique du réel. <strong>Naviguer dans l'incertitude sans se réfugier dans les certitudes illusoires</strong> est la condition de toute pensée rigoureuse.</p>
+    </div>
+  </div>
+
+  <div class="signal">
+    <p><em>Complexus</em> vient du latin : ce qui est tissé ensemble. La complexité n'est pas la complication (accumulation de données), ni le chaos (désordre absolu). <strong>C'est la reconnaissance que le réel est irréductiblement tissé d'ordre et de désordre, de certitude et d'incertitude, d'unité et de multiplicité</strong> — et que toute pensée qui prétend le simplifier trahit quelque chose d'essentiel.</p>
+  </div>
+</section>
+
+<!-- LA MÉTHODE -->
+<section id="methode" class="section reveal">
+  <p class="section-label">Section 4</p>
+  <h2 class="section-title">La Méthode — une œuvre-monde</h2>
+  <p class="section-intro">Six volumes publiés sur vingt-sept ans (1977–2004). Une somme qui n'est pas un système fermé mais une exploration ouverte, transdisciplinaire, de la connaissance, de la vie, des idées, de l'humanité et de l'éthique.</p>
+
+  <div class="methode-grid">
+    <div class="methode-tome">
+      <p class="methode-annee">1977</p>
+      <p class="methode-num">I</p>
+      <p class="methode-titre">La Nature de la Nature</p>
+      <p class="methode-sous">Physique, chimie, biologie — les fondements naturels de la complexité. L'ordre et le désordre comme co-producteurs de l'organisation.</p>
+    </div>
+    <div class="methode-tome">
+      <p class="methode-annee">1980</p>
+      <p class="methode-num">II</p>
+      <p class="methode-titre">La Vie de la Vie</p>
+      <p class="methode-sous">L'auto-organisation du vivant. La boucle récursive comme principe fondateur de la vie. L'individu et l'espèce en co-production permanente.</p>
+    </div>
+    <div class="methode-tome">
+      <p class="methode-annee">1986</p>
+      <p class="methode-num">III</p>
+      <p class="methode-titre">La Connaissance de la Connaissance</p>
+      <p class="methode-sous">Épistémologie et biologie de la connaissance. Comment le cerveau construit la réalité. La réintroduction de l'observateur dans le système observé.</p>
+    </div>
+    <div class="methode-tome">
+      <p class="methode-annee">1991</p>
+      <p class="methode-num">IV</p>
+      <p class="methode-titre">Les Idées</p>
+      <p class="methode-sous">La noosphère — l'univers des idées comme écosystème. Les idées vivent, se reproduisent, meurent. La mémétique avant la lettre.</p>
+    </div>
+    <div class="methode-tome">
+      <p class="methode-annee">2001</p>
+      <p class="methode-num">V</p>
+      <p class="methode-titre">L'Humanité de l'Humanité</p>
+      <p class="methode-sous">L'identité humaine dans sa triple dimension : Homo sapiens, Homo demens, Homo faber. L'humain comme être à la fois rationnel, affectif et créateur.</p>
+    </div>
+    <div class="methode-tome">
+      <p class="methode-annee">2004</p>
+      <p class="methode-num">VI</p>
+      <p class="methode-titre">L'Éthique</p>
+      <p class="methode-sous">Une éthique sans fondement absolu mais avec des impératifs réels. Responsabilité, solidarité, humanité planétaire comme horizons éthiques de la complexité.</p>
+    </div>
+  </div>
+
+  <div class="signal bleu">
+    <p>La Méthode n'est pas un manuel à appliquer. C'est une <em>exploration en spirale</em> — Morin revient sans cesse sur les mêmes questions (qu'est-ce que la connaissance ? qu'est-ce que l'humain ?) depuis des angles différents, à chaque volume plus riches des acquis des précédents. <strong>C'est une pensée qui se fait en marchant</strong> — ce que Morin appelle lui-même une "pensée chemin faisant".</p>
+  </div>
+</section>
+
+<!-- HUMANISME PLANÉTAIRE -->
+<section id="humanisme" class="section reveal">
+  <p class="section-label">Section 5</p>
+  <h2 class="section-title">L'humanisme planétaire</h2>
+  <p class="section-intro">La pensée complexe n'est pas abstraite — elle débouche chez Morin sur une vision de l'humanité et une éthique de la responsabilité qui traversent toute son œuvre tardive.</p>
+
+  <div class="humanisme-wrap">
+    <div class="humanisme-cell">
+      <p class="humanisme-icon">🌍</p>
+      <p class="humanisme-name">L'identité terrienne</p>
+      <p class="humanisme-text">Morin forge le concept de Terre-Patrie — l'humanité comme communauté de destin, partageant une planète fragile. Avant les enjeux climatiques contemporains, il pensait déjà l'appartenance commune à la biosphère comme condition d'une éthique planétaire. L'individu est citoyen de sa nation ET citoyen de la Terre.</p>
+    </div>
+    <div class="humanisme-cell">
+      <p class="humanisme-icon">🧠</p>
+      <p class="humanisme-name">Homo sapiens demens</p>
+      <p class="humanisme-name" style="color:var(--bleu-clair)"></p>
+      <p class="humanisme-text">L'humain chez Morin est irréductiblement double : rationnel (sapiens) ET délirant, affectif, mythologique (demens). Vouloir réduire l'humain à sa rationalité, c'est manquer l'essentiel. La folie, le rêve, la passion ne sont pas des déviations — ils sont constitutifs de l'humanité. <strong>La raison a besoin de la déraison pour être pleinement humaine.</strong></p>
+    </div>
+    <div class="humanisme-cell">
+      <p class="humanisme-icon">📚</p>
+      <p class="humanisme-name">Les 7 savoirs de l'éducation</p>
+      <p class="humanisme-text">En 1999, l'UNESCO lui commande un rapport sur les savoirs nécessaires à l'éducation du futur. Morin y défend : enseigner les conditions de la connaissance, enseigner la condition humaine, enseigner l'identité terrienne, enseigner à faire face aux incertitudes, enseigner la compréhension, enseigner l'éthique de l'humanité. Un programme pédagogique radicalement différent des curricula traditionnels.</p>
+    </div>
+  </div>
+
+  <div class="signal vert">
+    <p>Ce qui distingue l'humanisme de Morin des humanismes classiques : <em>il n'idéalise pas l'humain.</em> Il le regarde tel qu'il est — capable du meilleur et du pire, porteur de grandeur et de barbarie, rationnel et irrationnel. <strong>C'est un humanisme lucide</strong>, né d'un homme qui a vu le nazisme, le stalinisme, les guerres coloniales — et qui a quand même choisi de croire en l'humanité, non pas malgré ce qu'il a vu, mais à travers cette lucidité même.</p>
+  </div>
+
+  <h3 style="font-family:var(--serif);font-size:1.2rem;font-weight:300;font-style:italic;color:#fff;margin-top:2.5rem;margin-bottom:1rem;">Oeuvres clés</h3>
+  <ul class="oeuvres-list">
+    <li class="oeuvre-item">
+      <p class="oeuvre-year">1951</p>
+      <div><p class="oeuvre-title">L'Homme et la Mort</p><p class="oeuvre-note">Sa première grande œuvre. La mort comme révélateur de la condition humaine — entre biologie, mythe et culture.</p></div>
+    </li>
+    <li class="oeuvre-item">
+      <p class="oeuvre-year">1962</p>
+      <div><p class="oeuvre-title">L'Esprit du temps</p><p class="oeuvre-note">Analyse pionnière de la culture de masse — cinéma, presse, publicité. Morin prend au sérieux ce que les intellectuels méprisent.</p></div>
+    </li>
+    <li class="oeuvre-item">
+      <p class="oeuvre-year">1977–2004</p>
+      <div><p class="oeuvre-title">La Méthode (6 volumes)</p><p class="oeuvre-note">L'œuvre-monde. Vingt-sept ans de pensée chemin faisant sur la nature, la vie, la connaissance, les idées, l'humanité, l'éthique.</p></div>
+    </li>
+    <li class="oeuvre-item">
+      <p class="oeuvre-year">1993</p>
+      <div><p class="oeuvre-title">Terre-Patrie (avec Anne Brigitte Kern)</p><p class="oeuvre-note">L'humanisme planétaire en acte. La Terre comme patrie commune, l'humanité comme communauté de destin.</p></div>
+    </li>
+    <li class="oeuvre-item">
+      <p class="oeuvre-year">1999</p>
+      <div><p class="oeuvre-title">Les Sept Savoirs nécessaires à l'éducation du futur</p><p class="oeuvre-note">Commande de l'UNESCO. Programme radical pour une éducation à la hauteur de la complexité du monde.</p></div>
+    </li>
+    <li class="oeuvre-item">
+      <p class="oeuvre-year">2020</p>
+      <div><p class="oeuvre-title">Changeons de voie — Les leçons du coronavirus</p><p class="oeuvre-note">À presque 100 ans, Morin analyse la pandémie à la lumière de la pensée complexe. L'urgence d'une politique de civilisation.</p></div>
+    </li>
+  </ul>
+</section>
+
+<!-- PONTS -->
+<section id="ponts" class="section reveal">
+  <p class="section-label">Section 6 — Archipel</p>
+  <h2 class="section-title">Ponts vers d'autres îles</h2>
+  <p class="section-intro">Morin est l'île qui dialogue avec toutes les autres depuis un niveau différent — non pas celui de la pratique relationnelle, mais celui de la pensée sur la pensée.</p>
+
+  <div class="ponts-grid">
+    <div class="pont-card disponible" onclick="window.location.href='palo-alto.html'">
+      <p class="pont-status open">↗ Île disponible</p>
+      <p class="pont-name">École de Palo Alto</p>
+      <p class="pont-lien">La causalité circulaire de Palo Alto et la boucle rétroactive de Morin : deux façons de penser le même refus de la linéarité. Watzlawick et Morin héritent tous deux de la cybernétique — mais Morin en fait une épistémologie générale.</p>
+    </div>
+    <div class="pont-card disponible" onclick="window.location.href='lewin.html'">
+      <p class="pont-status open">↗ Île disponible</p>
+      <p class="pont-name">Kurt Lewin</p>
+      <p class="pont-lien">La théorie du champ de Lewin et le principe systémique de Morin : même refus de l'atomisme, même attention aux émergences. B = f(P,E) est une formulation pré-complexe du principe hologrammique.</p>
+    </div>
+    <div class="pont-card disponible" onclick="window.location.href='gestalt.html'">
+      <p class="pont-status open">↗ Île disponible</p>
+      <p class="pont-name">Gestalt-thérapie</p>
+      <p class="pont-lien">"Le tout est supérieur à la somme des parties" — loi fondatrice de la Gestalt-psychologie que Morin intègre, radicalise et étend à tous les niveaux du réel dans son principe systémique.</p>
+    </div>
+    <div class="pont-card disponible" onclick="window.location.href='meirieu.html'">
+      <p class="pont-status open">↗ Île disponible</p>
+      <p class="pont-name">Philippe Meirieu</p>
+      <p class="pont-lien">Les Sept Savoirs de Morin et la pédagogie de Meirieu convergent sur l'essentiel : enseigner à penser plutôt qu'à mémoriser, former des sujets capables de relier plutôt que d'accumuler.</p>
+    </div>
+    <div class="pont-card disponible" onclick="window.location.href='rogers.html'">
+      <p class="pont-status open">↗ Île disponible</p>
+      <p class="pont-name">Carl Rogers</p>
+      <p class="pont-lien">Deux humanismes du XXe siècle. Rogers pense l'humain dans la relation thérapeutique. Morin pense l'humain dans sa condition planétaire. Deux façons d'honorer la complexité de l'être humain sans le réduire.</p>
+    </div>
+    <div class="pont-card">
+      <p class="pont-status bientot">· En construction</p>
+      <p class="pont-name">Norbert Wiener & la Cybernétique</p>
+      <p class="pont-lien">La cybernétique est le terreau direct de la pensée complexe. La boucle de rétroaction de Wiener devient chez Morin un principe épistémologique général — la boucle récursive qui fonde toute auto-organisation.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-brand">Archipel des idées — île : Edgar Morin</span>
+  <span class="footer-note">Construit à partir de sources académiques. Navigation libre.</span>
+</footer>
+
+</div>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
