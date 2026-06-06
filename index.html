@@ -6,836 +6,793 @@
 <title>Archipel des idées — Naviguer dans la pensée</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --void: #08090d;
-  --deep: #0d1017;
-  --surface: #121620;
-  --card: #151a24;
-  --muted: #3a4560;
-  --text-dim: #6a7a95;
-  --text: #b8c4d8;
-  --text-bright: #dde6f0;
-  --white: #f0f4f8;
-  --gold: #c8a96e;
-  --gold-dim: rgba(200,169,110,0.12);
-  --gold-glow: rgba(200,169,110,0.06);
-  --cyan: #4dd9c0;
-  --cyan-dim: rgba(77,217,192,0.08);
-  --rose: #e06b6b;
-  --rose-dim: rgba(224,107,107,0.08);
-  --border: rgba(255,255,255,0.055);
-  --border-gold: rgba(200,169,110,0.2);
+  --noir: #020304;
+  --rouge: #ff2a2a;
+  --rouge-dim: rgba(255,42,42,0.15);
+  --or: #c8a96e;
+  --text: #a0b0c0;
+  --text-dim: #404858;
   --serif: 'Cormorant Garamond', Georgia, serif;
   --mono: 'DM Mono', monospace;
-  --sans: 'DM Sans', system-ui, sans-serif;
 }
 
-html { scroll-behavior: smooth; }
+html, body {
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+}
 
 body {
-  font-family: var(--sans);
-  background: var(--void);
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
-  cursor: default;
-}
-
-/* TEXTURE DE FOND — carte marine */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 60px,
-      rgba(255,255,255,0.012) 60px,
-      rgba(255,255,255,0.012) 61px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 60px,
-      rgba(255,255,255,0.008) 60px,
-      rgba(255,255,255,0.008) 61px
-    );
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* LUEURS ATMOSPHÉRIQUES */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 70% 50% at 20% 30%, rgba(200,169,110,0.04) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 40% at 80% 70%, rgba(77,217,192,0.03) 0%, transparent 55%),
-    radial-gradient(ellipse 40% 60% at 60% 10%, rgba(139,159,212,0.03) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* TOUT LE CONTENU AU-DESSUS */
-.layer { position: relative; z-index: 1; }
-
-/* HEADER */
-.site-header {
-  padding: 4rem 3rem 3rem;
-  max-width: 1100px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.header-eyebrow {
+  background: var(--noir);
   font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--gold);
-  opacity: 0.8;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-.header-eyebrow::before {
-  content: '';
-  display: block;
-  width: 24px;
-  height: 1px;
-  background: var(--gold);
-  opacity: 0.5;
+  color: var(--text);
+  cursor: crosshair;
 }
 
+/* ============================================================
+   CANVAS PRINCIPAL
+   ============================================================ */
+#map-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 50;
+  padding: 1.5rem 2rem;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
 .header-title {
   font-family: var(--serif);
-  font-size: clamp(3rem, 7vw, 6rem);
-  font-weight: 300;
-  color: var(--white);
-  line-height: 1.0;
-  letter-spacing: -0.02em;
-}
-.header-title em {
-  font-style: italic;
-  font-weight: 300;
-  color: var(--gold);
-}
-
-.header-desc {
-  font-family: var(--serif);
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   font-weight: 300;
   font-style: italic;
-  color: var(--text-dim);
-  max-width: 520px;
-  line-height: 1.65;
-  margin-top: 0.5rem;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: 0.02em;
+  line-height: 1.1;
 }
-
-.header-stat {
-  display: flex;
-  gap: 2rem;
-  margin-top: 1rem;
-  flex-wrap: wrap;
-}
-.stat-item {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.stat-num {
-  font-family: var(--serif);
-  font-size: 2rem;
-  font-weight: 300;
-  color: var(--gold);
-  line-height: 1;
-}
-.stat-label {
+.header-title span {
+  display: block;
   font-family: var(--mono);
   font-size: 9px;
-  letter-spacing: 0.15em;
+  font-style: normal;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--text-dim);
+  margin-top: 0.3rem;
 }
-
-/* SÉPARATEUR */
-.sep {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 3rem;
-}
-.sep-line {
-  height: 1px;
-  background: var(--border);
-}
-
-/* CARTE DE L'ARCHIPEL */
-.carte-section {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 3rem 3rem 4rem;
-}
-
-.carte-header {
-  display: flex;
-  align-items: baseline;
-  gap: 1.5rem;
-  margin-bottom: 3rem;
-  flex-wrap: wrap;
-}
-.carte-label {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.carte-title {
-  font-family: var(--serif);
-  font-size: 1.5rem;
-  font-weight: 300;
-  color: var(--text-bright);
-  font-style: italic;
-}
-
-/* GRILLE DES ÎLES */
-.iles-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1px;
-  background: var(--border);
-}
-
-/* ÎLE DISPONIBLE */
-.ile-card {
-  background: var(--card);
-  padding: 2rem;
-  text-decoration: none;
-  display: block;
-  position: relative;
-  overflow: hidden;
-  transition: background 0.25s;
-}
-.ile-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: var(--gold);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
-}
-.ile-card:hover { background: var(--surface); }
-.ile-card:hover::before { transform: scaleX(1); }
-
-.ile-card.cyan-accent::before { background: var(--cyan); }
-.ile-card.cyan-accent:hover { background: rgba(77,217,192,0.04); }
-
-.ile-status {
-  font-family: var(--mono);
-  font-size: 9.5px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.ile-status.open { color: var(--gold); }
-.ile-status.open-cyan { color: var(--cyan); }
-
-.status-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  animation: pulse 2s ease-in-out infinite;
-}
-.status-dot.gold { background: var(--gold); }
-.status-dot.cyan { background: var(--cyan); }
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
-
-.ile-type {
+.header-coords {
   font-family: var(--mono);
   font-size: 9px;
   letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 0.5rem;
-}
-
-.ile-name {
-  font-family: var(--serif);
-  font-size: 1.6rem;
-  font-weight: 400;
-  color: var(--white);
-  line-height: 1.15;
-  margin-bottom: 0.75rem;
-}
-.ile-card.cyan-accent .ile-name { color: #e8f4f0; }
-
-.ile-desc {
-  font-family: var(--serif);
-  font-size: 0.95rem;
-  font-weight: 300;
-  font-style: italic;
   color: var(--text-dim);
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
+  text-align: right;
+  line-height: 1.8;
 }
 
-.ile-tags {
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 50;
+  padding: 1.25rem 2rem;
+  pointer-events: none;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
+  align-items: flex-end;
+  justify-content: space-between;
 }
-.ile-tag {
-  font-family: var(--mono);
+.footer-hint {
   font-size: 9px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 2px 8px;
-  border: 1px solid var(--border);
-  color: var(--text-dim);
-}
-.ile-card:hover .ile-tag { border-color: rgba(200,169,110,0.2); }
-.ile-card.cyan-accent:hover .ile-tag { border-color: rgba(77,217,192,0.2); }
-
-.ile-arrow {
-  position: absolute;
-  bottom: 2rem;
-  right: 2rem;
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--muted);
-  transition: color 0.2s, transform 0.2s;
-}
-.ile-card:hover .ile-arrow { color: var(--gold); transform: translate(3px, -3px); }
-.ile-card.cyan-accent:hover .ile-arrow { color: var(--cyan); }
-
-/* Gestalt — accent chaud ocre */
-.ile-card.warm-accent::before { background: #c17d3c; }
-.ile-card.warm-accent:hover { background: rgba(193,125,60,0.04); }
-.ile-card.warm-accent .ile-name { color: #f5ede0; }
-.ile-card.warm-accent:hover .ile-tag { border-color: rgba(193,125,60,0.25); }
-.ile-card.warm-accent:hover .ile-arrow { color: #c17d3c; }
-.ile-status.open-warm { color: #c17d3c; }
-.status-dot.warm { background: #c17d3c; animation: pulse 2s ease-in-out infinite; }
-
-/* AT — accent bleu-indigo */
-.ile-card.at-accent::before { background: #3d5499; }
-.ile-card.at-accent:hover { background: rgba(61,84,153,0.05); }
-.ile-card.at-accent .ile-name { color: #eaecf7; }
-.ile-card.at-accent:hover .ile-tag { border-color: rgba(61,84,153,0.25); }
-.ile-card.at-accent:hover .ile-arrow { color: #3d5499; }
-.ile-status.open-at { color: #3d5499; }
-.status-dot.at { background: #3d5499; animation: pulse 2s ease-in-out infinite; }
-
-/* Lewin — accent vert électrique */
-.ile-card.lewin-accent::before { background: #1eb87a; }
-.ile-card.lewin-accent:hover { background: rgba(30,184,122,0.04); }
-.ile-card.lewin-accent .ile-name { color: #e4f5ee; }
-.ile-card.lewin-accent:hover .ile-tag { border-color: rgba(30,184,122,0.25); }
-.ile-card.lewin-accent:hover .ile-arrow { color: #1eb87a; }
-.ile-status.open-lewin { color: #1eb87a; }
-.status-dot.lewin { background: #1eb87a; animation: pulse 2s ease-in-out infinite; }
-
-/* Rogers — accent cuivré-rosé */
-.ile-card.rogers-accent::before { background: #b8652a; }
-.ile-card.rogers-accent:hover { background: rgba(184,101,42,0.04); }
-.ile-card.rogers-accent .ile-name { color: #f5ede0; }
-.ile-card.rogers-accent:hover .ile-tag { border-color: rgba(184,101,42,0.22); }
-.ile-card.rogers-accent:hover .ile-arrow { color: #b8652a; }
-.ile-status.open-rogers { color: #b8652a; }
-.status-dot.rogers { background: #b8652a; animation: pulse 2s ease-in-out infinite; }
-
-/* Morin — accent or profond */
-.ile-card.morin-accent::before { background: #c8973a; }
-.ile-card.morin-accent:hover { background: rgba(200,151,58,0.04); }
-.ile-card.morin-accent .ile-name { color: #f5edda; }
-.ile-card.morin-accent:hover .ile-tag { border-color: rgba(200,151,58,0.25); }
-.ile-card.morin-accent:hover .ile-arrow { color: #c8973a; }
-.ile-status.open-morin { color: #c8973a; }
-.status-dot.morin { background: #c8973a; animation: pulse 2s ease-in-out infinite; }
-
-/* Wiener — accent vert phosphore */
-.ile-card.wiener-accent::before { background: #00e87a; }
-.ile-card.wiener-accent:hover { background: rgba(0,232,122,0.04); }
-.ile-card.wiener-accent .ile-name { color: #e0f5ec; }
-.ile-card.wiener-accent:hover .ile-tag { border-color: rgba(0,232,122,0.22); }
-.ile-card.wiener-accent:hover .ile-arrow { color: #00e87a; }
-.ile-status.open-wiener { color: #00e87a; }
-.status-dot.wiener { background: #00e87a; animation: pulse 2s ease-in-out infinite; }
-
-/* Bateson — accent forêt */
-.ile-card.bateson-accent::before { background: #2d5a30; }
-.ile-card.bateson-accent:hover { background: rgba(30,61,32,0.04); }
-.ile-card.bateson-accent .ile-name { color: #e8f0e0; }
-.ile-card.bateson-accent:hover .ile-tag { border-color: rgba(30,61,32,0.22); }
-.ile-card.bateson-accent:hover .ile-arrow { color: #2d5a30; }
-.ile-status.open-bateson { color: #2d5a30; }
-.status-dot.bateson { background: #2d5a30; animation: pulse 2s ease-in-out infinite; }
-
-/* ÎLE EN CONSTRUCTION */
-.ile-construction {
-  background: var(--void);
-  padding: 2rem;
-  position: relative;
-  border: 1px dashed rgba(255,255,255,0.06);
-  margin: -1px;
-}
-
-.construction-status {
-  font-family: var(--mono);
-  font-size: 9.5px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.construction-status::before {
-  content: '·';
-  font-size: 18px;
-  line-height: 1;
-  color: var(--muted);
-}
-
-.ile-construction .ile-type { opacity: 0.5; }
-
-.ile-construction .ile-name {
-  font-family: var(--serif);
-  font-size: 1.4rem;
-  font-weight: 300;
-  color: var(--muted);
-  line-height: 1.15;
-  margin-bottom: 0.6rem;
-  font-style: italic;
-}
-
-.ile-construction .ile-desc {
-  font-size: 0.88rem;
-  color: var(--muted);
-  opacity: 0.7;
-}
-
-/* SECTION MANIFESTE */
-.manifeste-section {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 3rem;
-  border-top: 1px solid var(--border);
-}
-
-.manifeste-grid {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 4rem;
-  align-items: start;
-}
-@media (max-width: 700px) { .manifeste-grid { grid-template-columns: 1fr; gap: 2rem; } }
-
-.manifeste-label {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 1rem;
-}
-.manifeste-subtitle {
-  font-family: var(--serif);
-  font-size: 1.6rem;
-  font-weight: 300;
-  font-style: italic;
-  color: var(--text-bright);
-  line-height: 1.3;
-}
-
-.manifeste-body p {
-  font-family: var(--serif);
-  font-size: 1.05rem;
-  font-weight: 300;
-  color: var(--text);
-  line-height: 1.8;
-  margin-bottom: 1rem;
-}
-.manifeste-body p:last-child { margin-bottom: 0; }
-.manifeste-body strong { color: var(--text-bright); font-weight: 400; }
-.manifeste-body em { color: var(--gold); font-style: italic; }
-
-/* PRINCIPES */
-.principes-section {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 3rem;
-  border-top: 1px solid var(--border);
-}
-
-.principes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1px;
-  background: var(--border);
-  margin-top: 2rem;
-}
-
-.principe-cell {
-  background: var(--card);
-  padding: 1.5rem;
-}
-.principe-num {
-  font-family: var(--serif);
-  font-size: 2.5rem;
-  font-weight: 300;
-  color: var(--border);
-  line-height: 1;
-  margin-bottom: 0.75rem;
-}
-.principe-title {
-  font-family: var(--serif);
-  font-size: 1rem;
-  font-weight: 400;
-  color: var(--gold);
-  margin-bottom: 0.4rem;
-  line-height: 1.3;
-}
-.principe-text {
-  font-family: var(--serif);
-  font-size: 0.9rem;
-  font-weight: 300;
   color: var(--text-dim);
-  line-height: 1.6;
-  font-style: italic;
 }
-
-/* FOOTER */
-footer {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 2rem 3rem;
-  border-top: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-.footer-brand {
-  font-family: var(--serif);
-  font-size: 1rem;
-  font-weight: 300;
-  font-style: italic;
-  color: var(--muted);
-}
-.footer-note {
-  font-family: var(--mono);
-  font-size: 9.5px;
-  letter-spacing: 0.1em;
+.footer-count {
+  font-size: 9px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted);
-  opacity: 0.6;
+  color: var(--text-dim);
 }
 
-/* ANIMATIONS D'ENTRÉE */
-.fade-in {
+/* ============================================================
+   TOOLTIP
+   ============================================================ */
+.tooltip {
+  position: fixed;
+  z-index: 200;
+  pointer-events: none;
   opacity: 0;
-  transform: translateY(16px);
-  animation: fadeIn 0.8s ease forwards;
+  transition: opacity 0.15s ease;
+  transform: translate(-50%, calc(-100% - 18px));
 }
-.fade-in:nth-child(1) { animation-delay: 0.1s; }
-.fade-in:nth-child(2) { animation-delay: 0.2s; }
-.fade-in:nth-child(3) { animation-delay: 0.3s; }
-.fade-in:nth-child(4) { animation-delay: 0.4s; }
+.tooltip.visible { opacity: 1; }
+.tooltip-inner {
+  background: rgba(2,3,4,0.96);
+  border: 1px solid rgba(255,42,42,0.3);
+  border-top: 2px solid var(--rouge);
+  padding: 0.8rem 1.1rem;
+  min-width: 200px;
+  max-width: 240px;
+  text-align: left;
+}
+.tt-type {
+  font-size: 8.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,42,42,0.7);
+  margin-bottom: 0.35rem;
+}
+.tt-name {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 0.4rem;
+}
+.tt-desc {
+  font-size: 0.76rem;
+  color: rgba(160,176,192,0.7);
+  line-height: 1.55;
+  margin-bottom: 0.5rem;
+  font-family: var(--mono);
+  font-weight: 300;
+}
+.tt-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 0.5rem;
+}
+.tt-tag {
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,42,42,0.6);
+  border: 1px solid rgba(255,42,42,0.2);
+  padding: 2px 6px;
+}
+.tt-cta {
+  font-size: 8.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rouge);
+  border-top: 1px solid rgba(255,42,42,0.15);
+  padding-top: 0.45rem;
+}
 
-@keyframes fadeIn {
+/* ============================================================
+   INTRO
+   ============================================================ */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2,3,4,0.88);
+  transition: opacity 0.8s ease;
+}
+.intro.out { opacity: 0; pointer-events: none; }
+.intro-box {
+  text-align: center;
+  max-width: 420px;
+  padding: 0 2rem;
+  animation: rise 1s ease forwards;
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: none; }
 }
+.intro-title {
+  font-family: var(--serif);
+  font-size: clamp(2.8rem, 7vw, 4.5rem);
+  font-weight: 300;
+  font-style: italic;
+  color: #fff;
+  line-height: 1.05;
+  margin-bottom: 1rem;
+}
+.intro-sub {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  color: rgba(160,176,192,0.6);
+  line-height: 1.75;
+  margin-bottom: 2rem;
+}
+.intro-btn {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--rouge);
+  border: 1px solid rgba(255,42,42,0.4);
+  padding: 0.8rem 2.2rem;
+  cursor: pointer;
+  background: none;
+  transition: background 0.2s, border-color 0.2s;
+}
+.intro-btn:hover {
+  background: rgba(255,42,42,0.08);
+  border-color: rgba(255,42,42,0.7);
+}
 
-/* RESPONSIVE */
-@media (max-width: 600px) {
-  .site-header { padding: 3rem 1.5rem 2rem; }
-  .carte-section, .manifeste-section, .principes-section { padding: 2rem 1.5rem; }
-  footer { padding: 1.5rem; }
-  .header-title { font-size: 2.8rem; }
+/* ============================================================
+   ANIMATIONS CSS
+   ============================================================ */
+@keyframes signal-pulse {
+  0%   { opacity: 1;   transform: scale(1); }
+  40%  { opacity: 0.15; transform: scale(0.7); }
+  70%  { opacity: 0.9;  transform: scale(1.05); }
+  100% { opacity: 1;   transform: scale(1); }
+}
+@keyframes ring-expand {
+  0%   { r: 0; opacity: 0.8; }
+  100% { r: 36; opacity: 0; }
 }
 </style>
 </head>
 <body>
 
-<div class="layer">
-
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="fade-in">
-      <p class="header-eyebrow">Portail de navigation intellectuelle</p>
-    </div>
-    <div class="fade-in">
-      <h1 class="header-title">Archipel<br><em>des idées</em></h1>
-    </div>
-    <div class="fade-in">
-      <p class="header-desc">Un espace de navigation dans la pensée — auteurs, écoles, théories, concepts. Chaque île, sa singularité. Entre elles, des ponts.</p>
-    </div>
-    <div class="fade-in">
-      <div class="header-stat">
-        <div class="stat-item">
-          <span class="stat-num">10</span>
-          <span class="stat-label">Îles disponibles</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-num">∞</span>
-          <span class="stat-label">À venir</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-num">∞</span>
-          <span class="stat-label">À venir</span>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <div class="sep"><div class="sep-line"></div></div>
-
-  <!-- CARTE -->
-  <section class="carte-section">
-    <div class="carte-header">
-      <span class="carte-label">La carte</span>
-      <span class="carte-title">Naviguer par curiosité, pas par plan</span>
-    </div>
-
-    <div class="iles-grid">
-
-      <!-- ÎLE 1 : Meirieu — disponible -->
-      <a href="meirieu.html" class="ile-card">
-        <div class="ile-status open">
-          <span class="status-dot gold"></span>
-          Île disponible
-        </div>
-        <p class="ile-type">Pédagogue — France</p>
-        <p class="ile-name">Philippe Meirieu</p>
-        <p class="ile-desc">L'apprentissage comme émancipation. Le paradoxe de l'acte éducatif entre contrainte féconde et liberté du sujet.</p>
-        <div class="ile-tags">
-          <span class="ile-tag">Pédagogie</span>
-          <span class="ile-tag">Émancipation</span>
-          <span class="ile-tag">École</span>
-          <span class="ile-tag">Différenciation</span>
-        </div>
-        <span class="ile-arrow">↗</span>
-      </a>
-
-      <!-- ÎLE 2 : Palo Alto — disponible -->
-      <a href="palo-alto.html" class="ile-card cyan-accent">
-        <div class="ile-status open-cyan">
-          <span class="status-dot cyan"></span>
-          Île disponible
-        </div>
-        <p class="ile-type">École de pensée — Californie, 1950s</p>
-        <p class="ile-name">École de Palo Alto</p>
-        <p class="ile-desc">La communication, les systèmes, le changement. Un collectif qui a révolutionné la façon de penser les relations humaines.</p>
-        <div class="ile-tags">
-          <span class="ile-tag">Systémique</span>
-          <span class="ile-tag">Communication</span>
-          <span class="ile-tag">Cybernétique</span>
-          <span class="ile-tag">Thérapie brève</span>
-        </div>
-        <span class="ile-arrow">↗</span>
-      </a>
-
-      <!-- ÎLE 3 : Gestalt — disponible -->
-      <a href="gestalt.html" class="ile-card warm-accent">
-        <div class="ile-status open-warm">
-          <span class="status-dot warm"></span>
-          Île disponible
-        </div>
-        <p class="ile-type">Approche thérapeutique — New York, 1951</p>
-        <p class="ile-name">Gestalt-thérapie</p>
-        <p class="ile-desc">La forme qui prend forme. L'organisme en contact avec son monde, dans la plénitude du présent vécu.</p>
-        <div class="ile-tags">
-          <span class="ile-tag">Contact</span>
-          <span class="ile-tag">Phénoménologie</span>
-          <span class="ile-tag">Ici et maintenant</span>
-          <span class="ile-tag">Humanisme</span>
-        </div>
-        <span class="ile-arrow">↗</span>
-      </a>
-
-      <!-- ÎLE 4 : Analyse Transactionnelle — disponible -->
-      <a href="at.html" class="ile-card at-accent">
-        <div class="ile-status open-at">
-          <span class="status-dot at"></span>
-          Île disponible
-        </div>
-        <p class="ile-type">Théorie de la personnalité — San Francisco, 1958</p>
-        <p class="ile-name">Analyse Transactionnelle</p>
-        <p class="ile-desc">Parent, Adulte, Enfant. Décrypter ce qui se joue dans chaque échange — jeux, positions de vie, scénario.</p>
-        <div class="ile-tags">
-          <span class="ile-tag">États du Moi</span>
-          <span class="ile-tag">Jeux psychologiques</span>
-          <span class="ile-tag">Éric Berne</span>
-          <span class="ile-tag">Autonomie</span>
-        </div>
-        <span class="ile-arrow">↗</span>
-      </a>
-
-      <!-- ÎLE 5 : Lewin — disponible -->
-      <a href="lewin.html" class="ile-card lewin-accent">
-        <div class="ile-status open-lewin">
-          <span class="status-dot lewin"></span>
-          Île disponible
-        </div>
-        <p class="ile-type">Psychologue social — Prusse / USA, 1890–1947</p>
-        <p class="ile-name">Kurt Lewin</p>
-        <p class="ile-desc">B = f(P,E). Le champ, le groupe, la recherche-action. Le chaînon qui relie presque tout l'archipel.</p>
-        <div class="ile-tags">
-          <span class="ile-tag">Théorie du champ</span>
-          <span class="ile-tag">Dynamique des groupes</span>
-          <span class="ile-tag">Changement</span>
-          <span class="ile-tag">Leadership</span>
-        </div>
-        <span class="ile-arrow">↗</span>
-      </a>
-
-      <!-- ÎLE 6 : Rogers — disponible -->
-      <a href="rogers.html" class="ile-card rogers-accent">
-        <div class="ile-status open-rogers">
-          <span class="status-dot rogers"></span>
-          Île disponible
-        </div>
-        <p class="ile-type">Psychologue humaniste — USA, 1902–1987</p>
-        <p class="ile-name">Carl Rogers</p>
-        <p class="ile-desc">La relation avant la technique. Empathie, congruence, considération positive inconditionnelle.</p>
-        <div class="ile-tags">
-          <span class="ile-tag">ACP</span>
-          <span class="ile-tag">Empathie</span>
-          <span class="ile-tag">Congruence</span>
-          <span class="ile-tag">Humanisme</span>
-        </div>
-        <span class="ile-arrow">↗</span>
-      </a>
-
-      <!-- ÎLE 7 : Morin — disponible -->
-      <a href="morin.html" class="ile-card morin-accent">
-        <div class="ile-status open-morin">
-          <span class="status-dot morin"></span>
-          Île disponible
-        </div>
-        <p class="ile-type">Sociologue & philosophe — France, né en 1921</p>
-        <p class="ile-name">Edgar Morin</p>
-        <p class="ile-desc">Relier · Distinguer · Ne pas réduire. La pensée complexe contre toutes les simplifications.</p>
-        <div class="ile-tags">
-          <span class="ile-tag">Complexité</span>
-          <span class="ile-tag">Transdisciplinarité</span>
-          <span class="ile-tag">Humanisme planétaire</span>
-          <span class="ile-tag">La Méthode</span>
-        </div>
-        <span class="ile-arrow">↗</span>
-      </a>
-
-      <!-- ÎLE 8 : Wiener — disponible -->
-      <a href="wiener.html" class="ile-card wiener-accent">
-        <div class="ile-status open-wiener">
-          <span class="status-dot wiener"></span>
-          Île disponible
-        </div>
-        <p class="ile-type">Mathématicien — Columbia MO / MIT, 1894–1964</p>
-        <p class="ile-name">Norbert Wiener</p>
-        <p class="ile-desc">Le père de la cybernétique. La boucle de rétroaction — et la conscience aiguë de ce qu'elle ferait au monde.</p>
-        <div class="ile-tags">
-          <span class="ile-tag">Cybernétique</span>
-          <span class="ile-tag">Feedback</span>
-          <span class="ile-tag">Information</span>
-          <span class="ile-tag">Éthique technologique</span>
-        </div>
-        <span class="ile-arrow">↗</span>
-      </a>
-
-      <!-- ÎLE 9 : Bateson — disponible -->
-      <a href="bateson.html" class="ile-card bateson-accent">
-        <div class="ile-status open-bateson">
-          <span class="status-dot bateson"></span>
-          Île disponible
-        </div>
-        <p class="ile-type">Anthropologue & théoricien — Grantchester / San Francisco, 1904–1980</p>
-        <p class="ile-name">Gregory Bateson</p>
-        <p class="ile-desc">La structure qui connecte. Le double lien, l'écologie de l'esprit, les patterns qui relient toutes choses.</p>
-        <div class="ile-tags">
-          <span class="ile-tag">Double lien</span>
-          <span class="ile-tag">Niveaux logiques</span>
-          <span class="ile-tag">Écologie de l'esprit</span>
-          <span class="ile-tag">Patterns</span>
-        </div>
-        <span class="ile-arrow">↗</span>
-      </a>
-
-    </div>
-  </section>
-
-  <div class="sep"><div class="sep-line"></div></div>
-
-  <!-- MANIFESTE -->
-  <section class="manifeste-section">
-    <div class="manifeste-grid">
-      <div>
-        <p class="manifeste-label">Ce que c'est</p>
-        <p class="manifeste-subtitle">Un archipel,<br>pas une encyclopédie</p>
-      </div>
-      <div class="manifeste-body">
-        <p>Chaque île de cet archipel est <strong>autonome</strong> : elle a son propre écosystème, sa propre logique interne, sa propre façon de donner à voir une pensée. On peut la visiter seule, sans plan, sans ordre prescrit.</p>
-        <p>Mais les îles sont aussi <strong>reliées</strong>. Entre elles circulent des concepts, des filiations, des tensions productives. Un pont entre Meirieu et Palo Alto, par exemple : le paradoxe éducatif d'un côté, la double contrainte de l'autre. Deux pensées qui ne se connaissaient pas, mais qui se répondent.</p>
-        <p>L'ambition n'est pas l'exhaustivité. C'est <em>la qualité de la navigation</em> : entrer dans une pensée, la comprendre dans ses articulations essentielles, la retenir — et repartir avec quelque chose de nouveau dans la tête.</p>
-      </div>
-    </div>
-  </section>
-
-  <div class="sep"><div class="sep-line"></div></div>
-
-  <!-- PRINCIPES -->
-  <section class="principes-section">
-    <p class="manifeste-label">Les principes de navigation</p>
-    <div class="principes-grid">
-      <div class="principe-cell">
-        <p class="principe-num">01</p>
-        <p class="principe-title">Naviguer par curiosité</p>
-        <p class="principe-text">Pas de parcours imposé. On entre par où l'on veut, on suit ce qui attire, on revient, on fait des détours.</p>
-      </div>
-      <div class="principe-cell">
-        <p class="principe-num">02</p>
-        <p class="principe-title">La qualité contre le gavage</p>
-        <p class="principe-text">Chaque île est dense mais lisible. L'essentiel, pas l'exhaustif. Comprendre et retenir plutôt qu'accumuler.</p>
-      </div>
-      <div class="principe-cell">
-        <p class="principe-num">03</p>
-        <p class="principe-title">Les ponts, pas les murs</p>
-        <p class="principe-text">Chaque île signale ses connexions avec d'autres. La valeur naît des relations entre les îles autant que de chaque île seule.</p>
-      </div>
-      <div class="principe-cell">
-        <p class="principe-num">04</p>
-        <p class="principe-title">Toujours en chantier</p>
-        <p class="principe-text">L'archipel grandit. Les îles en construction sont visibles : elles invitent à revenir, pas à attendre qu'il soit "fini".</p>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <span class="footer-brand">Archipel des idées</span>
-    <span class="footer-note">Navigation libre — Connaissance ouverte</span>
-  </footer>
-
+<!-- INTRO -->
+<div class="intro" id="intro">
+  <div class="intro-box">
+    <h1 class="intro-title">Archipel<br>des idées</h1>
+    <p class="intro-sub">Vue satellite · Nuit · Dix îles intellectuelles<br>Survolez un signal. Cliquez pour atterrir.</p>
+    <button class="intro-btn" onclick="closeIntro()">Accéder à la carte →</button>
+  </div>
 </div>
 
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-title">
+    Archipel des idées
+    <span>Portail de navigation intellectuelle</span>
+  </div>
+  <div class="header-coords" id="coords">
+    <!-- coordonnées dynamiques -->
+  </div>
+</header>
+
+<!-- SVG MAP -->
+<svg id="map-canvas" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Fond terrestre nocturne — couches atmosphériques -->
+    <radialGradient id="earth-glow" cx="38%" cy="42%" r="65%">
+      <stop offset="0%"   stop-color="#0a0f18"/>
+      <stop offset="40%"  stop-color="#050810"/>
+      <stop offset="100%" stop-color="#020304"/>
+    </radialGradient>
+
+    <!-- Lueur atmosphérique sur les bords -->
+    <radialGradient id="atmo" cx="50%" cy="50%" r="50%">
+      <stop offset="70%" stop-color="transparent"/>
+      <stop offset="100%" stop-color="rgba(10,20,50,0.4)"/>
+    </radialGradient>
+
+    <!-- Filtre brume -->
+    <filter id="blur-soft">
+      <feGaussianBlur stdDeviation="2"/>
+    </filter>
+    <filter id="blur-strong">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+
+    <!-- Glow rouge pour les points actifs -->
+    <filter id="red-glow" x="-200%" y="-200%" width="500%" height="500%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="red-glow-strong" x="-300%" y="-300%" width="700%" height="700%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Masque vignette -->
+    <radialGradient id="vignette" cx="50%" cy="50%" r="70%">
+      <stop offset="50%" stop-color="rgba(0,0,0,0)"/>
+      <stop offset="100%" stop-color="rgba(0,0,0,0.85)"/>
+    </radialGradient>
+  </defs>
+
+  <!-- FOND TERRE NOCTURNE -->
+  <rect width="100%" height="100%" fill="url(#earth-glow)"/>
+
+  <!-- Continents stylisés (Asie du Sud-Est / Indonésie) — masses terrestres sombres -->
+  <g id="landmass" opacity="0.55">
+    <!-- Masse principale Asia SE -->
+    <ellipse cx="44%" cy="35%" rx="22%" ry="14%" fill="#0d1420" opacity="0.8"/>
+    <!-- Péninsule malaise -->
+    <ellipse cx="46%" cy="48%" rx="5%" ry="10%" fill="#0c1318" opacity="0.7"/>
+    <!-- Sumatra -->
+    <ellipse cx="36%" cy="56%" rx="10%" ry="4%" fill="#0b1218" transform="rotate(-18,36%,56%)" opacity="0.75"/>
+    <!-- Java -->
+    <ellipse cx="50%" cy="62%" rx="8%" ry="2.5%" fill="#0b1218" transform="rotate(-8,50%,62%)" opacity="0.7"/>
+    <!-- Bornéo -->
+    <ellipse cx="58%" cy="52%" rx="8%" ry="7%" fill="#0c1318" opacity="0.72"/>
+    <!-- Sulawesi approximatif -->
+    <ellipse cx="70%" cy="52%" rx="4%" ry="7%" fill="#0b1218" opacity="0.65"/>
+    <!-- Papouasie -->
+    <ellipse cx="80%" cy="56%" rx="10%" ry="5%" fill="#0c1318" opacity="0.68"/>
+    <!-- Philippines -->
+    <ellipse cx="66%" cy="38%" rx="4%" ry="8%" fill="#0c1318" opacity="0.6"/>
+    <!-- Australie nord -->
+    <ellipse cx="68%" cy="78%" rx="18%" ry="10%" fill="#0d1420" opacity="0.6"/>
+    <!-- Inde -->
+    <ellipse cx="28%" cy="32%" rx="7%" ry="10%" fill="#0c1318" opacity="0.55"/>
+  </g>
+
+  <!-- Lueurs de villes existantes — petits clusters de lumière dorée/blanche -->
+  <g id="city-lights" opacity="0.4">
+    <!-- Jakarta -->
+    <circle cx="49.5%" cy="63.5%" r="3" fill="#ffcc55" filter="url(#blur-soft)" opacity="0.8"/>
+    <circle cx="49.5%" cy="63.5%" r="1.2" fill="#fff5cc"/>
+    <!-- Singapour -->
+    <circle cx="46.8%" cy="57.5%" r="2.5" fill="#ffcc55" filter="url(#blur-soft)" opacity="0.9"/>
+    <circle cx="46.8%" cy="57.5%" r="1" fill="#fff"/>
+    <!-- Kuala Lumpur -->
+    <circle cx="45.5%" cy="54%" r="2" fill="#ffcc55" filter="url(#blur-soft)" opacity="0.7"/>
+    <!-- Bangkok -->
+    <circle cx="43%" cy="43%" r="2.5" fill="#ffcc55" filter="url(#blur-soft)" opacity="0.75"/>
+    <!-- Manille -->
+    <circle cx="67%" cy="37%" r="2" fill="#ffcc55" filter="url(#blur-soft)" opacity="0.7"/>
+    <!-- Surabaya -->
+    <circle cx="52%" cy="64%" r="1.8" fill="#ffcc88" filter="url(#blur-soft)" opacity="0.6"/>
+    <!-- Ho Chi Minh -->
+    <circle cx="48%" cy="47%" r="2" fill="#ffcc55" filter="url(#blur-soft)" opacity="0.65"/>
+    <!-- Mumbai -->
+    <circle cx="24%" cy="34%" r="2.2" fill="#ffcc55" filter="url(#blur-soft)" opacity="0.6"/>
+    <!-- Sydney -->
+    <circle cx="78%" cy="82%" r="2.5" fill="#ffcc55" filter="url(#blur-soft)" opacity="0.65"/>
+    <!-- Darwin -->
+    <circle cx="66%" cy="74%" r="1.5" fill="#ffcc88" filter="url(#blur-soft)" opacity="0.5"/>
+    <!-- Tokyo lointain -->
+    <circle cx="82%" cy="30%" r="3" fill="#ffcc55" filter="url(#blur-soft)" opacity="0.5"/>
+    <!-- Shanghai -->
+    <circle cx="72%" cy="28%" r="2.5" fill="#ffcc55" filter="url(#blur-soft)" opacity="0.5"/>
+    <!-- Lumières dispersées -->
+    <circle cx="55%" cy="40%" r="1" fill="#ffcc88" filter="url(#blur-soft)" opacity="0.4"/>
+    <circle cx="60%" cy="44%" r="0.8" fill="#ffcc88" filter="url(#blur-soft)" opacity="0.35"/>
+    <circle cx="63%" cy="60%" r="1.2" fill="#ffcc88" filter="url(#blur-soft)" opacity="0.4"/>
+    <circle cx="74%" cy="58%" r="1" fill="#ffcc88" filter="url(#blur-soft)" opacity="0.35"/>
+    <circle cx="36%" cy="50%" r="0.8" fill="#ffcc88" filter="url(#blur-soft)" opacity="0.3"/>
+    <circle cx="39%" cy="46%" r="1" fill="#ffcc88" filter="url(#blur-soft)" opacity="0.35"/>
+    <circle cx="30%" cy="28%" r="1.5" fill="#ffcc88" filter="url(#blur-soft)" opacity="0.3"/>
+  </g>
+
+  <!-- Brume atmosphérique / nuages légers -->
+  <g id="clouds" opacity="0.12">
+    <ellipse cx="25%" cy="22%" rx="18%" ry="8%" fill="#3a5080" filter="url(#blur-strong)"/>
+    <ellipse cx="72%" cy="18%" rx="15%" ry="6%" fill="#304060" filter="url(#blur-strong)"/>
+    <ellipse cx="85%" cy="65%" rx="12%" ry="5%" fill="#283850" filter="url(#blur-strong)"/>
+    <ellipse cx="15%" cy="60%" rx="10%" ry="6%" fill="#304060" filter="url(#blur-strong)"/>
+    <ellipse cx="55%" cy="80%" rx="20%" ry="7%" fill="#283858" filter="url(#blur-strong)"/>
+  </g>
+
+  <!-- CONNEXIONS entre îles -->
+  <g id="connections"></g>
+
+  <!-- SIGNAUX ROUGES (îles) -->
+  <g id="islands"></g>
+
+  <!-- Vignette bords -->
+  <rect width="100%" height="100%" fill="url(#vignette)" pointer-events="none"/>
+
+  <!-- Scan line subtil (effet satellite) -->
+  <rect width="100%" height="100%" fill="none"
+        style="background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.015) 3px, rgba(0,0,0,0.015) 4px);"
+        pointer-events="none" opacity="0.6"/>
+</svg>
+
+<!-- TOOLTIP -->
+<div class="tooltip" id="tooltip">
+  <div class="tooltip-inner">
+    <p class="tt-type" id="tt-type"></p>
+    <p class="tt-name" id="tt-name"></p>
+    <p class="tt-desc" id="tt-desc"></p>
+    <div class="tt-tags" id="tt-tags"></div>
+    <p class="tt-cta">→ Cliquer pour explorer</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <span class="footer-hint">Survolez un signal rouge · Cliquez pour atterrir</span>
+  <span class="footer-count">10 îles intellectuelles · Navigation libre</span>
+</footer>
+
+<script>
+// ============================================================
+// DONNÉES — positions sur la carte (0–1 relatif à la fenêtre)
+// Dispersées comme un vrai archipel indonésien
+// ============================================================
+const ILES = [
+  {
+    id: 'meirieu',
+    href: 'meirieu.html',
+    name: 'Philippe Meirieu',
+    type: 'Pédagogue · France',
+    desc: 'L\'apprentissage comme émancipation.',
+    tags: ['Pédagogie', 'Émancipation', 'École'],
+    px: 0.22, py: 0.28,
+    r: 4.5,
+    ponts: ['gestalt','paloalto','lewin','rogers','morin','bateson'],
+    delay: 0
+  },
+  {
+    id: 'paloalto',
+    href: 'palo-alto.html',
+    name: 'École de Palo Alto',
+    type: 'École de pensée · Californie, 1950s',
+    desc: 'Communication, systèmes, double contrainte.',
+    tags: ['Systémique', 'Communication', 'Cybernétique'],
+    px: 0.50, py: 0.20,
+    r: 5.5,
+    ponts: ['bateson','wiener','gestalt','meirieu','at'],
+    delay: 0.4
+  },
+  {
+    id: 'gestalt',
+    href: 'gestalt.html',
+    name: 'Gestalt-thérapie',
+    type: 'Approche thérapeutique · New York, 1951',
+    desc: 'L\'organisme en contact avec son monde.',
+    tags: ['Contact', 'Phénoménologie', 'Présent'],
+    px: 0.33, py: 0.50,
+    r: 4.5,
+    ponts: ['paloalto','meirieu','lewin','rogers','at'],
+    delay: 0.7
+  },
+  {
+    id: 'at',
+    href: 'at.html',
+    name: 'Analyse Transactionnelle',
+    type: 'Théorie de la personnalité · 1958',
+    desc: 'Parent, Adulte, Enfant. Les jeux psychologiques.',
+    tags: ['États du Moi', 'Relation', 'Scénario'],
+    px: 0.58, py: 0.42,
+    r: 4.5,
+    ponts: ['gestalt','paloalto','meirieu','rogers','lewin'],
+    delay: 1.0
+  },
+  {
+    id: 'lewin',
+    href: 'lewin.html',
+    name: 'Kurt Lewin',
+    type: 'Psychologue social · 1890–1947',
+    desc: 'B = f(P,E). Champ, groupes, changement.',
+    tags: ['Théorie du champ', 'Dynamique', 'Leadership'],
+    px: 0.38, py: 0.70,
+    r: 4.5,
+    ponts: ['gestalt','meirieu','at','rogers','bateson','wiener'],
+    delay: 0.3
+  },
+  {
+    id: 'rogers',
+    href: 'rogers.html',
+    name: 'Carl Rogers',
+    type: 'Psychologue humaniste · 1902–1987',
+    desc: 'Empathie, congruence, considération positive.',
+    tags: ['ACP', 'Empathie', 'Humanisme'],
+    px: 0.20, py: 0.66,
+    r: 4,
+    ponts: ['gestalt','at','lewin','meirieu'],
+    delay: 0.9
+  },
+  {
+    id: 'morin',
+    href: 'morin.html',
+    name: 'Edgar Morin',
+    type: 'Philosophe · né en 1921',
+    desc: 'Relier · Distinguer · Ne pas réduire.',
+    tags: ['Complexité', 'Transdisciplinarité'],
+    px: 0.70, py: 0.60,
+    r: 4.5,
+    ponts: ['paloalto','lewin','wiener','bateson'],
+    delay: 0.6
+  },
+  {
+    id: 'wiener',
+    href: 'wiener.html',
+    name: 'Norbert Wiener',
+    type: 'Mathématicien · MIT, 1894–1964',
+    desc: 'Le père de la cybernétique. Le feedback.',
+    tags: ['Cybernétique', 'Feedback', 'Information'],
+    px: 0.63, py: 0.24,
+    r: 6,
+    ponts: ['bateson','paloalto','morin','lewin'],
+    delay: 0.2
+  },
+  {
+    id: 'bateson',
+    href: 'bateson.html',
+    name: 'Gregory Bateson',
+    type: 'Anthropologue & théoricien · 1904–1980',
+    desc: 'La structure qui connecte. L\'écologie de l\'esprit.',
+    tags: ['Double lien', 'Niveaux logiques', 'Patterns'],
+    px: 0.52, py: 0.55,
+    r: 7,
+    ponts: ['wiener','paloalto','morin','lewin','gestalt','meirieu'],
+    delay: 0.1
+  }
+];
+
+// ============================================================
+// UTILITAIRES
+// ============================================================
+const svg = document.getElementById('map-canvas');
+const gConn = document.getElementById('connections');
+const gIsles = document.getElementById('islands');
+const tooltip = document.getElementById('tooltip');
+const coordsEl = document.getElementById('coords');
+
+const NS = 'http://www.w3.org/2000/svg';
+
+function W() { return window.innerWidth; }
+function H() { return window.innerHeight; }
+
+function pos(ile) {
+  // Marges pour rester dans la zone visible
+  const mx = 0.08, my = 0.14;
+  return {
+    x: mx * W() + ile.px * (1 - 2*mx) * W(),
+    y: my * H() + ile.py * (1 - 2*my) * H()
+  };
+}
+
+function el(tag, attrs) {
+  const e = document.createElementNS(NS, tag);
+  Object.entries(attrs).forEach(([k,v]) => e.setAttribute(k, v));
+  return e;
+}
+
+// ============================================================
+// CONSTRUCTION DE LA CARTE
+// ============================================================
+function buildMap() {
+  gConn.innerHTML = '';
+  gIsles.innerHTML = '';
+
+  const scale = Math.min(W(), H()) / 800;
+
+  // 1. CONNEXIONS
+  const drawn = new Set();
+  ILES.forEach(ile => {
+    const p1 = pos(ile);
+    ile.ponts.forEach(id2 => {
+      const key = [ile.id, id2].sort().join('|');
+      if (drawn.has(key)) return;
+      drawn.add(key);
+      const ile2 = ILES.find(i => i.id === id2);
+      if (!ile2) return;
+      const p2 = pos(ile2);
+      const line = el('line', {
+        x1: p1.x, y1: p1.y,
+        x2: p2.x, y2: p2.y,
+        stroke: 'rgba(255,42,42,0.12)',
+        'stroke-width': 0.6,
+        'stroke-dasharray': '3 8'
+      });
+      line.dataset.k = key;
+      line.dataset.a = ile.id;
+      line.dataset.b = id2;
+      gConn.appendChild(line);
+    });
+  });
+
+  // 2. ÎLES — signaux rouges
+  ILES.forEach((ile, i) => {
+    const {x, y} = pos(ile);
+    const r = ile.r * Math.max(0.75, scale);
+
+    const g = document.createElementNS(NS, 'g');
+    g.dataset.id = ile.id;
+    g.style.cursor = 'pointer';
+
+    // Halo externe large (premier pulse)
+    const halo2 = el('circle', {
+      cx: x, cy: y, r: r * 5,
+      fill: 'rgba(255,42,42,0.04)',
+      class: 'halo-outer'
+    });
+    g.appendChild(halo2);
+
+    // Halo intermédiaire
+    const halo1 = el('circle', {
+      cx: x, cy: y, r: r * 3,
+      fill: 'rgba(255,42,42,0.08)',
+      class: 'halo-mid'
+    });
+    g.appendChild(halo1);
+
+    // Anneau d'expansion (animation)
+    const ring = el('circle', {
+      cx: x, cy: y, r: r,
+      fill: 'none',
+      stroke: 'rgba(255,42,42,0.5)',
+      'stroke-width': 1,
+      class: 'ring'
+    });
+    ring.style.transformOrigin = `${x}px ${y}px`;
+    ring.style.animation = `ring-out ${2 + ile.delay}s ease-out ${ile.delay}s infinite`;
+    g.appendChild(ring);
+
+    // Point rouge principal
+    const dot = el('circle', {
+      cx: x, cy: y, r: r,
+      fill: '#ff2a2a',
+      filter: 'url(#red-glow)',
+      class: 'dot-main'
+    });
+    dot.style.animation = `blink-signal ${1.8 + i * 0.15}s ease-in-out ${ile.delay * 0.5}s infinite`;
+    g.appendChild(dot);
+
+    // Coeur brillant
+    const core = el('circle', {
+      cx: x, cy: y, r: r * 0.4,
+      fill: 'rgba(255,180,180,0.9)',
+      class: 'dot-core'
+    });
+    g.appendChild(core);
+
+    // Événements
+    g.addEventListener('mouseenter', e => onEnter(ile, g, dot, halo1, halo2, r, e));
+    g.addEventListener('mouseleave', e => onLeave(ile, g, dot, halo1, halo2, r));
+    g.addEventListener('mousemove', e => {
+      tooltip.style.left = e.clientX + 'px';
+      tooltip.style.top  = (e.clientY - 8) + 'px';
+    });
+    g.addEventListener('click', () => window.location.href = ile.href);
+
+    gIsles.appendChild(g);
+  });
+}
+
+// ============================================================
+// HOVER
+// ============================================================
+function onEnter(ile, g, dot, halo1, halo2, r, e) {
+  // Grossir le point
+  dot.setAttribute('r', r * 2.5);
+  dot.setAttribute('filter', 'url(#red-glow-strong)');
+  halo1.setAttribute('r', r * 5);
+  halo1.setAttribute('fill', 'rgba(255,42,42,0.14)');
+  halo2.setAttribute('r', r * 9);
+  halo2.setAttribute('fill', 'rgba(255,42,42,0.06)');
+
+  // Connexions
+  document.querySelectorAll('[data-k]').forEach(line => {
+    const ids = [line.dataset.a, line.dataset.b];
+    if (ids.includes(ile.id)) {
+      line.setAttribute('stroke', 'rgba(255,42,42,0.55)');
+      line.setAttribute('stroke-width', 1);
+      line.setAttribute('stroke-dasharray', '0');
+    } else {
+      line.setAttribute('stroke', 'rgba(255,42,42,0.04)');
+    }
+  });
+
+  // Autres îles
+  ILES.forEach(a => {
+    if (a.id === ile.id) return;
+    const grp = gIsles.querySelector(`[data-id="${a.id}"]`);
+    if (!grp) return;
+    grp.style.opacity = ile.ponts.includes(a.id) ? '1' : '0.25';
+  });
+
+  // Tooltip
+  document.getElementById('tt-type').textContent = ile.type;
+  document.getElementById('tt-name').textContent = ile.name;
+  document.getElementById('tt-desc').textContent = ile.desc;
+  const tagsEl = document.getElementById('tt-tags');
+  tagsEl.innerHTML = ile.tags.map(t => `<span class="tt-tag">${t}</span>`).join('');
+  tooltip.style.left = e.clientX + 'px';
+  tooltip.style.top  = (e.clientY - 8) + 'px';
+  tooltip.classList.add('visible');
+
+  document.body.style.cursor = 'pointer';
+}
+
+function onLeave(ile, g, dot, halo1, halo2, r) {
+  dot.setAttribute('r', r);
+  dot.setAttribute('filter', 'url(#red-glow)');
+  halo1.setAttribute('r', r * 3);
+  halo1.setAttribute('fill', 'rgba(255,42,42,0.08)');
+  halo2.setAttribute('r', r * 5);
+  halo2.setAttribute('fill', 'rgba(255,42,42,0.04)');
+
+  document.querySelectorAll('[data-k]').forEach(line => {
+    line.setAttribute('stroke', 'rgba(255,42,42,0.12)');
+    line.setAttribute('stroke-width', 0.6);
+    line.setAttribute('stroke-dasharray', '3 8');
+  });
+
+  ILES.forEach(a => {
+    const grp = gIsles.querySelector(`[data-id="${a.id}"]`);
+    if (grp) grp.style.opacity = '1';
+  });
+
+  tooltip.classList.remove('visible');
+  document.body.style.cursor = 'crosshair';
+}
+
+// ============================================================
+// COORDONNÉES DYNAMIQUES (simule un vrai GPS satellite)
+// ============================================================
+function updateCoords(x, y) {
+  const lat = (( (y / H()) - 0.5) * -24 + 2).toFixed(4);
+  const lng = (((x / W()) - 0.5) * 60 + 118).toFixed(4);
+  const ns = lat >= 0 ? 'N' : 'S';
+  const ew = lng >= 0 ? 'E' : 'W';
+  coordsEl.innerHTML = `${Math.abs(lat)}° ${ns}<br>${Math.abs(lng)}° ${ew}`;
+}
+
+document.addEventListener('mousemove', e => updateCoords(e.clientX, e.clientY));
+
+// ============================================================
+// INTRO
+// ============================================================
+function closeIntro() {
+  const intro = document.getElementById('intro');
+  intro.classList.add('out');
+  setTimeout(() => intro.style.display = 'none', 850);
+}
+setTimeout(closeIntro, 5500);
+
+// ============================================================
+// CSS ANIMATIONS (injectées dynamiquement)
+// ============================================================
+const css = `
+  @keyframes blink-signal {
+    0%,100% { opacity: 1; }
+    45%     { opacity: 0.2; }
+    65%     { opacity: 0.9; }
+  }
+  @keyframes ring-out {
+    0%   { r: 4px; opacity: 0.7; stroke-width: 1.5px; }
+    100% { r: 40px; opacity: 0; stroke-width: 0.3px; }
+  }
+  .ile-group { transition: opacity 0.3s ease; }
+`;
+const st = document.createElement('style');
+st.textContent = css;
+document.head.appendChild(st);
+
+// ============================================================
+// INIT
+// ============================================================
+buildMap();
+window.addEventListener('resize', buildMap);
+</script>
 </body>
 </html>
