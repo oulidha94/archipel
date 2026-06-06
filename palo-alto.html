@@ -67,7 +67,10 @@ body {
   text-transform: uppercase;
   margin-right: auto;
   opacity: 0.8;
+  text-decoration: none;
+  transition: opacity 0.2s;
 }
+.nav-logo:hover { opacity: 1; }
 .nav-links {
   display: flex;
   gap: 0;
@@ -600,7 +603,7 @@ footer {
 <body>
 
 <nav class="nav">
-  <span class="nav-logo">Archipel des idées</span>
+  <a href="index.html" class="nav-logo">← Archipel des idées</a>
   <ul class="nav-links">
     <li><a href="#ancrage">Contexte</a></li>
     <li><a href="#figures">Figures</a></li>
