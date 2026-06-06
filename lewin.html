@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kurt Lewin — Le champ, le groupe, le changement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Barlow+Condensed:wght@300;400;600;700&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ardoise: #0f1318;
+  --ardoise-mid: #181e26;
+  --ardoise-soft: #1f2733;
+  --ardoise-card: #1a2130;
+  --vert: #1eb87a;
+  --vert-dim: rgba(30,184,122,0.12);
+  --vert-pale: rgba(30,184,122,0.06);
+  --jaune: #f5c842;
+  --jaune-dim: rgba(245,200,66,0.12);
+  --rouge: #e05a4a;
+  --rouge-dim: rgba(224,90,74,0.12);
+  --bleu: #4a9fd4;
+  --bleu-dim: rgba(74,159,212,0.12);
+  --text: #c8d4e0;
+  --text-dim: #6a7e94;
+  --muted: #3a4a5a;
+  --border: rgba(255,255,255,0.07);
+  --border-vert: rgba(30,184,122,0.25);
+  --sans: 'Barlow', system-ui, sans-serif;
+  --cond: 'Barlow Condensed', system-ui, sans-serif;
+  --mono: 'DM Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--ardoise);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.65;
+  min-height: 100vh;
+}
+
+/* Grille de fond — champ de forces */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(30,184,122,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30,184,122,0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 20%, rgba(30,184,122,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 85% 75%, rgba(74,159,212,0.05) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 60% at 50% 50%, rgba(15,19,24,0.7) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.layer { position: relative; z-index: 1; }
+
+/* NAV */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(15,19,24,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  height: 50px;
+}
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--vert);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-right: auto;
+  opacity: 0.8;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.nav-logo:hover { opacity: 1; }
+.nav-links { display: flex; list-style: none; }
+.nav-links li a {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 0 0.9rem;
+  height: 50px;
+  line-height: 50px;
+  border-right: 1px solid var(--border);
+  transition: color 0.2s;
+}
+.nav-links li:first-child a { border-left: 1px solid var(--border); }
+.nav-links li a:hover { color: var(--vert); }
+
+/* HERO */
+.hero {
+  padding: 9rem 2rem 5rem;
+  max-width: 980px;
+  margin: 0 auto;
+}
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--vert);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--vert);
+  opacity: 0.7;
+}
+.hero-title {
+  font-family: var(--cond);
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  font-weight: 700;
+  line-height: 0.95;
+  color: #fff;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.hero-title em {
+  font-style: normal;
+  color: var(--vert);
+}
+.hero-equation {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--vert-dim);
+  border: 1px solid var(--border-vert);
+  padding: 0.5rem 1.25rem;
+  margin: 1rem 0;
+  font-family: var(--mono);
+  font-size: 1.1rem;
+  color: var(--vert);
+  letter-spacing: 0.1em;
+}
+.hero-subtitle {
+  font-family: var(--sans);
+  font-size: 1.05rem;
+  font-weight: 300;
+  color: var(--text-dim);
+  max-width: 560px;
+  margin-top: 0.75rem;
+  line-height: 1.65;
+  font-style: italic;
+}
+.hero-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
+.meta-pill {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  background: var(--ardoise-card);
+}
+.meta-pill.accent { border-color: var(--border-vert); color: var(--vert); background: var(--vert-pale); }
+
+/* SECTIONS */
+.section { max-width: 980px; margin: 0 auto; padding: 4rem 2rem; border-top: 1px solid var(--border); }
+.section-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+.section-title {
+  font-family: var(--cond);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.6rem;
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.section-intro { font-size: 1rem; font-weight: 300; color: var(--text-dim); max-width: 660px; margin-bottom: 2.5rem; line-height: 1.7; font-style: italic; }
+
+/* SIGNAL */
+.signal {
+  border-left: 3px solid var(--vert);
+  padding: 1.25rem 1.5rem;
+  background: var(--vert-dim);
+  margin: 2rem 0;
+}
+.signal p { font-size: 0.97rem; color: var(--text); line-height: 1.7; font-weight: 300; }
+.signal p + p { margin-top: 0.75rem; }
+.signal em { color: var(--vert); font-style: italic; }
+.signal strong { color: #fff; font-weight: 600; }
+.signal.jaune { border-left-color: var(--jaune); background: var(--jaune-dim); }
+.signal.jaune em { color: var(--jaune); }
+.signal.bleu { border-left-color: var(--bleu); background: var(--bleu-dim); }
+.signal.bleu em { color: var(--bleu); }
+
+/* QUOTE */
+.quote {
+  border-left: 2px solid var(--vert);
+  padding: 1.25rem 1.75rem;
+  background: var(--ardoise-card);
+  margin: 2rem 0;
+}
+.quote-text { font-family: var(--cond); font-size: 1.5rem; font-weight: 400; color: var(--vert); line-height: 1.35; margin-bottom: 0.4rem; letter-spacing: 0.01em; }
+.quote-source { font-family: var(--mono); font-size: 10px; color: var(--text-dim); letter-spacing: 0.05em; }
+
+/* CHAMP DE FORCES */
+.champ-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  margin: 2rem 0;
+}
+@media (max-width: 580px) { .champ-grid { grid-template-columns: 1fr; } }
+.champ-cell {
+  background: var(--ardoise-card);
+  padding: 1.75rem;
+}
+.champ-cell-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  color: var(--vert);
+}
+.champ-cell-title {
+  font-family: var(--cond);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #fff;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.02em;
+}
+.champ-cell-text { font-size: 0.9rem; color: var(--text-dim); line-height: 1.65; font-weight: 300; }
+.champ-cell-text strong { color: var(--text); font-weight: 500; }
+.champ-cell-text em { color: var(--vert); font-style: italic; }
+
+/* DIAGRAMME FORCES */
+.forces-diagram {
+  background: var(--ardoise-mid);
+  border: 1px solid var(--border);
+  padding: 2rem;
+  margin: 2rem 0;
+  position: relative;
+  overflow: hidden;
+}
+.forces-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.forces-center {
+  text-align: center;
+  padding: 1rem 0;
+  margin: 1rem 0;
+  border-top: 2px solid var(--vert);
+  border-bottom: 2px solid var(--vert);
+  position: relative;
+}
+.forces-center-label {
+  font-family: var(--cond);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--vert);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.forces-center-sub {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 0.25rem;
+}
+.forces-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0.75rem;
+  align-items: center;
+  margin: 0.75rem 0;
+}
+.force-item {
+  padding: 0.6rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--text);
+  background: var(--ardoise-soft);
+  border: 1px solid var(--border);
+  text-align: center;
+}
+.force-item.motrice { border-color: rgba(30,184,122,0.3); color: var(--vert); }
+.force-item.resistante { border-color: rgba(224,90,74,0.3); color: var(--rouge); }
+.force-arrow { font-family: var(--mono); font-size: 1.2rem; text-align: center; }
+.force-arrow.vert { color: var(--vert); }
+.force-arrow.rouge { color: var(--rouge); }
+
+/* LEADERSHIP — trois styles */
+.leadership-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  margin: 2rem 0;
+}
+@media (max-width: 640px) { .leadership-grid { grid-template-columns: 1fr; } }
+.leadership-card {
+  background: var(--ardoise-card);
+  padding: 1.75rem;
+  border-top: 3px solid;
+  transition: background 0.2s;
+}
+.leadership-card:hover { background: var(--ardoise-soft); }
+.leadership-card.directif { border-top-color: var(--rouge); }
+.leadership-card.participatif { border-top-color: var(--vert); }
+.leadership-card.laissezfaire { border-top-color: var(--jaune); }
+.leadership-num {
+  font-family: var(--mono);
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  opacity: 0.25;
+  color: #fff;
+}
+.leadership-name {
+  font-family: var(--cond);
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+}
+.leadership-card.directif .leadership-name { color: var(--rouge); }
+.leadership-card.participatif .leadership-name { color: var(--vert); }
+.leadership-card.laissezfaire .leadership-name { color: var(--jaune); }
+.leadership-desc { font-size: 0.88rem; color: var(--text-dim); line-height: 1.6; font-weight: 300; margin-bottom: 1rem; }
+.leadership-result {
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.55;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  font-style: italic;
+}
+.leadership-tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border: 1px solid;
+  margin-bottom: 0.6rem;
+}
+.directif .leadership-tag { color: var(--rouge); border-color: rgba(224,90,74,0.3); }
+.participatif .leadership-tag { color: var(--vert); border-color: var(--border-vert); }
+.laissezfaire .leadership-tag { color: var(--jaune); border-color: rgba(245,200,66,0.3); }
+
+/* RECHERCHE-ACTION */
+.ra-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  margin: 2rem 0;
+}
+.ra-step {
+  background: var(--ardoise-card);
+  padding: 1.5rem;
+  position: relative;
+}
+.ra-step-num {
+  font-family: var(--cond);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: rgba(30,184,122,0.2);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+.ra-step-name {
+  font-family: var(--cond);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--vert);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.4rem;
+}
+.ra-step-desc { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; font-weight: 300; }
+
+/* MODÈLE DU CHANGEMENT */
+.changement-wrap {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  gap: 0;
+  background: var(--border);
+  margin: 2rem 0;
+  align-items: stretch;
+}
+@media (max-width: 640px) {
+  .changement-wrap { grid-template-columns: 1fr; }
+  .changement-arrow { display: none; }
+}
+.changement-cell {
+  background: var(--ardoise-card);
+  padding: 1.75rem 1.5rem;
+  border-right: none;
+}
+.changement-arrow {
+  background: var(--ardoise-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.75rem;
+  font-size: 1.4rem;
+  color: var(--vert);
+}
+.changement-phase {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--vert);
+  margin-bottom: 0.5rem;
+}
+.changement-name {
+  font-family: var(--cond);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.75rem;
+}
+.changement-desc { font-size: 0.88rem; color: var(--text-dim); line-height: 1.65; font-weight: 300; }
+.changement-desc strong { color: var(--text); font-weight: 500; }
+
+/* EXPÉRIENCES MARQUANTES */
+.experiences-list { list-style: none; }
+.experience-item {
+  border-top: 1px solid var(--border);
+  padding: 1.5rem 0;
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+@media (max-width: 560px) { .experience-item { grid-template-columns: 1fr; gap: 0.5rem; } }
+.experience-item:last-child { border-bottom: 1px solid var(--border); }
+.experience-date {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--vert);
+  letter-spacing: 0.08em;
+  padding-top: 3px;
+}
+.experience-title {
+  font-family: var(--cond);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.3rem;
+}
+.experience-desc { font-size: 0.9rem; color: var(--text-dim); line-height: 1.65; font-weight: 300; }
+.experience-desc strong { color: var(--text); font-weight: 500; }
+.experience-desc em { color: var(--vert); font-style: italic; }
+
+/* PONTS */
+.ponts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1px;
+  background: var(--border);
+}
+.pont-card {
+  background: var(--ardoise-card);
+  padding: 1.25rem 1.5rem;
+  border-bottom: 2px solid transparent;
+  transition: background 0.2s, border-color 0.2s;
+}
+.pont-card.disponible { cursor: pointer; }
+.pont-card.disponible:hover { background: var(--ardoise-soft); border-bottom-color: var(--vert); }
+.pont-status { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.pont-status.open { color: var(--vert); }
+.pont-status.bientot { color: var(--muted); }
+.pont-name { font-family: var(--cond); font-size: 1.05rem; font-weight: 600; color: #fff; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 0.25rem; }
+.pont-card:not(.disponible) .pont-name { color: var(--muted); }
+.pont-lien { font-size: 0.86rem; color: var(--text-dim); font-style: italic; line-height: 1.5; font-weight: 300; }
+.pont-card:not(.disponible) .pont-lien { opacity: 0.6; }
+
+/* FOOTER */
+footer { max-width: 980px; margin: 0 auto; padding: 2rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.footer-brand { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.footer-note { font-size: 0.85rem; color: var(--muted); font-style: italic; font-weight: 300; }
+
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+<div class="layer">
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">← Archipel des idées</a>
+  <ul class="nav-links">
+    <li><a href="#ancrage">Ancrage</a></li>
+    <li><a href="#champ">Champ</a></li>
+    <li><a href="#leadership">Leadership</a></li>
+    <li><a href="#recherche">Recherche-action</a></li>
+    <li><a href="#changement">Changement</a></li>
+    <li><a href="#ponts">Ponts</a></li>
+  </ul>
+</nav>
+
+<header class="hero layer">
+  <p class="hero-eyebrow">Île de l'archipel — Psychologue social</p>
+  <h1 class="hero-title">Kurt<br><em>Lewin</em></h1>
+  <div class="hero-equation">B = f(P, E)</div>
+  <p class="hero-subtitle">Le comportement est une fonction de la personne et de son environnement. Une équation qui a changé la façon dont on pense les groupes, le changement et le leadership.</p>
+  <div class="hero-meta">
+    <span class="meta-pill accent">1890 — 1947</span>
+    <span class="meta-pill">Prusse → USA</span>
+    <span class="meta-pill accent">Théorie du champ</span>
+    <span class="meta-pill">Dynamique des groupes</span>
+    <span class="meta-pill">Recherche-action</span>
+    <span class="meta-pill">Changement planifié</span>
+  </div>
+</header>
+
+<!-- ANCRAGE -->
+<section id="ancrage" class="section reveal">
+  <p class="section-label">Section 1</p>
+  <h2 class="section-title">L'homme et son époque</h2>
+  <p class="section-intro">Lewin est inséparable de son siècle. Né en Prusse dans une famille juive, chassé d'Allemagne par le nazisme, il fait de sa biographie un moteur de sa science.</p>
+
+  <div class="signal">
+    <p>Kurt Lewin naît en 1890 à Mogilno, en Prusse. Formé à Berlin, il étudie la Gestalt auprès de Wertheimer et Köhler, combat dans les tranchées de la Première Guerre mondiale — expérience qui lui révèle que <em>la perception d'un même paysage diffère totalement selon que l'on est soldat ou promeneur.</em> C'est sa première intuition de champ.</p>
+    <p>En 1933, la montée du nazisme le contraint à l'exil. Il émigre aux États-Unis. Cette rupture biographique est aussi une rupture intellectuelle : <strong>il déplace son regard de l'individu vers le groupe.</strong> Celui qui a vécu la persécution collective va consacrer sa science à comprendre — et à transformer — les dynamiques de groupe.</p>
+  </div>
+
+  <div class="quote">
+    <p class="quote-text">« Rien n'est plus pratique qu'une bonne théorie. »</p>
+    <p class="quote-source">Kurt Lewin — formule emblématique de toute sa démarche scientifique</p>
+  </div>
+
+  <div class="signal jaune">
+    <p>Ce qui distingue Lewin de presque tous ses contemporains : <em>il refuse la séparation entre recherche fondamentale et recherche appliquée.</em> Pour lui, une théorie qui ne transforme pas la réalité sociale est incomplète. Et une action sans fondement théorique est aveugle. Cette posture — science engagée, ancrée dans les problèmes réels — est le fil rouge de toute son œuvre. <strong>Il mourra subitement en 1947, à 56 ans, en plein travail.</strong></p>
+  </div>
+</section>
+
+<!-- THÉORIE DU CHAMP -->
+<section id="champ" class="section reveal">
+  <p class="section-label">Section 2</p>
+  <h2 class="section-title">La théorie du champ</h2>
+  <p class="section-intro">Inspiré par la physique et la Gestalt, Lewin conçoit l'espace psychologique et social comme un champ de forces en tension permanente. Aucun comportement ne peut se comprendre hors de ce champ.</p>
+
+  <div class="champ-grid">
+    <div class="champ-cell">
+      <p class="champ-cell-label">Le principe fondateur</p>
+      <p class="champ-cell-title">B = f(P, E)</p>
+      <p class="champ-cell-text">Le comportement (B) est une <em>fonction</em> de la personnalité (P) et de l'environnement (E). Ces deux facteurs sont indissociables — ni l'un ni l'autre ne suffit à expliquer ce qu'une personne fait. C'est leur <strong>interaction dans le champ</strong> qui produit le comportement observable.</p>
+    </div>
+    <div class="champ-cell">
+      <p class="champ-cell-label">Le champ psychologique</p>
+      <p class="champ-cell-title">L'espace vital</p>
+      <p class="champ-cell-text">Lewin appelle "espace vital" l'ensemble de la personne et de son environnement psychologique tel qu'il est <em>perçu et vécu</em> par elle à un moment donné. Pas l'environnement objectif — mais l'environnement tel que la personne le construit. <strong>Ce qui n'existe pas dans l'espace vital n'influence pas le comportement.</strong></p>
+    </div>
+    <div class="champ-cell">
+      <p class="champ-cell-label">Héritage de la Gestalt</p>
+      <p class="champ-cell-title">Le tout prime sur les parties</p>
+      <p class="champ-cell-text">Comme la Gestalt-psychologie, Lewin refuse l'atomisme : on ne peut comprendre un individu en analysant ses composantes séparément. <em>Le groupe n'est pas la somme de ses membres</em> — c'est un champ avec ses propres propriétés émergentes. Cette intuition est le fondement de toute sa théorie des groupes.</p>
+    </div>
+    <div class="champ-cell">
+      <p class="champ-cell-label">Rupture épistémologique</p>
+      <p class="champ-cell-title">Synchronique vs diachronique</p>
+      <p class="champ-cell-text">Là où la psychanalyse cherche les causes dans le passé (diachronique), Lewin s'intéresse à ce qui se passe <strong>maintenant</strong> dans le champ (synchronique). Le comportement présent est déterminé par la configuration actuelle du champ — pas par l'histoire de la personne. <em>Ce déplacement est radical.</em></p>
+    </div>
+  </div>
+
+  <div class="forces-diagram">
+    <p class="forces-title">Diagramme de champ de forces — exemple : changement organisationnel</p>
+    <div style="display:grid;grid-template-columns:1fr;gap:0.5rem;max-width:600px;margin:0 auto;">
+      <div class="forces-row">
+        <div class="force-item motrice">Pression du marché →</div>
+        <div class="force-arrow vert">→→</div>
+        <div style="opacity:0"></div>
+      </div>
+      <div class="forces-row">
+        <div class="force-item motrice">Nouveau leadership →</div>
+        <div class="force-arrow vert">→→</div>
+        <div style="opacity:0"></div>
+      </div>
+      <div class="forces-center">
+        <p class="forces-center-label">État actuel en équilibre</p>
+        <p class="forces-center-sub">Résultante des forces motrices et résistantes</p>
+      </div>
+      <div class="forces-row">
+        <div style="opacity:0"></div>
+        <div class="force-arrow rouge">←←</div>
+        <div class="force-item resistante">← Habitudes établies</div>
+      </div>
+      <div class="forces-row">
+        <div style="opacity:0"></div>
+        <div class="force-arrow rouge">←←</div>
+        <div class="force-item resistante">← Peur de l'inconnu</div>
+      </div>
+    </div>
+    <p style="font-size:0.82rem;color:var(--text-dim);text-align:center;margin-top:1.25rem;font-style:italic;">Pour changer l'état actuel : augmenter les forces motrices OU réduire les forces résistantes — Lewin recommande la seconde stratégie.</p>
+  </div>
+</section>
+
+<!-- LEADERSHIP -->
+<section id="leadership" class="section reveal">
+  <p class="section-label">Section 3</p>
+  <h2 class="section-title">Les trois styles de leadership</h2>
+  <p class="section-intro">Dans une expérience célèbre avec des groupes d'enfants construisant des modèles réduits d'avions, Lewin identifie trois styles de leadership aux effets radicalement différents sur la qualité du travail et le bien-être des membres.</p>
+
+  <div class="leadership-grid">
+    <div class="leadership-card directif">
+      <p class="leadership-num">01</p>
+      <span class="leadership-tag">Autoritaire</span>
+      <p class="leadership-name">Directif</p>
+      <p class="leadership-desc">Le leader décide seul, donne des ordres non discutables, contrôle l'exécution. Aucune rétroaction possible. Position de chef assimilable au paternalisme.</p>
+      <p class="leadership-result">Résultat : productivité correcte en présence du leader, mais chute dès son absence. Tension, agressivité latente dans le groupe. Dépendance totale envers l'autorité.</p>
+    </div>
+    <div class="leadership-card participatif">
+      <p class="leadership-num">02</p>
+      <span class="leadership-tag">Démocratique</span>
+      <p class="leadership-name">Participatif</p>
+      <p class="leadership-desc">Le leader anime, facilite, encourage la participation de tous. Les décisions se prennent collectivement. L'apprentissage repose sur l'interaction entre membres.</p>
+      <p class="leadership-result">Résultat : meilleure qualité de travail, maintenue même en l'absence du leader. Cohésion forte, satisfaction élevée. Les membres s'approprient les objectifs. C'est le style que Lewin préconise.</p>
+    </div>
+    <div class="leadership-card laissezfaire">
+      <p class="leadership-num">03</p>
+      <span class="leadership-tag">Non-directif</span>
+      <p class="leadership-name">Laissez-faire</p>
+      <p class="leadership-desc">Le leader se met en retrait, surveille sans intervenir, répond aux demandes sans les anticiper. Le groupe est livré à lui-même.</p>
+      <p class="leadership-result">Résultat : qualité de travail la plus faible. Confusion, frustration, conflits non régulés. Le groupe ne se structure pas sans guidance minimale. Contre-exemple utile : la liberté sans cadre n'est pas l'autonomie.</p>
+    </div>
+  </div>
+
+  <div class="signal bleu">
+    <p>La conclusion de Lewin est claire mais nuancée : <em>le style participatif n'est pas simplement "plus agréable"</em> — il produit des résultats objectivement meilleurs sur la durée, en qualité et en cohésion. Mais il exige un leader compétent dans la facilitation, pas dans le commandement. <strong>C'est une compétence différente, et plus difficile à exercer.</strong> Ce travail influencera directement Douglas McGregor et ses théories X et Y du management.</p>
+  </div>
+</section>
+
+<!-- RECHERCHE-ACTION -->
+<section id="recherche" class="section reveal">
+  <p class="section-label">Section 4</p>
+  <h2 class="section-title">La recherche-action</h2>
+  <p class="section-intro">Lewin invente un mode de recherche hybride : on ne peut comprendre un système social qu'en essayant de le changer. La théorie et la pratique ne sont pas séparées — elles se co-construisent.</p>
+
+  <div class="signal">
+    <p>La recherche-action naît d'un refus fondamental : <em>celui de la recherche qui observe sans agir, et de l'action qui agit sans comprendre.</em> Pour Lewin, les problèmes sociaux réels — préjugés raciaux, dynamiques de groupe dysfonctionnelles, résistances au changement — ne peuvent être étudiés en laboratoire dans des conditions artificielles. Il faut <strong>intervenir dans la réalité vivante</strong>, observer ce qui change, théoriser à partir de l'expérience, et recommencer.</p>
+  </div>
+
+  <div class="ra-steps">
+    <div class="ra-step">
+      <p class="ra-step-num">01</p>
+      <p class="ra-step-name">Diagnostic</p>
+      <p class="ra-step-desc">Identifier et analyser le problème dans son contexte réel. Cartographier les forces en présence dans le champ. Formuler des hypothèses d'action.</p>
+    </div>
+    <div class="ra-step">
+      <p class="ra-step-num">02</p>
+      <p class="ra-step-name">Planification</p>
+      <p class="ra-step-desc">Concevoir une intervention. Définir les objectifs, les acteurs, les moyens. Prévoir les indicateurs qui permettront d'évaluer les effets.</p>
+    </div>
+    <div class="ra-step">
+      <p class="ra-step-num">03</p>
+      <p class="ra-step-name">Action</p>
+      <p class="ra-step-desc">Mettre en œuvre l'intervention dans le milieu réel, avec les acteurs concernés — qui sont partie prenante, pas simples sujets d'observation.</p>
+    </div>
+    <div class="ra-step">
+      <p class="ra-step-num">04</p>
+      <p class="ra-step-name">Évaluation</p>
+      <p class="ra-step-desc">Observer et mesurer les effets. Qu'est-ce qui a changé ? Qu'est-ce qui résiste ? Pourquoi ?</p>
+    </div>
+    <div class="ra-step">
+      <p class="ra-step-num">05</p>
+      <p class="ra-step-name">Théorisation</p>
+      <p class="ra-step-desc">Tirer des enseignements généralisables. Enrichir la théorie à partir de l'expérience. Puis recommencer — la boucle est spiralée, pas linéaire.</p>
+    </div>
+  </div>
+
+  <ul class="experiences-list">
+    <li class="experience-item">
+      <p class="experience-date">1943 — Guerre</p>
+      <div>
+        <p class="experience-title">L'expérience des abats</p>
+        <p class="experience-desc">Commissionné par l'armée américaine pour convaincre les ménagères de consommer des abats (libérant la viande pour les troupes). Deux groupes : l'un reçoit un cours magistral d'un nutritionniste, l'autre débat ensemble après le cours. <strong>Résultat : le groupe de discussion modifie son comportement beaucoup plus que le groupe cours.</strong> <em>Première démonstration empirique que la participation produit un changement plus durable que la persuasion.</em></p>
+      </div>
+    </li>
+    <li class="experience-item">
+      <p class="experience-date">1947 — Industrie</p>
+      <div>
+        <p class="experience-title">L'usine de pyjamas</p>
+        <p class="experience-desc">Dans une usine, une équipe d'ouvrières se voit confier la responsabilité de déterminer elle-même ses objectifs et méthodes de production. <strong>Résultat : hausse de productivité de 20 %, confirmée par des expériences ultérieures.</strong> <em>Première preuve expérimentale que l'autonomie et la participation dépassent les performances de l'organisation taylorienne.</em> Ce résultat préfigure tout le mouvement du management participatif.</p>
+      </div>
+    </li>
+    <li class="experience-item">
+      <p class="experience-date">1946 — Société</p>
+      <div>
+        <p class="experience-title">La lutte contre les préjugés raciaux</p>
+        <p class="experience-desc">Mandaté par le Connecticut pour lutter contre les préjugés raciaux et religieux, Lewin met en place des formations pour leaders communautaires. La découverte clé : les participants qui peuvent <em>observer leur propre comportement en groupe</em> et en discuter collectivement changent plus profondément que ceux qui reçoivent simplement des informations. <strong>Cette découverte est à l'origine des groupes de sensibilisation (T-groups) et de toute la tradition de formation expérientielle.</strong></p>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<!-- MODÈLE DU CHANGEMENT -->
+<section id="changement" class="section reveal">
+  <p class="section-label">Section 5</p>
+  <h2 class="section-title">Le modèle du changement en trois phases</h2>
+  <p class="section-intro">L'une des contributions les plus citées de Lewin en management et en organisation. Un modèle simple, puissant, et souvent mal compris.</p>
+
+  <div class="changement-wrap">
+    <div class="changement-cell">
+      <p class="changement-phase">Phase 1</p>
+      <p class="changement-name">Dégel</p>
+      <p class="changement-desc">Créer la motivation au changement. <strong>Déstabiliser l'équilibre existant</strong> — montrer que le statu quo est insatisfaisant, coûteux ou dangereux. Sans cette phase, toute tentative de changement sera rejetée. Le dégel implique de réduire les forces résistantes ET d'augmenter les forces motrices — mais Lewin insiste : <strong>mieux vaut réduire les résistances qu'augmenter la pression.</strong></p>
+    </div>
+    <div class="changement-arrow">→</div>
+    <div class="changement-cell">
+      <p class="changement-phase">Phase 2</p>
+      <p class="changement-name">Mouvement</p>
+      <p class="changement-desc">Mettre en œuvre le changement. Amener le système vers un <strong>nouvel état d'équilibre</strong> — nouvelles pratiques, nouveaux comportements, nouvelles représentations. Cette phase est celle de l'apprentissage, de l'expérimentation, de l'incertitude. Elle nécessite un accompagnement actif. <em>Le mouvement seul ne suffit pas — il faut aussi consolider.</em></p>
+    </div>
+    <div class="changement-arrow">→</div>
+    <div class="changement-cell">
+      <p class="changement-phase">Phase 3</p>
+      <p class="changement-name">Regel</p>
+      <p class="changement-desc">Stabiliser le nouvel état. <strong>Ancrer les nouvelles pratiques</strong> dans les normes, les structures, la culture. Sans cette phase, le système régresse vers l'état antérieur dès que la pression diminue. Le regel n'est pas une fin — c'est un nouveau point de départ pour un prochain cycle de changement. <em>Tout changement est temporaire.</em></p>
+    </div>
+  </div>
+
+  <div class="signal">
+    <p>Le contresens le plus fréquent sur ce modèle : le traiter comme une recette en trois étapes. Lewin lui-même insistait sur sa nature <em>dynamique et non linéaire</em> — les trois phases s'interpénètrent, les forces résistantes ne disparaissent pas lors du mouvement, et le regel d'un changement est souvent le dégel du suivant. <strong>C'est une grille de lecture, pas un mode d'emploi.</strong></p>
+  </div>
+</section>
+
+<!-- PONTS -->
+<section id="ponts" class="section reveal">
+  <p class="section-label">Section 6 — Archipel</p>
+  <h2 class="section-title">Ponts vers d'autres îles</h2>
+  <p class="section-intro">Lewin est le chaînon qui relie presque toutes les îles de l'archipel. Sa théorie du champ irrigue la Gestalt, sa dynamique des groupes nourrit l'AT, sa recherche-action fonde une tradition pédagogique entière.</p>
+
+  <div class="ponts-grid">
+    <div class="pont-card disponible" onclick="window.location.href='gestalt.html'">
+      <p class="pont-status open">↗ Île disponible</p>
+      <p class="pont-name">Gestalt-thérapie</p>
+      <p class="pont-lien">Lewin a étudié la Gestalt-psychologie auprès de Wertheimer et Köhler. Sa théorie du champ est directement intégrée dans les fondements de la Gestalt-thérapie — le champ organisme-environnement en est l'héritier direct.</p>
+    </div>
+    <div class="pont-card disponible" onclick="window.location.href='palo-alto.html'">
+      <p class="pont-status open">↗ Île disponible</p>
+      <p class="pont-name">École de Palo Alto</p>
+      <p class="pont-lien">La pensée systémique et circulaire de Palo Alto prolonge la vision lewineienne du champ. Bateson et Lewin partagent le même refus de la causalité linéaire et la même attention aux patterns d'interaction.</p>
+    </div>
+    <div class="pont-card disponible" onclick="window.location.href='at.html'">
+      <p class="pont-status open">↗ Île disponible</p>
+      <p class="pont-name">Analyse Transactionnelle</p>
+      <p class="pont-lien">Les jeux psychologiques de Berne et la dynamique des groupes de Lewin : deux théories de la façon dont les groupes s'auto-régulent, souvent à leur propre détriment. L'AT organisationnelle s'inscrit explicitement dans cette tradition.</p>
+    </div>
+    <div class="pont-card disponible" onclick="window.location.href='meirieu.html'">
+      <p class="pont-status open">↗ Île disponible</p>
+      <p class="pont-name">Philippe Meirieu</p>
+      <p class="pont-lien">La pédagogie coopérative, les groupes de besoin, la classe comme champ de forces — Meirieu hérite directement de Lewin. L'expérience des abats préfigure toute la pédagogie par la participation et la délibération collective.</p>
+    </div>
+    <div class="pont-card">
+      <p class="pont-status bientot">· En construction</p>
+      <p class="pont-name">Edgar Morin</p>
+      <p class="pont-lien">La complexité contre la réduction. Le champ de Lewin et la pensée complexe de Morin : même refus de l'analyse atomiste, même attention aux interdépendances et aux émergences.</p>
+    </div>
+    <div class="pont-card">
+      <p class="pont-status bientot">· En construction</p>
+      <p class="pont-name">Paulo Freire</p>
+      <p class="pont-lien">La recherche-action de Lewin et la pédagogie des opprimés de Freire : deux façons de penser l'action transformatrice avec les personnes concernées — pas pour elles.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-brand">Archipel des idées — île : Kurt Lewin</span>
+  <span class="footer-note">Construit à partir de sources académiques. Navigation libre.</span>
+</footer>
+
+</div>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
