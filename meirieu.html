@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Philippe Meirieu — Pensée & Pédagogie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1814;
+    --paper: #f5f0e8;
+    --paper-warm: #ede7d8;
+    --accent: #8b3a1e;
+    --accent-light: #c4622d;
+    --accent-pale: #f2e5dc;
+    --muted: #6b6558;
+    --border: #d0c8b8;
+    --green-dark: #2d4a35;
+    --green-mid: #4a7a59;
+    --green-pale: #e4ede7;
+    --blue-dark: #1d3556;
+    --blue-mid: #2e5f8a;
+    --blue-pale: #dde8f0;
+    --gold: #a07830;
+    --gold-pale: #f5eddc;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  .site-header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 3rem 2rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .site-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 40px,
+      rgba(255,255,255,0.015) 40px,
+      rgba(255,255,255,0.015) 41px
+    );
+    pointer-events: none;
+  }
+  .header-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .header-eyebrow {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    margin-bottom: 0.75rem;
+  }
+  .header-title {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    color: #fff;
+  }
+  .header-title em {
+    font-style: italic;
+    font-weight: 400;
+    color: #c8b89a;
+  }
+  .header-sub {
+    font-size: 15px;
+    color: #a09888;
+    font-weight: 300;
+    max-width: 520px;
+    margin-top: 0.75rem;
+  }
+  .header-dates {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .header-date-item {
+    font-size: 12px;
+    color: #706860;
+  }
+  .header-date-item strong {
+    color: #a09080;
+    font-weight: 500;
+  }
+
+  /* NAV */
+  .main-nav {
+    background: var(--paper-warm);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 0.85rem 1.25rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--muted);
+    border-bottom: 2.5px solid transparent;
+    white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s;
+    letter-spacing: 0.01em;
+  }
+  .nav-btn:hover { color: var(--ink); }
+  .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* SECTIONS */
+  .sections { max-width: 900px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* SECTION HEADER */
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.6rem;
+    line-height: 1.2;
+  }
+  .section-intro {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 600px;
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+  }
+
+  /* CARDS GRID */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .card {
+    background: var(--paper);
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+  }
+  .card:hover { background: var(--accent-pale); }
+  .card.active-card { background: var(--accent-pale); }
+  .card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    font-size: 16px;
+  }
+  .card-icon.coral { background: var(--accent-pale); color: var(--accent); }
+  .card-icon.green { background: var(--green-pale); color: var(--green-dark); }
+  .card-icon.blue { background: var(--blue-pale); color: var(--blue-dark); }
+  .card-icon.gold { background: var(--gold-pale); color: var(--gold); }
+  .card-title {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+  }
+  .card-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  .card-arrow {
+    position: absolute;
+    right: 1.2rem;
+    bottom: 1.2rem;
+    font-size: 18px;
+    color: var(--border);
+    transition: color 0.15s, transform 0.15s;
+  }
+  .card:hover .card-arrow, .card.active-card .card-arrow {
+    color: var(--accent);
+    transform: translateX(3px);
+  }
+
+  /* DETAIL PANEL */
+  .detail-panel {
+    margin-top: 1.5px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2rem;
+    display: none;
+  }
+  .detail-panel.open { display: block; }
+  .detail-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    background: rgba(255,255,255,0.1);
+    color: #c8b89a;
+    margin-bottom: 0.75rem;
+  }
+  .detail-title {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #fff;
+    line-height: 1.2;
+  }
+  .detail-body {
+    font-size: 14.5px;
+    color: #c0b8a8;
+    line-height: 1.75;
+    max-width: 640px;
+  }
+  .detail-body p + p { margin-top: 0.85rem; }
+  .detail-body strong { color: #e8ddc8; font-weight: 500; }
+
+  /* QUOTE */
+  .quote-block {
+    margin: 2rem 0;
+    padding: 1.5rem 1.5rem 1.5rem 1.75rem;
+    border-left: 3px solid var(--accent);
+    background: var(--accent-pale);
+  }
+  .quote-text {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.65;
+    margin-bottom: 0.5rem;
+  }
+  .quote-source {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  /* TENSION TABLE */
+  .tension-table { width: 100%; border-collapse: collapse; margin: 2rem 0; }
+  .tension-table th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--paper-warm);
+  }
+  .tension-table td {
+    padding: 0.9rem 1rem;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .tension-table tr:last-child td { border-bottom: none; }
+  .tension-table .pole-a { color: var(--accent); font-weight: 500; }
+  .tension-table .pole-b { color: var(--blue-dark); font-weight: 500; }
+  .tension-table .vs {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    text-align: center;
+    width: 50px;
+  }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 8px;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+  .timeline-item { position: relative; margin-bottom: 1.75rem; }
+  .timeline-dot {
+    position: absolute;
+    left: -2rem;
+    top: 5px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 2px solid var(--accent);
+  }
+  .timeline-dot.muted { border-color: var(--border); }
+  .timeline-year {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 0.2rem;
+  }
+  .timeline-year.muted { color: var(--muted); }
+  .timeline-event {
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 0.2rem;
+  }
+  .timeline-note { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  /* CRITIQUE CARDS */
+  .critique-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+  .critique-card {
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    background: var(--paper);
+  }
+  .critique-card.from-right { border-top: 3px solid var(--accent); }
+  .critique-card.from-left { border-top: 3px solid var(--blue-mid); }
+  .critique-card.from-field { border-top: 3px solid var(--green-mid); }
+  .critique-source {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .from-right .critique-source { color: var(--accent); }
+  .from-left .critique-source { color: var(--blue-mid); }
+  .from-field .critique-source { color: var(--green-mid); }
+  .critique-names { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 0.4rem; }
+  .critique-text { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+  /* BIO */
+  .bio-grid { display: grid; grid-template-columns: 1fr 280px; gap: 2rem; }
+  @media (max-width: 680px) { .bio-grid { grid-template-columns: 1fr; } }
+  .bio-text p { font-size: 15px; color: var(--ink); line-height: 1.75; margin-bottom: 0.9rem; }
+  .bio-sidebar {}
+  .bio-stat {
+    border-top: 1px solid var(--border);
+    padding: 0.85rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  .bio-stat:first-child { border-top: none; padding-top: 0; }
+  .bio-stat-label { font-size: 12px; color: var(--muted); font-weight: 400; }
+  .bio-stat-value { font-size: 13.5px; font-weight: 500; color: var(--ink); text-align: right; }
+
+  /* CONCEPTS glossary */
+  .concept-list { list-style: none; }
+  .concept-item {
+    border-top: 1px solid var(--border);
+    padding: 1.25rem 0;
+  }
+  .concept-item:last-child { border-bottom: 1px solid var(--border); }
+  .concept-term {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.35rem;
+  }
+  .concept-def {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.65;
+    max-width: 680px;
+  }
+  .concept-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    margin-bottom: 0.4rem;
+    border-radius: 2px;
+  }
+  .concept-tag.fondement { background: var(--accent-pale); color: var(--accent); }
+  .concept-tag.pratique { background: var(--green-pale); color: var(--green-dark); }
+  .concept-tag.critique { background: var(--blue-pale); color: var(--blue-dark); }
+  .concept-tag.tension { background: var(--gold-pale); color: var(--gold); }
+
+  /* OEUVRES */
+  .oeuvres-list { list-style: none; }
+  .oeuvre-item {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 0.75rem;
+    border-top: 1px solid var(--border);
+    padding: 1rem 0;
+    align-items: start;
+  }
+  .oeuvre-item:last-child { border-bottom: 1px solid var(--border); }
+  .oeuvre-year { font-size: 13px; color: var(--muted); font-weight: 500; padding-top: 2px; }
+  .oeuvre-title { font-size: 14.5px; font-weight: 500; color: var(--ink); line-height: 1.35; margin-bottom: 0.2rem; }
+  .oeuvre-note { font-size: 12.5px; color: var(--muted); line-height: 1.4; }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: var(--border); margin: 2rem 0; }
+
+  /* CLOSE BTN */
+  .close-detail {
+    float: right;
+    background: none;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #a09080;
+    font-size: 12px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-family: var(--sans);
+    transition: color 0.15s;
+    letter-spacing: 0.04em;
+  }
+  .close-detail:hover { color: #fff; }
+
+  /* POSTULATE PAIR */
+  .postulate-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    margin: 1.5rem 0;
+  }
+  @media (max-width: 560px) { .postulate-pair { grid-template-columns: 1fr; } }
+  .postulate-box {
+    padding: 1.5rem;
+  }
+  .postulate-box.left { background: var(--accent-pale); }
+  .postulate-box.right { background: var(--blue-pale); }
+  .postulate-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .postulate-box.left .postulate-label { color: var(--accent); }
+  .postulate-box.right .postulate-label { color: var(--blue-mid); }
+  .postulate-name {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .postulate-box.left .postulate-name { color: var(--accent); }
+  .postulate-box.right .postulate-name { color: var(--blue-dark); }
+  .postulate-text { font-size: 13.5px; color: var(--ink); line-height: 1.6; }
+
+  /* FIGURE CITATION */
+  .figures-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+  }
+  .figure-pill {
+    padding: 0.65rem 0.9rem;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .figure-pill span { display: block; font-size: 11px; color: var(--muted); font-weight: 400; margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <p class="header-eyebrow">Cartographie intellectuelle</p>
+    <h1 class="header-title">Philippe Meirieu<br><em>Pédagogue, penseur, militant</em></h1>
+    <p class="header-sub">Un parcours intellectuel consacré à la question de l'apprentissage, de l'émancipation et du rôle de l'école dans la démocratie.</p>
+    <div class="header-dates">
+      <span class="header-date-item"><strong>Né le</strong> 29 novembre 1949, Alès (Gard)</span>
+      <span class="header-date-item"><strong>Thèse</strong> 1983, Lyon II</span>
+      <span class="header-date-item"><strong>Professeur émérite</strong> Université Lumière-Lyon 2</span>
+    </div>
+  </div>
+</header>
+
+<nav class="main-nav">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="showSection('fondements')">Fondements théoriques</button>
+    <button class="nav-btn" onclick="showSection('concepts')">Concepts clés</button>
+    <button class="nav-btn" onclick="showSection('tensions')">Tensions pédagogiques</button>
+    <button class="nav-btn" onclick="showSection('critiques')">Critiques & débats</button>
+    <button class="nav-btn" onclick="showSection('oeuvres')">Oeuvres majeures</button>
+    <button class="nav-btn" onclick="showSection('biographie')">Biographie</button>
+  </div>
+</nav>
+
+<main class="sections">
+
+  <!-- FONDEMENTS -->
+  <section id="fondements" class="section active">
+    <p class="section-label">Section 1</p>
+    <h2 class="section-title">Les fondements de sa pédagogie</h2>
+    <p class="section-intro">Meirieu articule sa pensée autour de deux postulats éthiques incontournables et d'une finalité centrale : l'émancipation de l'élève. Cliquez sur chaque thème pour en savoir plus.</p>
+
+    <div class="postulate-pair">
+      <div class="postulate-box left">
+        <p class="postulate-label">Premier postulat</p>
+        <p class="postulate-name">Éducabilité</p>
+        <p class="postulate-text">Toute personne est susceptible d'être éduquée. Ce principe oblige l'enseignant à faire évoluer ses pratiques plutôt qu'à renoncer face à un élève en difficulté. Héritage de Herbart, Locke, Condillac, Pestalozzi.</p>
+      </div>
+      <div class="postulate-box right">
+        <p class="postulate-label">Second postulat</p>
+        <p class="postulate-name">Liberté</p>
+        <p class="postulate-text">L'apprentissage ne peut être assimilé à un dressage. En démocratie, l'éducation laisse au sujet la liberté de s'engager ou non. Les résultats de l'éducation sont donc fondamentalement incertains.</p>
+      </div>
+    </div>
+
+    <div class="quote-block">
+      <p class="quote-text">« Jeune instituteur, je vous prêche un art difficile, c'est de tout faire en ne faisant rien. »</p>
+      <p class="quote-source">Rousseau, <em>Émile ou de l'Éducation</em> — cité et commenté par Meirieu comme formule fondatrice</p>
+    </div>
+
+    <div class="cards-grid" id="fondements-cards">
+      <div class="card" onclick="toggleDetail('f1', this)">
+        <div class="card-icon coral">&#9670;</div>
+        <p class="card-title">Finalité : l'émancipation</p>
+        <p class="card-desc">L'école instruite et éduque. Sa visée ultime est l'autonomie du sujet, pas sa conformité.</p>
+        <span class="card-arrow">&#8594;</span>
+      </div>
+      <div class="card" onclick="toggleDetail('f2', this)">
+        <div class="card-icon green">&#9670;</div>
+        <p class="card-title">Le paradoxe éducatif</p>
+        <p class="card-desc">Transmettre des normes tout en apprenant à les questionner : une tension irréductible au coeur de l'acte d'enseigner.</p>
+        <span class="card-arrow">&#8594;</span>
+      </div>
+      <div class="card" onclick="toggleDetail('f3', this)">
+        <div class="card-icon blue">&#9670;</div>
+        <p class="card-title">La contrainte féconde</p>
+        <p class="card-desc">Meirieu ne rejette pas la contrainte. Il la valorise quand elle crée les conditions d'un dépassement du sujet.</p>
+        <span class="card-arrow">&#8594;</span>
+      </div>
+      <div class="card" onclick="toggleDetail('f4', this)">
+        <div class="card-icon gold">&#9670;</div>
+        <p class="card-title">L'intérêt de l'élève</p>
+        <p class="card-desc">Ce qui intéresse l'élève n'est pas toujours dans son intérêt. Cette tension est au coeur de la conception de l'enseignement.</p>
+        <span class="card-arrow">&#8594;</span>
+      </div>
+    </div>
+
+    <div class="detail-panel" id="detail-f1">
+      <button class="close-detail" onclick="closeDetail('f1')">fermer ×</button>
+      <span class="detail-tag">Finalité</span>
+      <h3 class="detail-title">L'émancipation comme horizon</h3>
+      <div class="detail-body">
+        <p>Pour Meirieu, ni l'instruction seule ni la socialisation ne suffisent à définir la mission de l'école. La finalité véritable est l'<strong>émancipation</strong> : amener chaque élève à devenir capable de penser par lui-même, d'examiner le monde de façon critique, d'exercer sa liberté de manière responsable.</p>
+        <p>Cette émancipation n'est pas un résultat garanti — elle est un horizon éthique qui structure toutes les décisions pédagogiques. Elle interdit aussi bien le laisser-faire (qui abandonnerait l'élève à ses déterminations sociales) que le formatage (qui l'enfermerait dans une identité prescrite).</p>
+        <p>Ce cadre place Meirieu dans la lignée des pédagogues progressistes (Freinet, Korczak, Makarenko) tout en le distinguant des tenants de la « non-directivité » pure, qu'il critique explicitement.</p>
+      </div>
+    </div>
+    <div class="detail-panel" id="detail-f2">
+      <button class="close-detail" onclick="closeDetail('f2')">fermer ×</button>
+      <span class="detail-tag">Fondement éthique</span>
+      <h3 class="detail-title">Le paradoxe de l'acte éducatif</h3>
+      <div class="detail-body">
+        <p>L'éducateur fait face à un paradoxe fondateur : il doit simultanément <strong>transmettre des normes sociales</strong> (pour permettre l'insertion dans la société) et <strong>apprendre à les questionner</strong> (pour former des citoyens capables de penser par eux-mêmes). Ces deux exigences sont en tension permanente.</p>
+        <p>De même, l'enseignant doit faire acquérir des savoirs nécessaires à la formation tout en tenant compte des intérêts réels de l'élève — sachant que mobiliser l'intérêt est une condition de tout apprentissage durable.</p>
+        <p>Meirieu refuse de trancher en faveur de l'un ou l'autre pôle. C'est précisément dans cet espace de tension que s'invente la pédagogie. La résolution facile (soit tout contraindre, soit tout laisser faire) est toujours une impasse.</p>
+      </div>
+    </div>
+    <div class="detail-panel" id="detail-f3">
+      <button class="close-detail" onclick="closeDetail('f3')">fermer ×</button>
+      <span class="detail-tag">Concept central</span>
+      <h3 class="detail-title">La contrainte féconde</h3>
+      <div class="detail-body">
+        <p>Contre une certaine interprétation de l'Éducation nouvelle qui ferait de toute contrainte un obstacle, Meirieu distingue la contrainte stérile (qui formate et inhibe) de la <strong>contrainte féconde</strong> : celle qui impose un sursis à l'immédiateté, crée un espace de symbolisation, et autorise l'émergence de la pensée.</p>
+        <p>Il s'appuie ici notamment sur Korczak, qui montre comment certaines règles communes, loin d'écraser la liberté des enfants, leur permettent précisément de se constituer en sujets capables de différer leurs impulsions.</p>
+        <p>Cette position lui vaut des critiques venant des deux bords : les partisans de l'autorité traditionnelle la trouvent trop permissive ; les tenants des pédagogies libertaires (écoles Sudbury, instruction en famille) la trouvent trop normative. Meirieu assume cette position médiane.</p>
+      </div>
+    </div>
+    <div class="detail-panel" id="detail-f4">
+      <button class="close-detail" onclick="closeDetail('f4')">fermer ×</button>
+      <span class="detail-tag">Tension pédagogique</span>
+      <h3 class="detail-title">L'intérêt de l'élève : lequel ?</h3>
+      <div class="detail-body">
+        <p>Meirieu formule cette tension avec une précision remarquable : <strong>« L'intérêt de l'élève, est-ce ce qui l'intéresse ou ce qui est dans son intérêt ? »</strong> — sachant que ce qui l'intéresse n'est pas toujours dans son intérêt, et que ce qui est dans son intérêt ne l'intéresse pas forcément.</p>
+        <p>Une pédagogie qui ne se soucie que des centres d'intérêt immédiats de l'élève risque de le maintenir dans ses dispositions culturelles d'origine et de le priver d'accès à de nouveaux objets de connaissance. C'est ce qu'il reconnaîtra comme une de ses propres erreurs de jeunesse : penser que les élèves défavorisés devaient apprendre à lire dans des modes d'emploi d'électroménager plutôt que dans des textes littéraires.</p>
+        <p>Cette autocritique publique, rare chez un intellectuel, est aussi ce qui distingue la pensée de Meirieu d'un militantisme pédagogique figé.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONCEPTS -->
+  <section id="concepts" class="section">
+    <p class="section-label">Section 2</p>
+    <h2 class="section-title">Concepts clés du lexique meirieusien</h2>
+    <p class="section-intro">Un ensemble de notions construites et revendiquées, qui structurent sa pensée et irriguent son oeuvre depuis quarante ans.</p>
+
+    <ul class="concept-list">
+      <li class="concept-item">
+        <span class="concept-tag fondement">Fondement</span>
+        <p class="concept-term">Éducabilité</p>
+        <p class="concept-def">Postulat selon lequel toute personne est éducable, quelles que soient ses conditions initiales. Ce n'est pas une vérité empirique mais un <em>choix éthique</em> : refuser ce postulat revient à condamner l'élève avant même d'avoir essayé. Meirieu l'oppose au fatalisme social et au déterminisme des aptitudes.</p>
+      </li>
+      <li class="concept-item">
+        <span class="concept-tag fondement">Fondement</span>
+        <p class="concept-term">La liberté du sujet</p>
+        <p class="concept-def">Pendant dialectique de l'éducabilité : si toute personne peut être éduquée, son apprentissage reste in fine une démarche qu'elle seule peut accomplir. L'enseignant ne peut que créer les conditions favorables. L'acte d'apprendre est irréductiblement du ressort du sujet.</p>
+      </li>
+      <li class="concept-item">
+        <span class="concept-tag pratique">Pratique</span>
+        <p class="concept-term">Pédagogie différenciée</p>
+        <p class="concept-def">Face à l'hétérogénéité inévitable des classes, l'enseignant adapte ses situations, ses supports et ses modalités de travail selon les besoins des élèves. Meirieu propose notamment les <strong>groupes de besoin</strong> comme dispositif concret. À distinguer de l'individualisation totale, qui ignore la dimension collective de l'apprentissage.</p>
+      </li>
+      <li class="concept-item">
+        <span class="concept-tag pratique">Pratique</span>
+        <p class="concept-term">Groupes de besoin</p>
+        <p class="concept-def">Modalité de regroupement des élèves non par niveau général, mais selon leurs besoins pédagogiques identifiés sur un point précis. Ces groupes sont temporaires, recomposés selon les séquences. C'est l'une des applications concrètes de la pédagogie différenciée.</p>
+      </li>
+      <li class="concept-item">
+        <span class="concept-tag tension">Tension</span>
+        <p class="concept-term">Le sursis à l'immédiateté</p>
+        <p class="concept-def">Notion issue notamment de sa lecture de Korczak : l'éducation consiste en partie à différer la satisfaction immédiate, à imposer un délai entre l'impulsion et l'acte. Ce sursis est la condition même de l'émergence de la pensée — et distingue l'éducation du dressage par réflexe.</p>
+      </li>
+      <li class="concept-item">
+        <span class="concept-tag critique">Critique</span>
+        <p class="concept-term">Naturalisme pédagogique</p>
+        <p class="concept-def">Terme critique forgé par Meirieu pour désigner les pédagogies qui postulent que l'enfant apprend naturellement, sans structure ni contrainte, si on lui en laisse la liberté. Il y voit une illusion romantique qui abandonne les élèves à leurs déterminismes au lieu de les en émanciper.</p>
+      </li>
+      <li class="concept-item">
+        <span class="concept-tag critique">Critique</span>
+        <p class="concept-term">Idéologie des compétences</p>
+        <p class="concept-def">Critique adressée aux réformes qui réduisent l'enseignement à l'acquisition de compétences opérationnelles, au détriment des savoirs construits et de l'intentionnalité des apprentissages. Meirieu y voit un risque d'émiettement du savoir et une instrumentalisation de l'école au service du marché.</p>
+      </li>
+      <li class="concept-item">
+        <span class="concept-tag tension">Tension</span>
+        <p class="concept-term">Pédagogie du sujet</p>
+        <p class="concept-def">Concept développé à partir des années 2000 pour contrebalancer les effets du consumérisme et de l'individualisme sur l'enfant. L'objectif : permettre à l'enfant « d'être au monde sans occuper le centre du monde ». Elle mobilise la symbolisation, le sursis et la coopération comme leviers éducatifs.</p>
+      </li>
+    </ul>
+  </section>
+
+  <!-- TENSIONS -->
+  <section id="tensions" class="section">
+    <p class="section-label">Section 3</p>
+    <h2 class="section-title">Les grandes tensions de sa pensée</h2>
+    <p class="section-intro">Meirieu ne dissout pas les contradictions — il les assume comme le terrain même de la réflexion pédagogique. Voici les principales polarités qui structurent son oeuvre.</p>
+
+    <table class="tension-table">
+      <thead>
+        <tr>
+          <th style="width:38%">Pôle A</th>
+          <th class="vs">vs</th>
+          <th style="width:38%">Pôle B</th>
+          <th style="width:18%">La position de Meirieu</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="pole-a">Transmettre des normes</span><br><span style="font-size:12px;color:var(--muted)">Insertion sociale, conformité, reproduction culturelle</span></td>
+          <td class="vs">↔</td>
+          <td><span class="pole-b">Apprendre à les questionner</span><br><span style="font-size:12px;color:var(--muted)">Esprit critique, autonomie, liberté de jugement</span></td>
+          <td style="font-size:13px;color:var(--muted)">Tension irréductible à maintenir, non à résoudre</td>
+        </tr>
+        <tr>
+          <td><span class="pole-a">Ce qui intéresse l'élève</span><br><span style="font-size:12px;color:var(--muted)">Motivation immédiate, culture de l'élève</span></td>
+          <td class="vs">↔</td>
+          <td><span class="pole-b">Ce qui est dans son intérêt</span><br><span style="font-size:12px;color:var(--muted)">Culture cultivée, savoirs fondamentaux, ouverture</span></td>
+          <td style="font-size:13px;color:var(--muted)">Refus des deux extrêmes ; mobiliser l'intérêt pour ouvrir vers l'inconnu</td>
+        </tr>
+        <tr>
+          <td><span class="pole-a">Éducabilité</span><br><span style="font-size:12px;color:var(--muted)">« Tout faire » — structurer, outiller, construire des situations</span></td>
+          <td class="vs">↔</td>
+          <td><span class="pole-b">Liberté du sujet</span><br><span style="font-size:12px;color:var(--muted)">« En ne faisant rien » — l'élève seul peut décider d'apprendre</span></td>
+          <td style="font-size:13px;color:var(--muted)">Les deux postulats sont nécessaires et contradictoires ; c'est leur cohabitation qui fonde la pédagogie</td>
+        </tr>
+        <tr>
+          <td><span class="pole-a">Pédagogie traditionnelle</span><br><span style="font-size:12px;color:var(--muted)">Savoirs, autorité magistrale, discipline</span></td>
+          <td class="vs">↔</td>
+          <td><span class="pole-b">Naturalisme pédagogique</span><br><span style="font-size:12px;color:var(--muted)">Liberté totale, non-directivité, écoles démocratiques</span></td>
+          <td style="font-size:13px;color:var(--muted)">Refus des deux postures ; la contrainte féconde comme troisième voie</td>
+        </tr>
+        <tr>
+          <td><span class="pole-a">Savoirs scolaires</span><br><span style="font-size:12px;color:var(--muted)">Contenus disciplinaires, culture lettrée</span></td>
+          <td class="vs">↔</td>
+          <td><span class="pole-b">Compétences</span><br><span style="font-size:12px;color:var(--muted)">Savoir-faire opérationnels, adaptabilité</span></td>
+          <td style="font-size:13px;color:var(--muted)">Critique de l'« idéologie des compétences » ; les savoirs construits restent premiers</td>
+        </tr>
+        <tr>
+          <td><span class="pole-a">École publique, apprendre ensemble</span><br><span style="font-size:12px;color:var(--muted)">Mixité, coopération, commun</span></td>
+          <td class="vs">↔</td>
+          <td><span class="pole-b">Instruction en famille / alternatives</span><br><span style="font-size:12px;color:var(--muted)">Individualisation maximale, choix parental</span></td>
+          <td style="font-size:13px;color:var(--muted)">Défense résolue de l'école publique comme lieu d'un apprentissage de la vie commune</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="quote-block" style="margin-top: 2rem;">
+      <p class="quote-text">« L'école primaire a autant besoin d'inventivité pour créer du commun entre les élèves que l'enseignement secondaire de promouvoir la solidarité dans une société déchirée. »</p>
+      <p class="quote-source">Philippe Meirieu, <em>Libération</em>, décembre 2017 — en réponse à la politique de Jean-Michel Blanquer</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <p style="font-size:13px;color:var(--muted);font-style:italic;line-height:1.6;">Note : ces tensions ne sont pas des défauts de cohérence mais, selon Meirieu lui-même, la condition de toute pensée pédagogique sérieuse. Une doctrine qui résout trop facilement ces paradoxes est une doctrine qui a renoncé à penser.</p>
+  </section>
+
+  <!-- CRITIQUES -->
+  <section id="critiques" class="section">
+    <p class="section-label">Section 4</p>
+    <h2 class="section-title">Critiques & controverses</h2>
+    <p class="section-intro">Meirieu est l'une des figures les plus disputées du débat éducatif français. Les attaques viennent de directions opposées — ce qui est en soi révélateur.</p>
+
+    <div class="critique-grid">
+      <div class="critique-card from-right">
+        <p class="critique-source">Critique républicaine / disciplinariste</p>
+        <p class="critique-names">Finkielkraut, Gauchet, Debray, de Romilly, Polony, Brighelli</p>
+        <p class="critique-text">Accusé d'avoir contribué à la baisse du niveau scolaire et à l'effondrement de l'autorité enseignante par une idéologie « pédagogiste », égalitariste, centrée sur l'élève au détriment des savoirs. En 2011, le Club de l'horloge lui attribue le prix Lyssenko pour « sa contribution à la ruine de l'enseignement ».</p>
+      </div>
+      <div class="critique-card from-left">
+        <p class="critique-source">Critique de gauche radicale</p>
+        <p class="critique-names">Jean-Claude Michéa</p>
+        <p class="critique-text">À l'opposé, Michéa voit en Meirieu le « fervent promoteur d'une transformation libérale de l'éducation », un agent de la modernisation capitaliste déguisée en progressisme pédagogique. Une critique qui l'attaque depuis sa gauche, ce que Meirieu conteste vivement.</p>
+      </div>
+      <div class="critique-card from-field">
+        <p class="critique-source">Critique pédagogique radicale</p>
+        <p class="critique-names">Ramïn Farhangi, partisans des écoles Sudbury</p>
+        <p class="critique-text">Lui reprochent une « pédagogie verticale » qui « formate » l'enfant, et de ne pas aller assez loin dans la non-directivité. Farhangi le qualifie de « fils spirituel d'Alain, un colon de l'enfance ». Meirieu leur répond en défendant l'idée qu'apprendre ensemble est constitutif de la mission scolaire.</p>
+      </div>
+    </div>
+
+    <div class="quote-block">
+      <p class="quote-text">« De quelle couleur sera l'étoile dont on affublera demain, si les clercs que vous représentez venaient, par malheur, à nous gouverner, les pédagogues comme moi ? »</p>
+      <p class="quote-source">Lettre ouverte de Philippe Meirieu à Alain Finkielkraut, <em>Le Monde</em>, 8 mai 2000</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <h3 style="font-family:var(--serif);font-size:1.2rem;font-weight:600;margin-bottom:0.75rem;">L'autocritique</h3>
+    <p style="font-size:14.5px;color:var(--muted);line-height:1.75;max-width:680px;margin-bottom:1rem;">Un trait rare dans le milieu intellectuel : Meirieu a publiquement reconnu s'être trompé sur certains points. Notamment sur la question de la littérature classique : dans les années 1980, influencé par Bourdieu et le marxisme, il avait estimé que les élèves défavorisés devaient apprendre à lire dans des modes d'emploi d'appareils électroménagers plutôt que dans des textes littéraires. Il a reconnu en 1999 que c'était une erreur, pour deux raisons : cela revenait à mépriser ces élèves, et à les priver d'une culture essentielle.</p>
+
+    <div class="divider"></div>
+
+    <h3 style="font-family:var(--serif);font-size:1.2rem;font-weight:600;margin-bottom:0.75rem;">Figures du débat pédagogique avec lesquelles il s'est confronté</h3>
+    <div class="figures-grid">
+      <div class="figure-pill">Alain Finkielkraut <span>Plusieurs débats publics ; polémique fondatrice de 2000</span></div>
+      <div class="figure-pill">Marcel Gauchet <span>Convergences sur la crise scolaire, divergences sur les remèdes</span></div>
+      <div class="figure-pill">Denis Kambouchner <span>Critique des réformes Allègre, dialogue ultérieur</span></div>
+      <div class="figure-pill">Jean-Claude Michéa <span>Attaque depuis la gauche radicale</span></div>
+      <div class="figure-pill">Robert Redeker <span>Émission Répliques, octobre 2016</span></div>
+      <div class="figure-pill">Natacha Polony <span>Opposition récurrente dans la presse</span></div>
+    </div>
+  </section>
+
+  <!-- OEUVRES -->
+  <section id="oeuvres" class="section">
+    <p class="section-label">Section 5</p>
+    <h2 class="section-title">Oeuvres majeures</h2>
+    <p class="section-intro">Une production éditoriale de plus de quarante ans, des ouvrages théoriques fondateurs aux essais polémiques récents.</p>
+
+    <ul class="oeuvres-list">
+      <li class="oeuvre-item">
+        <span class="oeuvre-year">1984</span>
+        <div>
+          <p class="oeuvre-title">Itinéraire des pédagogies de groupe</p>
+          <p class="oeuvre-note">Chronique sociale. Tiré de sa thèse sur les pratiques de groupe en situation scolaire. Ouvrage fondateur, 8 éditions.</p>
+        </div>
+      </li>
+      <li class="oeuvre-item">
+        <span class="oeuvre-year">1985</span>
+        <div>
+          <p class="oeuvre-title">L'École, mode d'emploi : des méthodes actives à la pédagogie différenciée</p>
+          <p class="oeuvre-note">ESF éditeur. L'un des textes les plus influents de la pédagogie différenciée en France. 14 éditions.</p>
+        </div>
+      </li>
+      <li class="oeuvre-item">
+        <span class="oeuvre-year">1987</span>
+        <div>
+          <p class="oeuvre-title">Apprendre... oui mais comment</p>
+          <p class="oeuvre-note">ESF éditeur. Référence centrale sur les mécanismes de l'apprentissage. 25 éditions jusqu'en 2017.</p>
+        </div>
+      </li>
+      <li class="oeuvre-item">
+        <span class="oeuvre-year">1991</span>
+        <div>
+          <p class="oeuvre-title">Le Choix d'éduquer : éthique et pédagogie</p>
+          <p class="oeuvre-note">ESF éditeur. Formulation systématique des postulats éthiques de l'éducation.</p>
+        </div>
+      </li>
+      <li class="oeuvre-item">
+        <span class="oeuvre-year">1999</span>
+        <div>
+          <p class="oeuvre-title">Des enfants et des hommes</p>
+          <p class="oeuvre-note">ESF éditeur. Contient la célèbre autocritique sur la littérature classique. Tournant dans sa pensée.</p>
+        </div>
+      </li>
+      <li class="oeuvre-item">
+        <span class="oeuvre-year">2004</span>
+        <div>
+          <p class="oeuvre-title">Faire l'école, faire la classe : précis de pédagogie</p>
+          <p class="oeuvre-note">ESF éditeur. Synthèse pédagogique majeure, souvent utilisée en formation des enseignants.</p>
+        </div>
+      </li>
+      <li class="oeuvre-item">
+        <span class="oeuvre-year">2007</span>
+        <div>
+          <p class="oeuvre-title">Pédagogie : le devoir de résister</p>
+          <p class="oeuvre-note">ESF éditeur. Réponse aux attaques contre la pédagogie progressiste. Ton polémique assumé.</p>
+        </div>
+      </li>
+      <li class="oeuvre-item">
+        <span class="oeuvre-year">2012</span>
+        <div>
+          <p class="oeuvre-title">Un pédagogue dans la Cité (avec Luc Cédelle)</p>
+          <p class="oeuvre-note">Desclée de Brouwer. Entretien-bilan où il répond notamment à Michéa et précise sa pensée politique.</p>
+        </div>
+      </li>
+      <li class="oeuvre-item">
+        <span class="oeuvre-year">2018</span>
+        <div>
+          <p class="oeuvre-title">La Riposte — pour en finir avec les miroirs aux alouettes</p>
+          <p class="oeuvre-note">Autrement. Critique des écoles alternatives, des neurosciences appliquées et du retour aux « bonnes vieilles méthodes ». Position médiane revendiquée.</p>
+        </div>
+      </li>
+      <li class="oeuvre-item">
+        <span class="oeuvre-year">2020</span>
+        <div>
+          <p class="oeuvre-title">Ce que l'école peut encore pour la démocratie</p>
+          <p class="oeuvre-note">Autrement. Bilan de pensée à l'heure des crises démocratiques et numériques.</p>
+        </div>
+      </li>
+      <li class="oeuvre-item">
+        <span class="oeuvre-year">2023</span>
+        <div>
+          <p class="oeuvre-title">Qui veut encore des professeurs ?</p>
+          <p class="oeuvre-note">Seuil, collection Libelle. Défense du métier enseignant face à la crise de vocation.</p>
+        </div>
+      </li>
+      <li class="oeuvre-item">
+        <span class="oeuvre-year">2024</span>
+        <div>
+          <p class="oeuvre-title">Éducation : Rallumons les Lumières</p>
+          <p class="oeuvre-note">Éditions de l'Aube. Retour aux fondements philosophiques des Lumières comme horizon de l'école républicaine.</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- BIOGRAPHIE -->
+  <section id="biographie" class="section">
+    <p class="section-label">Repères biographiques</p>
+    <h2 class="section-title">Une vie entre terrain et théorie</h2>
+    <p class="section-intro">Un intellectuel qui a aussi enseigné en lycée professionnel et dirigé une chaîne de télévision éducative.</p>
+
+    <div class="bio-grid">
+      <div class="bio-text">
+        <p>Né en 1949 à Alès dans une famille catholique proche de l'Action Française, Meirieu est très tôt influencé par le catholicisme de gauche dont il continue de se réclamer. Il fait ses premières armes en hypokhâgne au lycée Henri IV avant de s'engager dans une carrière à mi-chemin entre l'enseignement de terrain et la recherche universitaire.</p>
+        <p>Son parcours est délibérément hétérodoxe : philosophie au lycée, puis instituteur par CAP interposé, puis professeur de français en collège privé expérimental à Lyon — où il met en place une différenciation pédagogique permettant aux élèves de choisir leur nombre d'heures dans chaque discipline. C'est de ce terrain qu'est née sa thèse d'État (1983), consacrée aux pratiques de groupe en situation scolaire.</p>
+        <p>Professeur à Lyon II dès 1985, il dirige 49 thèses, préside des comités institutionnels, inspire des réformes (IUFM, TPE, ECJS), dirige l'INRP dont il démissionne en 2000 estimant que la rénovation pédagogique est compromise. Il enseigne à nouveau en lycée professionnel à Vénissieux à la rentrée 1993, sans discontinuer ses activités universitaires.</p>
+        <p>Son engagement politique le conduit à prendre la tête de la liste Europe Écologie en Rhône-Alpes en 2010, puis à être candidat aux législatives de 2012 à Lyon, où il échoue. Il assume l'articulation entre militantisme et pensée.</p>
+      </div>
+      <div class="bio-sidebar">
+        <div class="bio-stat">
+          <span class="bio-stat-label">Naissance</span>
+          <span class="bio-stat-value">29 nov. 1949, Alès</span>
+        </div>
+        <div class="bio-stat">
+          <span class="bio-stat-label">Thèse d'État</span>
+          <span class="bio-stat-value">1983, Lyon II</span>
+        </div>
+        <div class="bio-stat">
+          <span class="bio-stat-label">Thèses dirigées</span>
+          <span class="bio-stat-value">49</span>
+        </div>
+        <div class="bio-stat">
+          <span class="bio-stat-label">Chaire</span>
+          <span class="bio-stat-value">Prof. émérite, Lyon II</span>
+        </div>
+        <div class="bio-stat">
+          <span class="bio-stat-label">Légion d'honneur</span>
+          <span class="bio-stat-value">Chevalier, 1998</span>
+        </div>
+        <div class="bio-stat">
+          <span class="bio-stat-label">Doctorats honoris causa</span>
+          <span class="bio-stat-value">Bruxelles, Montréal, Fribourg</span>
+        </div>
+        <div class="bio-stat">
+          <span class="bio-stat-label">Engagement politique</span>
+          <span class="bio-stat-value">EELV, VP Région Rhône-Alpes 2010–2015</span>
+        </div>
+        <div class="bio-stat">
+          <span class="bio-stat-label">Parti</span>
+          <span class="bio-stat-value">Les Écologistes (ex-EELV)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h3 style="font-family:var(--serif);font-size:1.2rem;font-weight:600;margin-bottom:1.25rem;">Chronologie sélective</h3>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-year">1949</p>
+        <p class="timeline-event">Naissance à Alès (Gard)</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-year">Années 1970</p>
+        <p class="timeline-event">Animateur pédagogique, lycée Notre-Dame du Grandchamp (Versailles)</p>
+        <p class="timeline-note">Puis professeur de philosophie en lycée, puis instituteur.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-year">1983</p>
+        <p class="timeline-event">Thèse d'État, Université Lyon II</p>
+        <p class="timeline-note">Sur les pratiques de groupe en situation scolaire. Dir. Guy Avanzini.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-year">1985</p>
+        <p class="timeline-event">Professeur en sciences de l'éducation, Lyon II</p>
+        <p class="timeline-note">Publication de <em>L'École, mode d'emploi</em>. Début de l'oeuvre éditoriale majeure.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-year">1990–1993</p>
+        <p class="timeline-event">Membre du Conseil national des programmes</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-year">1993–1994</p>
+        <p class="timeline-event">Retour en classe, lycée professionnel Marc-Seguin, Vénissieux</p>
+        <p class="timeline-note">Geste rare : un universitaire qui retourne enseigner sur le terrain.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-year">1998–2000</p>
+        <p class="timeline-event">Directeur de l'INRP</p>
+        <p class="timeline-note">Démission en 2000, estimant la rénovation pédagogique compromise.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-year">2001–2006</p>
+        <p class="timeline-event">Directeur de l'IUFM de Lyon</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-year">2010–2015</p>
+        <p class="timeline-event">Vice-président du Conseil régional Rhône-Alpes (EELV)</p>
+        <p class="timeline-note">Délégué à la formation tout au long de la vie.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot muted"></div>
+        <p class="timeline-year muted">2014</p>
+        <p class="timeline-event">Retraite universitaire</p>
+        <p class="timeline-note">Colloque Lyon II : « Où vont les pédagogues ? »</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot muted"></div>
+        <p class="timeline-year muted">2020–2024</p>
+        <p class="timeline-event">Président puis vice-président des CEMEA</p>
+        <p class="timeline-note">Centres d'entraînement aux méthodes d'éducation active.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const btns = document.querySelectorAll('.nav-btn');
+  const labels = ['fondements','concepts','tensions','critiques','oeuvres','biographie'];
+  btns[labels.indexOf(id)].classList.add('active');
+  window.scrollTo({ top: document.querySelector('.main-nav').offsetTop - 10, behavior: 'smooth' });
+}
+
+function toggleDetail(id, cardEl) {
+  const panel = document.getElementById('detail-' + id);
+  const cards = document.querySelectorAll('#fondements-cards .card');
+  cards.forEach(c => { if (c !== cardEl) c.classList.remove('active-card'); });
+  const allPanels = document.querySelectorAll('.detail-panel');
+  allPanels.forEach(p => { if (p !== panel) p.classList.remove('open'); });
+  if (panel.classList.contains('open')) {
+    panel.classList.remove('open');
+    cardEl.classList.remove('active-card');
+  } else {
+    panel.classList.add('open');
+    cardEl.classList.add('active-card');
+    setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+  }
+}
+
+function closeDetail(id) {
+  document.getElementById('detail-' + id).classList.remove('open');
+  document.querySelectorAll('#fondements-cards .card').forEach(c => c.classList.remove('active-card'));
+}
+</script>
+</body>
+</html>
