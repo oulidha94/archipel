@@ -370,6 +370,24 @@ body::after {
 .ile-status.open-morin { color: #c8973a; }
 .status-dot.morin { background: #c8973a; animation: pulse 2s ease-in-out infinite; }
 
+/* Wiener — accent vert phosphore */
+.ile-card.wiener-accent::before { background: #00e87a; }
+.ile-card.wiener-accent:hover { background: rgba(0,232,122,0.04); }
+.ile-card.wiener-accent .ile-name { color: #e0f5ec; }
+.ile-card.wiener-accent:hover .ile-tag { border-color: rgba(0,232,122,0.22); }
+.ile-card.wiener-accent:hover .ile-arrow { color: #00e87a; }
+.ile-status.open-wiener { color: #00e87a; }
+.status-dot.wiener { background: #00e87a; animation: pulse 2s ease-in-out infinite; }
+
+/* Bateson — accent forêt */
+.ile-card.bateson-accent::before { background: #2d5a30; }
+.ile-card.bateson-accent:hover { background: rgba(30,61,32,0.04); }
+.ile-card.bateson-accent .ile-name { color: #e8f0e0; }
+.ile-card.bateson-accent:hover .ile-tag { border-color: rgba(30,61,32,0.22); }
+.ile-card.bateson-accent:hover .ile-arrow { color: #2d5a30; }
+.ile-status.open-bateson { color: #2d5a30; }
+.status-dot.bateson { background: #2d5a30; animation: pulse 2s ease-in-out infinite; }
+
 /* ÎLE EN CONSTRUCTION */
 .ile-construction {
   background: var(--void);
@@ -575,12 +593,12 @@ footer {
     <div class="fade-in">
       <div class="header-stat">
         <div class="stat-item">
-          <span class="stat-num">8</span>
+          <span class="stat-num">10</span>
           <span class="stat-label">Îles disponibles</span>
         </div>
         <div class="stat-item">
-          <span class="stat-num">2</span>
-          <span class="stat-label">En construction</span>
+          <span class="stat-num">∞</span>
+          <span class="stat-label">À venir</span>
         </div>
         <div class="stat-item">
           <span class="stat-num">∞</span>
@@ -727,20 +745,41 @@ footer {
         <span class="ile-arrow">↗</span>
       </a>
 
-      <!-- ÎLES EN CONSTRUCTION -->
-      <div class="ile-construction">
-        <p class="construction-status">En construction</p>
-        <p class="ile-type">Anthropologue & théoricien</p>
-        <p class="ile-name">Gregory Bateson</p>
-        <p class="ile-desc">L'écologie de l'esprit, les niveaux logiques, les patterns qui relient toutes choses.</p>
-      </div>
+      <!-- ÎLE 8 : Wiener — disponible -->
+      <a href="wiener.html" class="ile-card wiener-accent">
+        <div class="ile-status open-wiener">
+          <span class="status-dot wiener"></span>
+          Île disponible
+        </div>
+        <p class="ile-type">Mathématicien — Columbia MO / MIT, 1894–1964</p>
+        <p class="ile-name">Norbert Wiener</p>
+        <p class="ile-desc">Le père de la cybernétique. La boucle de rétroaction — et la conscience aiguë de ce qu'elle ferait au monde.</p>
+        <div class="ile-tags">
+          <span class="ile-tag">Cybernétique</span>
+          <span class="ile-tag">Feedback</span>
+          <span class="ile-tag">Information</span>
+          <span class="ile-tag">Éthique technologique</span>
+        </div>
+        <span class="ile-arrow">↗</span>
+      </a>
 
-      <div class="ile-construction">
-        <p class="construction-status">En construction</p>
-        <p class="ile-type">Mathématicien & philosophe — USA</p>
-        <p class="ile-name">Norbert Wiener & la Cybernétique</p>
-        <p class="ile-desc">Le terreau de tout. La boucle de rétroaction, l'information, la régulation des systèmes complexes.</p>
-      </div>
+      <!-- ÎLE 9 : Bateson — disponible -->
+      <a href="bateson.html" class="ile-card bateson-accent">
+        <div class="ile-status open-bateson">
+          <span class="status-dot bateson"></span>
+          Île disponible
+        </div>
+        <p class="ile-type">Anthropologue & théoricien — Grantchester / San Francisco, 1904–1980</p>
+        <p class="ile-name">Gregory Bateson</p>
+        <p class="ile-desc">La structure qui connecte. Le double lien, l'écologie de l'esprit, les patterns qui relient toutes choses.</p>
+        <div class="ile-tags">
+          <span class="ile-tag">Double lien</span>
+          <span class="ile-tag">Niveaux logiques</span>
+          <span class="ile-tag">Écologie de l'esprit</span>
+          <span class="ile-tag">Patterns</span>
+        </div>
+        <span class="ile-arrow">↗</span>
+      </a>
 
     </div>
   </section>
