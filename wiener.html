@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Norbert Wiener — La cybernétique, la machine et l'humain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Roboto+Slab:wght@200;300;400;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --noir: #050608;
+  --noir-mid: #090c10;
+  --circuit: #0d1218;
+  --card: #0a0e14;
+  --phosphore: #00e87a;
+  --phosphore-dim: rgba(0,232,122,0.1);
+  --phosphore-pale: rgba(0,232,122,0.05);
+  --phosphore-vif: #20ff90;
+  --ambre: #e8a820;
+  --ambre-dim: rgba(232,168,32,0.1);
+  --rouge: #e84040;
+  --rouge-dim: rgba(232,64,64,0.08);
+  --blanc: #e8eef5;
+  --text: #8aacb8;
+  --text-dim: #3a5568;
+  --muted: #1e3040;
+  --border: rgba(0,232,122,0.1);
+  --border-fort: rgba(0,232,122,0.22);
+  --mono: 'Share Tech Mono', 'DM Mono', monospace;
+  --slab: 'Roboto Slab', Georgia, serif;
+  --code: 'DM Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--mono);
+  background: var(--noir);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* Circuit imprimé en fond */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    /* Lignes horizontales circuit */
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 39px,
+      rgba(0,232,122,0.04) 39px,
+      rgba(0,232,122,0.04) 40px
+    ),
+    /* Lignes verticales circuit */
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 39px,
+      rgba(0,232,122,0.025) 39px,
+      rgba(0,232,122,0.025) 40px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 20%, rgba(0,232,122,0.06) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 40% at 80% 75%, rgba(232,168,32,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 70% at 50% 50%, rgba(5,6,8,0.6) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.layer { position: relative; z-index: 1; }
+
+/* NAV */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(5,6,8,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  height: 50px;
+}
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--phosphore);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-right: auto;
+  opacity: 0.8;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.nav-logo:hover { opacity: 1; }
+.nav-links { display: flex; list-style: none; }
+.nav-links li a {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 0 0.9rem;
+  height: 50px;
+  line-height: 50px;
+  border-right: 1px solid var(--border);
+  transition: color 0.2s;
+}
+.nav-links li:first-child a { border-left: 1px solid var(--border); }
+.nav-links li a:hover { color: var(--phosphore); }
+
+/* HERO */
+.hero { padding: 9rem 2rem 5rem; max-width: 960px; margin: 0 auto; }
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--phosphore);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  opacity: 0.8;
+}
+.hero-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: var(--phosphore); }
+.hero-title {
+  font-family: var(--slab);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 200;
+  line-height: 1.05;
+  color: var(--blanc);
+  letter-spacing: -0.02em;
+}
+.hero-title em { font-style: normal; color: var(--phosphore-vif); font-weight: 200; }
+.hero-def {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--phosphore);
+  background: var(--phosphore-dim);
+  border: 1px solid var(--border-fort);
+  padding: 0.4rem 1rem;
+  margin-top: 1.25rem;
+  letter-spacing: 0.06em;
+}
+.hero-subtitle {
+  font-family: var(--slab);
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--text-dim);
+  max-width: 560px;
+  margin-top: 0.75rem;
+  line-height: 1.7;
+}
+.hero-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
+.meta-pill {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  background: var(--card);
+}
+.meta-pill.p { border-color: var(--border-fort); color: var(--phosphore); background: var(--phosphore-pale); }
+.meta-pill.a { border-color: rgba(232,168,32,0.25); color: var(--ambre); background: var(--ambre-dim); }
+
+/* SECTIONS */
+.section { max-width: 960px; margin: 0 auto; padding: 4rem 2rem; border-top: 1px solid var(--border); }
+.section-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+.section-title {
+  font-family: var(--slab);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 300;
+  color: var(--blanc);
+  margin-bottom: 0.6rem;
+  line-height: 1.2;
+}
+.section-intro { font-family: var(--slab); font-size: 0.95rem; font-weight: 300; color: var(--text-dim); max-width: 660px; margin-bottom: 2.5rem; line-height: 1.75; font-style: italic; }
+
+/* SIGNAL */
+.signal {
+  border-left: 2px solid var(--phosphore);
+  padding: 1.25rem 1.5rem;
+  background: var(--phosphore-dim);
+  margin: 2rem 0;
+}
+.signal p { font-family: var(--slab); font-size: 0.95rem; color: var(--text); line-height: 1.75; font-weight: 300; }
+.signal p + p { margin-top: 0.75rem; }
+.signal em { color: var(--phosphore-vif); font-style: italic; }
+.signal strong { color: var(--blanc); font-weight: 600; }
+.signal.ambre { border-left-color: var(--ambre); background: var(--ambre-dim); }
+.signal.ambre em { color: var(--ambre); }
+.signal.rouge { border-left-color: var(--rouge); background: var(--rouge-dim); }
+.signal.rouge em { color: var(--rouge); }
+
+/* QUOTE */
+.quote {
+  padding: 1.5rem 1.75rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--phosphore);
+  margin: 2.5rem 0;
+}
+.quote-text { font-family: var(--slab); font-size: 1.05rem; font-weight: 300; color: var(--phosphore); line-height: 1.65; margin-bottom: 0.5rem; font-style: italic; }
+.quote-source { font-family: var(--mono); font-size: 10px; color: var(--text-dim); letter-spacing: 0.05em; }
+
+/* SCHÉMA FEEDBACK — ASCII-art style */
+.feedback-schema {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 2rem;
+  margin: 2rem 0;
+  font-family: var(--mono);
+}
+.schema-title {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.schema-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.schema-box {
+  border: 1px solid var(--phosphore);
+  padding: 0.6rem 1.2rem;
+  font-size: 11px;
+  color: var(--phosphore);
+  letter-spacing: 0.1em;
+  text-align: center;
+  background: var(--phosphore-pale);
+}
+.schema-box.sys { border-color: var(--ambre); color: var(--ambre); background: var(--ambre-dim); }
+.schema-arrow {
+  font-size: 1.1rem;
+  color: var(--text-dim);
+}
+.schema-feedback {
+  text-align: center;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  margin-top: 0.5rem;
+}
+.schema-feedback span {
+  color: var(--phosphore);
+  font-size: 1rem;
+}
+.schema-note {
+  font-family: var(--slab);
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+  margin-top: 1.25rem;
+  font-style: italic;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+}
+
+/* CONCEPTS */
+.concepts-list { list-style: none; }
+.concept-item {
+  border-top: 1px solid var(--border);
+  padding: 1.5rem 0;
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+@media (max-width: 560px) { .concept-item { grid-template-columns: 1fr; gap: 0.5rem; } }
+.concept-item:last-child { border-bottom: 1px solid var(--border); }
+.concept-tag {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  display: inline-block;
+  margin-top: 4px;
+  border: 1px solid;
+}
+.concept-tag.core { background: var(--phosphore-dim); color: var(--phosphore); border-color: var(--border-fort); }
+.concept-tag.apply { background: var(--ambre-dim); color: var(--ambre); border-color: rgba(232,168,32,0.25); }
+.concept-tag.ethic { background: var(--rouge-dim); color: var(--rouge); border-color: rgba(232,64,64,0.2); }
+.concept-tag.heritage { background: var(--muted); color: var(--text); border-color: var(--border); opacity: 0.7; }
+.concept-term {
+  font-family: var(--slab);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--blanc);
+  margin-bottom: 0.35rem;
+}
+.concept-def { font-family: var(--slab); font-size: 0.88rem; color: var(--text-dim); line-height: 1.7; font-weight: 300; }
+.concept-def strong { color: var(--text); font-weight: 400; }
+.concept-def em { color: var(--phosphore); font-style: italic; }
+
+/* CONFÉRENCES MACY */
+.macy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  margin: 2rem 0;
+}
+.macy-cell {
+  background: var(--card);
+  padding: 1.25rem;
+  transition: background 0.2s;
+}
+.macy-cell:hover { background: var(--circuit); }
+.macy-discipline {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--phosphore);
+  margin-bottom: 0.4rem;
+  opacity: 0.7;
+}
+.macy-name { font-family: var(--slab); font-size: 0.9rem; font-weight: 400; color: var(--blanc); margin-bottom: 0.2rem; }
+.macy-contrib { font-family: var(--slab); font-size: 0.82rem; color: var(--text-dim); line-height: 1.5; font-weight: 300; font-style: italic; }
+
+/* TIMELINE */
+.timeline { position: relative; padding-left: 1.5rem; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 8px; bottom: 8px;
+  width: 1px;
+  background: var(--phosphore);
+  opacity: 0.3;
+}
+.timeline-item { position: relative; padding: 0 0 2rem 1.5rem; }
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -4px; top: 8px;
+  width: 8px; height: 8px;
+  background: var(--phosphore);
+  border: 2px solid var(--noir);
+}
+.timeline-year { font-family: var(--mono); font-size: 11px; color: var(--phosphore); letter-spacing: 0.1em; margin-bottom: 0.25rem; opacity: 0.8; }
+.timeline-title { font-family: var(--slab); font-size: 0.95rem; font-weight: 400; color: var(--blanc); margin-bottom: 0.2rem; }
+.timeline-text { font-family: var(--slab); font-size: 0.86rem; color: var(--text-dim); line-height: 1.6; font-weight: 300; }
+.timeline-text em { color: var(--phosphore); font-style: italic; }
+.timeline-text strong { color: var(--text); font-weight: 400; }
+
+/* HÉRITAGE — îles nourries */
+.heritage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  margin: 2rem 0;
+}
+.heritage-cell {
+  background: var(--card);
+  padding: 1.5rem;
+  border-left: 2px solid transparent;
+  transition: background 0.2s, border-color 0.2s;
+}
+.heritage-cell:hover { background: var(--circuit); border-left-color: var(--phosphore); }
+.heritage-field {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--phosphore);
+  margin-bottom: 0.4rem;
+  opacity: 0.7;
+}
+.heritage-name { font-family: var(--slab); font-size: 0.95rem; font-weight: 400; color: var(--blanc); margin-bottom: 0.35rem; }
+.heritage-text { font-family: var(--slab); font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; font-weight: 300; }
+
+/* PONTS */
+.ponts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1px;
+  background: var(--border);
+}
+.pont-card {
+  background: var(--card);
+  padding: 1.25rem 1.5rem;
+  border-bottom: 2px solid transparent;
+  transition: background 0.2s, border-color 0.2s;
+}
+.pont-card.disponible { cursor: pointer; }
+.pont-card.disponible:hover { background: var(--circuit); border-bottom-color: var(--phosphore); }
+.pont-status { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.pont-status.open { color: var(--phosphore); }
+.pont-status.bientot { color: var(--muted); }
+.pont-name { font-family: var(--slab); font-size: 0.95rem; font-weight: 400; color: var(--blanc); margin-bottom: 0.25rem; }
+.pont-card:not(.disponible) .pont-name { color: var(--muted); }
+.pont-lien { font-family: var(--slab); font-size: 0.84rem; color: var(--text-dim); font-style: italic; line-height: 1.5; font-weight: 300; }
+.pont-card:not(.disponible) .pont-lien { opacity: 0.5; }
+
+/* OEUVRES */
+.oeuvres-list { list-style: none; }
+.oeuvre-item {
+  display: grid;
+  grid-template-columns: 55px 1fr;
+  gap: 0.75rem;
+  border-top: 1px solid var(--border);
+  padding: 1rem 0;
+  align-items: start;
+}
+.oeuvre-item:last-child { border-bottom: 1px solid var(--border); }
+.oeuvre-year { font-family: var(--mono); font-size: 11px; color: var(--phosphore); opacity: 0.7; padding-top: 2px; }
+.oeuvre-title { font-family: var(--slab); font-size: 0.92rem; font-weight: 400; color: var(--blanc); line-height: 1.35; margin-bottom: 0.2rem; }
+.oeuvre-note { font-family: var(--slab); font-size: 0.82rem; color: var(--text-dim); line-height: 1.45; font-weight: 300; }
+
+/* FOOTER */
+footer { max-width: 960px; margin: 0 auto; padding: 2rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.footer-brand { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.footer-note { font-family: var(--slab); font-size: 0.82rem; color: var(--muted); font-style: italic; font-weight: 300; }
+
+/* Clignotement curseur */
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.cursor::after { content: '█'; animation: blink 1s step-end infinite; color: var(--phosphore); font-size: 0.8em; }
+
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+<div class="layer">
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">← Archipel des idées</a>
+  <ul class="nav-links">
+    <li><a href="#ancrage">Ancrage</a></li>
+    <li><a href="#feedback">Feedback</a></li>
+    <li><a href="#concepts">Concepts</a></li>
+    <li><a href="#macy">Conférences Macy</a></li>
+    <li><a href="#ethique">Éthique</a></li>
+    <li><a href="#ponts">Ponts</a></li>
+  </ul>
+</nav>
+
+<header class="hero layer">
+  <p class="hero-eyebrow">Île de l'archipel — Mathématicien & théoricien</p>
+  <h1 class="hero-title">Norbert<br><em>Wiener</em></h1>
+  <div class="hero-def">CYBERNETICS : control and communication in the animal and the machine</div>
+  <p class="hero-subtitle">Le père de la cybernétique. Celui qui a nommé la boucle de rétroaction — et compris avant tous les autres ce qu'elle ferait au monde.</p>
+  <div class="hero-meta">
+    <span class="meta-pill p">1894 — 1964</span>
+    <span class="meta-pill">Columbia, Missouri → MIT</span>
+    <span class="meta-pill a">Cybernétique · Feedback · Information</span>
+    <span class="meta-pill">Conférences Macy</span>
+    <span class="meta-pill">Éthique de la machine</span>
+  </div>
+</header>
+
+<!-- ANCRAGE -->
+<section id="ancrage" class="section reveal">
+  <p class="section-label">Section 1 // Ancrage</p>
+  <h2 class="section-title">L'enfant prodige et le citoyen inquiet</h2>
+  <p class="section-intro">Wiener est une contradiction vivante : le mathématicien le plus abstrait de son époque, et l'un des premiers à avoir compris les conséquences humaines et politiques de la technique.</p>
+
+  <div class="signal">
+    <p>Norbert Wiener sait lire à un an et demi. Il entre à l'université à 11 ans. Il obtient son doctorat à Harvard à 18 ans — <em>le plus jeune PhD de toute l'histoire d'Harvard.</em> Son père, professeur de langues slaves, lui impose une éducation d'une rigueur extrême. Un journal l'appelle alors « le garçon le plus remarquable du monde ».</p>
+    <p>Il passe par Cambridge (Bertrand Russell, G.H. Hardy), Göttingen (David Hilbert), puis rejoint le MIT où il passera l'essentiel de sa carrière. <strong>C'est un mathématicien pur — stochastique, mouvement brownien, analyse harmonique — avant de devenir le fondateur de la cybernétique.</strong></p>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <p class="timeline-year">1894</p>
+      <p class="timeline-title">Naissance à Columbia, Missouri</p>
+      <p class="timeline-text">Fils de Leo Wiener, historien et linguiste. Parents « socialistes, humanistes et végétariens ». Norbert restera végétarien toute sa vie — <em>marqué dès l'enfance par les questions éthiques liées au traitement des vivants.</em></p>
+    </div>
+    <div class="timeline-item">
+      <p class="timeline-year">1912</p>
+      <p class="timeline-title">Doctorat à 18 ans</p>
+      <p class="timeline-text">Le plus jeune PhD de l'histoire d'Harvard. Thèse en logique mathématique. Puis Cambridge (Russell), Göttingen (Hilbert). <strong>La formation la plus rigoureuse possible en mathématiques pures.</strong></p>
+    </div>
+    <div class="timeline-item">
+      <p class="timeline-year">1919</p>
+      <p class="timeline-title">Entrée au MIT</p>
+      <p class="timeline-text">Poste de professeur de mathématiques. Il y restera toute sa carrière. Travaux sur le mouvement brownien, la transformation de Fourier, l'analyse harmonique. <em>Prix Bôcher en 1933.</em></p>
+    </div>
+    <div class="timeline-item">
+      <p class="timeline-year">1940–1945</p>
+      <p class="timeline-title">La guerre — et le refus</p>
+      <p class="timeline-text">Il <strong>refuse de participer au Projet Manhattan</strong> (bombe nucléaire), tout en travaillant sur la défense antiaérienne. Ce travail — prédire la trajectoire d'un avion ennemi en modélisant le comportement du pilote — le conduit directement à la cybernétique.</p>
+    </div>
+    <div class="timeline-item">
+      <p class="timeline-year">1946–1950</p>
+      <p class="timeline-title">Les conférences Macy</p>
+      <p class="timeline-text">Réunions interdisciplinaires légendaires à New York. <em>Mathématiciens, biologistes, anthropologues, psychologues, neurologues</em> — tous autour de la même table. Wiener y formalise la cybernétique.</p>
+    </div>
+    <div class="timeline-item">
+      <p class="timeline-year">1948</p>
+      <p class="timeline-title">Cybernetics</p>
+      <p class="timeline-text">Publication de l'ouvrage fondateur : <em>Cybernetics, or Control and Communication in the Animal and the Machine.</em> Un livre qui « bouscule durablement jusqu'au scandale le monde des idées ».</p>
+    </div>
+    <div class="timeline-item">
+      <p class="timeline-year">1950</p>
+      <p class="timeline-title">The Human Use of Human Beings</p>
+      <p class="timeline-text">Version plus accessible et éthiquement engagée. <strong>Wiener alerte sur les risques de l'automatisation pour le travail humain</strong> — soixante ans avant que la question devienne mainstream.</p>
+    </div>
+    <div class="timeline-item">
+      <p class="timeline-year">1964</p>
+      <p class="timeline-title">Mort à Stockholm</p>
+      <p class="timeline-text">Il reçoit la National Medal of Science. Meurt quelques semaines plus tard, à 69 ans. <em>Son œuvre continue de structurer la pensée informatique, biologique et sociale du XXe siècle.</em></p>
+    </div>
+  </div>
+</section>
+
+<!-- FEEDBACK -->
+<section id="feedback" class="section reveal">
+  <p class="section-label">Section 2 // Concept central</p>
+  <h2 class="section-title">Le feedback — une idée qui a tout changé</h2>
+  <p class="section-intro">La rétroaction n'était pas un concept nouveau. Wiener lui a donné un nom, une formalisation mathématique, et compris qu'elle opérait à tous les niveaux du vivant et du social.</p>
+
+  <div class="feedback-schema">
+    <p class="schema-title">// Schéma de la boucle de rétroaction (feedback loop)</p>
+    <div class="schema-diagram">
+      <div class="schema-box">INPUT<br><span style="font-size:9px;opacity:0.7">entrée</span></div>
+      <div class="schema-arrow">→</div>
+      <div class="schema-box sys">SYSTÈME<br><span style="font-size:9px;opacity:0.7">traitement</span></div>
+      <div class="schema-arrow">→</div>
+      <div class="schema-box">OUTPUT<br><span style="font-size:9px;opacity:0.7">sortie</span></div>
+    </div>
+    <div style="text-align:center;font-size:1.5rem;color:var(--phosphore);opacity:0.4;margin-bottom:0.5rem;">↑___________________________|</div>
+    <p class="schema-feedback"><span>↺</span> FEEDBACK — la sortie revient modifier l'entrée</p>
+    <p class="schema-note">Sans feedback, un système est aveugle à ses propres effets. Avec feedback négatif, il se corrige et s'auto-régule. Avec feedback positif, il s'emballe ou croît. Wiener montre que ce mécanisme est universel — du thermostat au cerveau, de la cellule à la société.</p>
+  </div>
+
+  <div class="signal">
+    <p>Ce qui rend l'intuition de Wiener révolutionnaire : <em>le feedback efface la frontière entre la machine et le vivant.</em> Un être humain qui attrape un verre d'eau utilise exactement le même principe qu'un missile guidé qui corrige sa trajectoire. Les deux systèmes reçoivent une information sur leur état actuel par rapport à leur objectif, et l'utilisent pour ajuster leur comportement.</p>
+    <p><strong>La cybernétique n'est pas une métaphore.</strong> C'est l'affirmation que le contrôle et la communication obéissent aux mêmes lois formelles dans l'animal et dans la machine — et que cette unité est réelle, pas simplement analogique.</p>
+  </div>
+
+  <div class="quote">
+    <p class="quote-text">La cybernétique est une arme à double tranchant, tôt ou tard elle vous blessera profondément.</p>
+    <p class="quote-source">Norbert Wiener — déclaration sous surveillance du FBI pendant le maccarthysme</p>
+  </div>
+</section>
+
+<!-- CONCEPTS -->
+<section id="concepts" class="section reveal">
+  <p class="section-label">Section 3 // Lexique</p>
+  <h2 class="section-title">Les concepts fondateurs</h2>
+  <p class="section-intro">La cybernétique n'est pas une discipline — c'est un vocabulaire transversal qui a permis à des domaines séparés de se parler.</p>
+
+  <ul class="concepts-list">
+    <li class="concept-item">
+      <div><span class="concept-tag core">Fondateur</span></div>
+      <div>
+        <p class="concept-term">Cybernétique</p>
+        <p class="concept-def">Du grec <em>kubernetes</em> — le pilote, celui qui tient le gouvernail. Wiener définit la cybernétique comme <strong>la science du contrôle et de la communication dans l'animal et dans la machine.</strong> Ce qui unit ces deux domaines : la régulation par feedback. Le pilote corrige le cap ; le thermostat corrige la température ; le cerveau corrige le geste. Même structure formelle, objets différents.</p>
+      </div>
+    </li>
+    <li class="concept-item">
+      <div><span class="concept-tag core">Fondateur</span></div>
+      <div>
+        <p class="concept-term">Rétroaction (feedback)</p>
+        <p class="concept-def">Mécanisme par lequel <strong>la sortie d'un système est renvoyée à son entrée pour modifier son comportement futur.</strong> La rétroaction négative stabilise (le thermostat qui coupe le chauffage quand la température est atteinte). La rétroaction positive amplifie (la panique boursière qui s'auto-entretient). <em>Wiener montre que tout système régulé — biologique, mécanique ou social — fonctionne par rétroaction.</em></p>
+      </div>
+    </li>
+    <li class="concept-item">
+      <div><span class="concept-tag core">Fondateur</span></div>
+      <div>
+        <p class="concept-term">Information</p>
+        <p class="concept-def">Wiener développe en parallèle de Shannon une théorie de l'information — mais avec une différence cruciale : là où Shannon pense l'information comme mesure statistique (bits), <strong>Wiener pense l'information comme ce qui permet à un système de s'organiser contre le désordre.</strong> L'information s'oppose à l'entropie. Vivre, c'est traiter de l'information pour maintenir de l'ordre face au désordre thermodynamique.</p>
+      </div>
+    </li>
+    <li class="concept-item">
+      <div><span class="concept-tag apply">Application</span></div>
+      <div>
+        <p class="concept-term">Entropie et néguentropie</p>
+        <p class="concept-def">Empruntés à la thermodynamique : l'entropie est la tendance naturelle au désordre, à la dégradation. La <em>néguentropie</em> (ou entropie négative) est la capacité d'un système à créer et maintenir de l'ordre. <strong>Pour Wiener, tout être vivant est une machine néguentropique</strong> — il consomme de l'énergie et de l'information pour maintenir son organisation face à la dégradation entropique du monde physique.</p>
+      </div>
+    </li>
+    <li class="concept-item">
+      <div><span class="concept-tag apply">Application</span></div>
+      <div>
+        <p class="concept-term">Homéostasie et régulation</p>
+        <p class="concept-def">Concept emprunté à la biologie (Walter Cannon) et formalisé par Wiener : la capacité d'un système à maintenir ses variables dans des limites viables malgré les perturbations de l'environnement. <em>Le corps humain maintient sa température, son taux de glycémie, sa pression artérielle</em> — autant de boucles de rétroaction négative. <strong>Wiener montre que ce principe s'étend aux organisations sociales et aux machines.</strong></p>
+      </div>
+    </li>
+    <li class="concept-item">
+      <div><span class="concept-tag ethic">Éthique</span></div>
+      <div>
+        <p class="concept-term">L'usage humain des êtres humains</p>
+        <p class="concept-def">Titre de son ouvrage de 1950 — et programme politique. <strong>Wiener est le premier à alerter sur le risque que l'automatisation fasse de l'humain un appendice de la machine</strong> plutôt que l'inverse. « Tout travail qui est en concurrence avec le travail d'esclave doit accepter les conditions économiques du travail d'esclave. » Il pense l'automatisation comme une menace sociale réelle, soixante ans avant que la question soit mainstream.</p>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<!-- CONFÉRENCES MACY -->
+<section id="macy" class="section reveal">
+  <p class="section-label">Section 4 // Les conférences Macy (1946–1953)</p>
+  <h2 class="section-title">Le creuset interdisciplinaire</h2>
+  <p class="section-intro">Les conférences Macy sont l'un des moments les plus fertiles de l'histoire intellectuelle du XXe siècle. Wiener en est la figure centrale — mais il y côtoie des esprits qui façonneront chacun un domaine entier.</p>
+
+  <div class="signal ambre">
+    <p>À New York, de 1946 à 1953, une dizaine de réunions réunit <em>les scientifiques les plus brillants de leur époque</em> autour d'un seul objectif : élaborer une science générale du fonctionnement de l'esprit — machine, animal, humain. <strong>C'est là que naît, de façon collective et interdisciplinaire, le paradigme cybernétique</strong> qui irrigue ensuite Palo Alto, la Gestalt (via Kurt Lewin), la biologie, l'informatique et les sciences sociales.</p>
+  </div>
+
+  <div class="macy-grid">
+    <div class="macy-cell">
+      <p class="macy-discipline">Mathématiques</p>
+      <p class="macy-name">Norbert Wiener</p>
+      <p class="macy-contrib">Cybernétique, feedback, information. La figure centrale des conférences.</p>
+    </div>
+    <div class="macy-cell">
+      <p class="macy-discipline">Mathématiques</p>
+      <p class="macy-name">John von Neumann</p>
+      <p class="macy-contrib">Architecture des ordinateurs, automates cellulaires. Il utilise les conférences pour construire le supercalculateur qui servira à la bombe H.</p>
+    </div>
+    <div class="macy-cell">
+      <p class="macy-discipline">Neurologie</p>
+      <p class="macy-name">Warren McCulloch</p>
+      <p class="macy-contrib">Modélisation mathématique du neurone. Fondements des réseaux de neurones artificiels.</p>
+    </div>
+    <div class="macy-cell">
+      <p class="macy-discipline">Biologie / Philosophie</p>
+      <p class="macy-name">Heinz von Foerster</p>
+      <p class="macy-contrib">Cybernétique de second ordre — l'observateur inclus dans le système observé. Fondements du constructivisme.</p>
+    </div>
+    <div class="macy-cell">
+      <p class="macy-discipline">Anthropologie</p>
+      <p class="macy-name">Gregory Bateson</p>
+      <p class="macy-contrib">Import de la cybernétique dans l'anthropologie et la psychiatrie. Ce qu'il apporte aux conférences deviendra Palo Alto.</p>
+    </div>
+    <div class="macy-cell">
+      <p class="macy-discipline">Anthropologie</p>
+      <p class="macy-name">Margaret Mead</p>
+      <p class="macy-contrib">Applications anthropologiques et sociales. Elle contribue à étendre le paradigme cybernétique aux sciences humaines.</p>
+    </div>
+    <div class="macy-cell">
+      <p class="macy-discipline">Ingénierie / Information</p>
+      <p class="macy-name">Claude Shannon</p>
+      <p class="macy-contrib">Théorie mathématique de l'information (bit). Présent aux dernières conférences, dialogue fondateur avec Wiener.</p>
+    </div>
+    <div class="macy-cell">
+      <p class="macy-discipline">Neurophysiologie</p>
+      <p class="macy-name">Arturo Rosenblueth</p>
+      <p class="macy-contrib">Collaborateur de Wiener sur le feedback biologique. Co-auteur de l'article fondateur de 1943 sur le comportement et la téléologie.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ÉTHIQUE ET HÉRITAGE -->
+<section id="ethique" class="section reveal">
+  <p class="section-label">Section 5 // Éthique & Héritage</p>
+  <h2 class="section-title">La conscience du savant</h2>
+  <p class="section-intro">Wiener est l'un des rares scientifiques de son époque à avoir systématiquement pensé les conséquences éthiques et sociales de ses propres travaux.</p>
+
+  <div class="signal rouge">
+    <p>Après Hiroshima et Auschwitz, Wiener est hanté. Il refuse de participer au Projet Manhattan. Il hésite à abandonner la recherche scientifique, <em>faute de pouvoir contrôler les usages qui en sont faits.</em> Cette angoisse est productrice : elle le conduit à écrire <em>The Human Use of Human Beings</em> (1950), ouvrage dans lequel <strong>il alerte sur l'automatisation comme menace pour la dignité et l'emploi humains</strong> — avec une lucidité que les décennies n'ont fait que confirmer.</p>
+  </div>
+
+  <div class="heritage-grid">
+    <div class="heritage-cell">
+      <p class="heritage-field">Informatique & IA</p>
+      <p class="heritage-name">Fondements de l'informatique moderne</p>
+      <p class="heritage-text">Von Neumann, McCulloch et Wiener posent ensemble aux conférences Macy les bases conceptuelles de l'ordinateur, des réseaux de neurones artificiels et de l'intelligence artificielle. Tout ce qui suit hérite de ce moment.</p>
+    </div>
+    <div class="heritage-cell">
+      <p class="heritage-field">Biologie & médecine</p>
+      <p class="heritage-name">Régulation et homéostasie</p>
+      <p class="heritage-text">La formalisation cybernétique de l'homéostasie transforme la physiologie et la médecine. La biologie des systèmes, la médecine de régulation, les approches systémiques en santé — toutes héritent directement de Wiener.</p>
+    </div>
+    <div class="heritage-cell">
+      <p class="heritage-field">Sciences sociales</p>
+      <p class="heritage-name">Pensée systémique et complexité</p>
+      <p class="heritage-text">Via Bateson (Palo Alto), von Foerster (constructivisme) et Morin (complexité), la cybernétique irrigue les sciences humaines et sociales. Le paradigme systémique qui traverse tout l'archipel prend racine ici.</p>
+    </div>
+    <div class="heritage-cell">
+      <p class="heritage-field">Éthique technologique</p>
+      <p class="heritage-name">Le précurseur des débats contemporains</p>
+      <p class="heritage-text">L'IA et l'emploi, l'automatisation et la dignité humaine, la responsabilité du scientifique face aux usages de ses travaux — Wiener posait ces questions en 1950. Les décennies n'ont fait qu'en confirmer l'urgence.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--slab);font-size:1rem;font-weight:300;color:var(--blanc);margin-top:2.5rem;margin-bottom:1rem;">Oeuvres clés</h3>
+  <ul class="oeuvres-list">
+    <li class="oeuvre-item">
+      <p class="oeuvre-year">1948</p>
+      <div><p class="oeuvre-title">Cybernetics, or Control and Communication in the Animal and the Machine</p><p class="oeuvre-note">L'ouvrage fondateur. Formalise la cybernétique comme science transdisciplinaire. Publié simultanément à Paris, Cambridge et New York. Bouscule durablement jusqu'au scandale le monde des idées.</p></div>
+    </li>
+    <li class="oeuvre-item">
+      <p class="oeuvre-year">1950</p>
+      <div><p class="oeuvre-title">The Human Use of Human Beings (Cybernétique et société)</p><p class="oeuvre-note">Version accessible et éthiquement engagée. Alerte sur l'automatisation, la dignité humaine, la responsabilité du scientifique. Un texte d'une prescience remarquable.</p></div>
+    </li>
+    <li class="oeuvre-item">
+      <p class="oeuvre-year">1964</p>
+      <div><p class="oeuvre-title">God & Golem, Inc.</p><p class="oeuvre-note">Dernier grand ouvrage. Points de collision entre cybernétique et religion — la machine qui apprend, qui se reproduit, qui crée. Questions que l'IA contemporaine rend plus aiguës encore.</p></div>
+    </li>
+  </ul>
+</section>
+
+<!-- PONTS -->
+<section id="ponts" class="section reveal">
+  <p class="section-label">Section 6 // Archipel</p>
+  <h2 class="section-title">Ponts vers d'autres îles</h2>
+  <p class="section-intro">Wiener est le terreau de presque tout l'archipel. Les autres îles ont hérité de lui — souvent sans le citer explicitement.</p>
+
+  <div class="ponts-grid">
+    <div class="pont-card disponible" onclick="window.location.href='palo-alto.html'">
+      <p class="pont-status open">↗ Île disponible</p>
+      <p class="pont-name">École de Palo Alto</p>
+      <p class="pont-lien">Bateson participe aux conférences Macy avec Wiener. Il importe directement la cybernétique dans l'anthropologie et la psychiatrie. Palo Alto est la cybernétique appliquée aux relations humaines.</p>
+    </div>
+    <div class="pont-card disponible" onclick="window.location.href='morin.html'">
+      <p class="pont-status open">↗ Île disponible</p>
+      <p class="pont-name">Edgar Morin</p>
+      <p class="pont-lien">La boucle rétroactive et récursive de Morin hérite directement du feedback de Wiener. La pensée complexe est une généralisation philosophique de la cybernétique — Morin en est le prolongement épistémologique.</p>
+    </div>
+    <div class="pont-card disponible" onclick="window.location.href='lewin.html'">
+      <p class="pont-status open">↗ Île disponible</p>
+      <p class="pont-name">Kurt Lewin</p>
+      <p class="pont-lien">Lewin et Wiener sont contemporains et partagent l'intuition systémique. La théorie du champ de Lewin et la cybernétique de Wiener pensent tous deux les phénomènes humains comme des systèmes en équilibre dynamique.</p>
+    </div>
+    <div class="pont-card disponible" onclick="window.location.href='gestalt.html'">
+      <p class="pont-status open">↗ Île disponible</p>
+      <p class="pont-name">Gestalt-thérapie</p>
+      <p class="pont-lien">La Gestalt-psychologie (Lewin, Wertheimer) et la cybernétique (Wiener) partagent le principe holiste : le tout prime sur les parties. La Gestalt-thérapie hérite des deux filières sans les confondre.</p>
+    </div>
+    <div class="pont-card disponible" onclick="window.location.href='at.html'">
+      <p class="pont-status open">↗ Île disponible</p>
+      <p class="pont-name">Analyse Transactionnelle</p>
+      <p class="pont-lien">Les jeux psychologiques de l'AT sont des boucles de rétroaction relationnelles — des patterns qui s'auto-entretiennent exactement comme un feedback positif. La cybernétique donne un cadre formel à ce que Berne observe cliniquement.</p>
+    </div>
+    <div class="pont-card">
+      <p class="pont-status bientot">· En construction</p>
+      <p class="pont-name">Gregory Bateson</p>
+      <p class="pont-lien">L'héritier direct de Wiener dans les sciences humaines. Une île entière lui sera consacrée — elle sera le nœud central de l'archipel.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-brand">Archipel des idées — île : Norbert Wiener</span>
+  <span class="footer-note">Construit à partir de sources académiques. Navigation libre.</span>
+</footer>
+
+</div>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
